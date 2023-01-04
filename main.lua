@@ -8,6 +8,7 @@ function love.load()
 
     love.physics.setMeter(64)
     world = love.physics.newWorld(0, 3.72*64, true)
+    world:setCallbacks(beginContact, endContact, preSolve, postSolve)
   
     objects = {} 
     objects.ground = {}
@@ -16,7 +17,7 @@ function love.load()
     objects.ground.fixture = love.physics.newFixture(objects.ground.body, objects.ground.shape)
   
     objects.tower = {}
-    objects.tower.body = love.physics.newBody(world, love.graphics.getPixelWidth()/2, love.graphics.getPixelHeight()/2, "dynamic")
+    objects.tower.body = love.physics.newBody(world, love.math.random(0, love.graphics.getPixelWidth()), 0, "dynamic")
     objects.tower.shape = love.physics.newCircleShape(100)
     objects.tower.images = buildingImage
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
@@ -50,3 +51,14 @@ function love.load()
 
 
   end
+
+function beginContact()
+    local x, y = objects.tower.body:getLinearVelocity()
+    print (y)
+    print(objects.tower.body:getAngularVelocity())
+    if y < 100 then
+        print"landed"
+    else 
+        print"Boom!"
+    end
+end
