@@ -4,6 +4,8 @@
 
 function love.load()
     buildingImage = love.graphics.newImage("Assets/isometric_office_5.png")
+    buildingImageWidth = buildingImage:getWidth()
+    buildingImageHeight = buildingImage:getHeight()
     background = love.graphics.newImage("Assets/marsmountain.png")
 
     love.physics.setMeter(64)
@@ -18,7 +20,7 @@ function love.load()
   
     objects.tower = {}
     objects.tower.body = love.physics.newBody(world, love.math.random(0, love.graphics.getPixelWidth()), 0, "dynamic")
-    objects.tower.shape = love.physics.newCircleShape(100)
+    objects.tower.shape = love.physics.newRectangleShape(buildingImageWidth, buildingImageHeight + 75)
     objects.tower.images = buildingImage
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
     objects.tower.fixture:setRestitution(0.3) 
@@ -37,7 +39,7 @@ function love.load()
       objects.tower.body:applyForce(-400, 0)
     end
     if love.keyboard.isDown("up") then
-        objects.tower.body:applyForce(0, -4600)
+        objects.tower.body:applyForce(0, -3000)
     end
   end
   
