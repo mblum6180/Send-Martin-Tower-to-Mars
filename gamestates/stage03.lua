@@ -3,7 +3,7 @@
 local Scene = {}
 
 function Scene:load()
-    buildingImage = love.graphics.newImage("Assets/isometric_office_5.png")
+    buildingImage = love.graphics.newImage("assets/isometric_office_5.png")
     buildingImageWidth = buildingImage:getWidth()
     buildingImageHeight = buildingImage:getHeight()
     background = love.graphics.newImage("Assets/marsmountain.png")

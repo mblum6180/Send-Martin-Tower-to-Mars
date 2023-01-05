@@ -1,9 +1,9 @@
---! file: title.lua
+--! file: stage02.lua
 
 local Scene = {}
 
 function Scene:load()
-background = love.graphics.newImage("Assets/marsmountain.png")
+background = love.graphics.newImage("assets/marsmountain.png")
     
 end
     
@@ -18,10 +18,14 @@ function Scene:draw()
 end
 
 function Scene:keypressed(key, scancode, isrepeat)
+    if key == "s" then
+        score = score + 1
+        print(score)
+    end
     if key == "escape" then
         love.event.quit()
     elseif key == "space" then
-        changeScene("stage01")
+        changeScene("stage03")
     end
 end
 
