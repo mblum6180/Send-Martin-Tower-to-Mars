@@ -24,6 +24,7 @@ function love.load()
     objects.tower.images = buildingImage
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
     objects.tower.fixture:setRestitution(0.3) 
+    objects.tower.fixture:setFriction(0.98)
   
 
     love.graphics.setBackgroundColor(0.92, 0.70, 0.60)
