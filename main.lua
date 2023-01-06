@@ -14,3 +14,7 @@ function love.load()
   Gamestate.registerEvents()
   Gamestate.switch(mainMenu)
 end
+
+function beginContact()
+  Gamestate.beginContact()
+end
