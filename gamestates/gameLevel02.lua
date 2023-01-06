@@ -2,7 +2,7 @@
 
 Gamestate = require 'libs.hump.gamestate'
 
-local gameLevel02 = Gamestate.new()
+local gameLevel02 = {}
 
 function gameLevel02:init()
     background = love.graphics.newImage("assets/marsmountain.png")
@@ -25,7 +25,7 @@ function gameLevel02:keypressed(key, scancode, isrepeat)
     if key == "escape" then
         love.event.quit()
     elseif key == "space" then
-        changeScene(mainMenu)
+        Gamestate.switch(gameLevel03)
     end
 end
 

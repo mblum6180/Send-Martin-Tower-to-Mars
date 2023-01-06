@@ -1,10 +1,8 @@
 --! file: mainmenu.lua
 
-local score = 0
-
 Gamestate = require 'libs.hump.gamestate'
 
-local mainmenu = Gamestate.new()
+local mainmenu = {}
 
 function mainmenu:init()
     background = love.graphics.newImage("assets/marsmountain.png")
@@ -32,5 +30,6 @@ function mainmenu:keypressed(key, scancode, isrepeat)
         Gamestate.switch(gameLevel01)
     end
 end
+
 
 return mainmenu

@@ -1,12 +1,14 @@
 --! file: stage03.lua
 
-local Scene = {}
+Gamestate = require 'libs.hump.gamestate'
 
-function Scene:load()
+local gameLevel03 = {}
+
+function gameLevel03:init()
     buildingImage = love.graphics.newImage("assets/isometric_office_5.png")
     buildingImageWidth = buildingImage:getWidth()
     buildingImageHeight = buildingImage:getHeight()
-    background = love.graphics.newImage("Assets/marsmountain.png")
+    background = love.graphics.newImage("assets/marsmountain.png")
 
     love.physics.setMeter(64)
     world = love.physics.newWorld(0, 3.72*64, true)
@@ -31,7 +33,7 @@ function Scene:load()
       end
   
   
-  function Scene:update(dt)
+  function gameLevel03:update(dt)
     world:update(dt) 
 
     if love.keyboard.isDown("right") then
@@ -44,7 +46,7 @@ function Scene:load()
     end
   end
   
-  function Scene:draw()
+  function gameLevel03:draw()
     love.graphics.draw(background, 0, 0)
     love.graphics.setColor(0.53, 0.39, 0.32)
     love.graphics.polygon("fill", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
@@ -55,7 +57,7 @@ function Scene:load()
 
   end
 
-function Scene:beginContact()
+function gameLevel03:beginContact()
     local x, y = objects.tower.body:getLinearVelocity()
     print (y)
     print(objects.tower.body:getAngularVelocity())
@@ -66,7 +68,7 @@ function Scene:beginContact()
     end
 end
 
-function Scene:keypressed(key, scancode, isrepeat)
+function gameLevel03:keypressed(key, scancode, isrepeat)
   if key == "escape" then
       love.event.quit()
   elseif key == "space" then
@@ -75,4 +77,4 @@ function Scene:keypressed(key, scancode, isrepeat)
 end
 
 
-return Scene
+return gameLevel03
