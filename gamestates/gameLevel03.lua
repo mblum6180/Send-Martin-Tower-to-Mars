@@ -5,7 +5,7 @@ Gamestate = require 'libs.hump.gamestate'
 local gameLevel03 = {}
 
 function gameLevel03:init()
-    buildingImage = love.graphics.newImage("assets/isometric_office_5.png")
+    buildingImage = love.graphics.newImage("assets/martin8bit.png")
     buildingImageWidth = buildingImage:getWidth()
     buildingImageHeight = buildingImage:getHeight()
     background = love.graphics.newImage("assets/marsmountain.png")
