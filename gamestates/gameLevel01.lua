@@ -5,17 +5,26 @@
 Gamestate = require 'libs.hump.gamestate'
 
 local gameLevel01 = {}
-
 function gameLevel01:init()
+    timer = 1
+    bgAlpha = 0
+    bgFadein = 1
     background = love.graphics.newImage("assets/marsmountain8bit.png")
 end
     
     
 function gameLevel01:update(dt)
+    timer = timer + dt
+    if bgAlpha ~= 1 then
+        if timer > bgFadein then 
+            bgAlpha = fade(dt, bgAlpha, 0.9)
+        end
+    end
 
 end
     
 function gameLevel01:draw()
+    love.graphics.setColor(255, 255, 255, bgAlpha)
     love.graphics.draw(background, 20, 0)
 end
 

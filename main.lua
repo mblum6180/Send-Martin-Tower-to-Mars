@@ -10,10 +10,14 @@ gameLevel02 = require 'gamestates.gameLevel02'
 gameLevel03 = require 'gamestates.gameLevel03'
 pause = require 'gamestates.pause'
 
-score = 0
+
 
 function love.load()
+  love.physics.setMeter(64)
+  world = love.physics.newWorld(0, 3.72*64, true)
+  --require 'objects'
   Gamestate.registerEvents()
+  score = 0
   Gamestate.switch(mainMenu)
 end
 
