@@ -5,7 +5,7 @@ Gamestate = require 'libs.hump.gamestate'
 local mainmenu = {}
 
 function mainmenu:init()
-    background = love.graphics.newImage("assets/marsmountain.png")
+    background = love.graphics.newImage("assets/title.png")
     
 end
     
@@ -27,7 +27,7 @@ function mainmenu:keypressed(key, scancode, isrepeat)
     if key == "escape" then
         love.event.quit()
     elseif key == "space" then
-        Gamestate.switch(gameLevel01)
+        Gamestate.switch(gameLevel03)
     end
 end
 

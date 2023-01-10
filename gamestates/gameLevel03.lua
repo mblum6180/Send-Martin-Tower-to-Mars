@@ -8,7 +8,7 @@ function gameLevel03:init()
     buildingImage = love.graphics.newImage("assets/martin8bit.png")
     buildingImageWidth = buildingImage:getWidth()
     buildingImageHeight = buildingImage:getHeight()
-    background = love.graphics.newImage("assets/marsmountain.png")
+    background = love.graphics.newImage("assets/marsmountain8bit.png")
 
     love.physics.setMeter(64)
     world = love.physics.newWorld(0, 3.72*64, true)
