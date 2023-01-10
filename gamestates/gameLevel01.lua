@@ -7,7 +7,7 @@ Gamestate = require 'libs.hump.gamestate'
 local gameLevel01 = {}
 
 function gameLevel01:init()
-    background = love.graphics.newImage("assets/marsmountain.png")
+    background = love.graphics.newImage("assets/marsmountain8bit.png")
 end
     
     

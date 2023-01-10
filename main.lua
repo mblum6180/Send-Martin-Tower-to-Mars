@@ -10,6 +10,8 @@ gameLevel02 = require 'gamestates.gameLevel02'
 gameLevel03 = require 'gamestates.gameLevel03'
 pause = require 'gamestates.pause'
 
+score = 0
+
 function love.load()
   Gamestate.registerEvents()
   Gamestate.switch(mainMenu)
@@ -20,8 +22,9 @@ function fade(dt,d,x)  --dt, Alpha, duration
     d = d + x * dt
   else d = 1
   end
-  print(d)
+  --print(d)
   return d
+
 end
 
 
