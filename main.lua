@@ -15,6 +15,16 @@ function love.load()
   Gamestate.switch(mainMenu)
 end
 
+function fade(dt,d,x)  --dt, Alpha, duration 
+  if d < 1 then
+    d = d + x * dt
+  else d = 1
+  end
+  print(d)
+  return d
+end
+
+
 function beginContact()
   Gamestate.beginContact()
 end
