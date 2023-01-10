@@ -10,6 +10,7 @@ function gameLevel01:init()
     bgAlpha = 0
     bgFadein = 1
     background = love.graphics.newImage("assets/marsmountain8bit.png")
+    building = Building(200,100) --Testing
 end
     
     
@@ -26,6 +27,7 @@ end
 function gameLevel01:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
     love.graphics.draw(background, 20, 0)
+    building:draw()
 end
 
 function gameLevel01:keypressed(key, scancode, isrepeat)
