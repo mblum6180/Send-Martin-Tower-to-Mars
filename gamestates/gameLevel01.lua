@@ -9,7 +9,7 @@ function gameLevel01:init()
     timer = 1
     bgAlpha = 0
     bgFadein = 1
-    background = love.graphics.newImage("assets/marsmountain8bit.png")
+    background = love.graphics.newImage("assets/CityBG8bit.png")
     building = Building(100,100, 0, 4, 4) --Testing
 end
     
@@ -27,6 +27,7 @@ end
 function gameLevel01:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
     love.graphics.draw(background, 20, 0)
+    love.graphics.setColor(255, 255, 255, 1)
     building:draw()
 end
 
