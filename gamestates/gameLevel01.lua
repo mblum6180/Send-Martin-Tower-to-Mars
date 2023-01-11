@@ -10,7 +10,7 @@ function gameLevel01:init()
     bgAlpha = 0
     bgFadein = 1
     background = love.graphics.newImage("assets/marsmountain8bit.png")
-    building = Building(200,100) --Testing
+    building = Building(100,100, 0, 4, 4) --Testing
 end
     
     
