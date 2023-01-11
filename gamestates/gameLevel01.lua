@@ -10,7 +10,6 @@ function gameLevel01:init()
     bgAlpha = 0
     bgFadein = 1
     background = love.graphics.newImage("assets/CityBG8bit.png")
-    building = Building(100,100, 0, 4, 4) --Testing
 end
     
     
@@ -28,7 +27,15 @@ function gameLevel01:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
     love.graphics.draw(background, 20, 0)
     love.graphics.setColor(255, 255, 255, 1)
-    building:draw()
+
+    love.graphics.setColor(0.53, 0.39, 0.32)
+    love.graphics.polygon("fill", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
+  
+    love.graphics.setColor(1.0, 1.0, 1.0)
+    love.graphics.draw(objects.tower.image, system.winWidth/10, system.winHeight/2.7, 0, 3, 3)
+
+
+    --building:draw()
 end
 
 function gameLevel01:keypressed(key, scancode, isrepeat)

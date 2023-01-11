@@ -1,17 +1,20 @@
 --! file: main.lua
 function love.load()
 
-  Gamestate = require 'libs.hump.gamestate'
+  Gamestate = require 'libs.hump.gamestate' -- Game levels
   mainMenu = require 'gamestates.mainmenu'
   gameLevel01 = require 'gamestates.gameLevel01'
   gameLevel02 = require 'gamestates.gameLevel02'
   gameLevel03 = require 'gamestates.gameLevel03'
   pause = require 'gamestates.pause'
-  love.physics.setMeter(64)
+
+  system = {}
+  system.winWidth = love.graphics.getPixelWidth()
+  system.winHeight = love.graphics.getPixelHeight()
+
+  love.physics.setMeter(64)  -- physics setup
   world = love.physics.newWorld(0, 3.72*64, true)
-  Object = require "classic"
-  require "entity"
-  require "building"
+  require "objects"
   Gamestate.registerEvents()
   score = 0
   Gamestate.switch(mainMenu)
