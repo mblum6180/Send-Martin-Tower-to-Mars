@@ -1,19 +1,32 @@
 --! file: gameLevel01.lua
 
--- Luanch
+--Launch
 
 Gamestate = require 'libs.hump.gamestate'
 
 local gameLevel01 = {}
 function gameLevel01:init()
+    launch = false
     timer = 1
     bgAlpha = 0
     bgFadein = 1
     background = love.graphics.newImage("assets/CityBG8bit.png")
+
+    objects.ground.body = love.physics.newBody(earth, system.winWidth/2, love.graphics.getPixelHeight() - 42)
+    objects.ground.shape = love.physics.newRectangleShape(system.winWidth, 150)
+    objects.ground.fixture = love.physics.newFixture(objects.ground.body, objects.ground.shape)
+
+    objects.tower.body = love.physics.newBody(earth, love.math.random(0, system.winWidth), 0, "dynamic")
+    objects.tower.shape = love.physics.newRectangleShape(objects.tower.width * 3, (objects.tower.height * 3) + 285) 
+    objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
+
+    objects.tower.body:setX(system.winWidth/10)
+    objects.tower.body:setY(system.winHeight/2.7)
 end
     
     
 function gameLevel01:update(dt)
+    earth:update(dt) 
     timer = timer + dt
     if bgAlpha ~= 1 then
         if timer > bgFadein then 
@@ -21,21 +34,28 @@ function gameLevel01:update(dt)
         end
     end
 
+    if objects.tower.body:getY() < -375 then
+        Gamestate.switch(gameLevel02)
+    end
+
+    if launch then 
+        objects.tower.body:applyForce(0, -35000)
+    end
+
+
 end
     
 function gameLevel01:draw()
-    love.graphics.setColor(255, 255, 255, bgAlpha)
+    love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)
     love.graphics.draw(background, 20, 0)
-    love.graphics.setColor(255, 255, 255, 1)
+    love.graphics.setColor(1.0, 1.0, 1.0, 1)
 
-    love.graphics.setColor(0.53, 0.39, 0.32)
+    love.graphics.setColor(0.149, 0.361, 0.259, 0.4)
     love.graphics.polygon("fill", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
   
-    love.graphics.setColor(1.0, 1.0, 1.0)
-    love.graphics.draw(objects.tower.image, system.winWidth/10, system.winHeight/2.7, 0, 3, 3)
+    love.graphics.setColor(1.0, 1.0, 1.0)  
+    love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), 0, 3, 3)
 
-
-    --building:draw()
 end
 
 function gameLevel01:keypressed(key, scancode, isrepeat)
@@ -46,7 +66,7 @@ function gameLevel01:keypressed(key, scancode, isrepeat)
     if key == "escape" then
         love.event.quit()
     elseif key == "space" then
-        Gamestate.switch(gameLevel02)
+        launch = true
     end
 end
 

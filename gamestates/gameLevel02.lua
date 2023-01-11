@@ -6,13 +6,23 @@ local gameLevel02 = {}
 function gameLevel02:init()
     background = love.graphics.newImage("assets/marsmountain8bit.png") -- Background image
 
-    world:setCallbacks(beginContact, endContact, preSolve, postSolve)
+    space:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
     love.graphics.setBackgroundColor(0.92, 0.70, 0.60)
+
+
+    objects.ground.body = love.physics.newBody(space, system.winWidth/2, love.graphics.getPixelHeight() - 75)
+    objects.ground.shape = love.physics.newRectangleShape(system.winWidth, 150)
+    objects.ground.fixture = love.physics.newFixture(objects.ground.body, objects.ground.shape)
+
+    objects.tower.body = love.physics.newBody(space, love.math.random(0, system.winWidth), 0, "dynamic")
+    objects.tower.shape = love.physics.newRectangleShape(objects.tower.width, objects.tower.height + 75)
+    objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
+
 end
 
 function gameLevel02:update(dt)
-    world:update(dt) 
+    space:update(dt) 
 
     if love.keyboard.isDown("right") then
       objects.tower.body:applyForce(400, 0)

@@ -13,7 +13,9 @@ function love.load()
   system.winHeight = love.graphics.getPixelHeight()
 
   love.physics.setMeter(64)  -- physics setup
-  world = love.physics.newWorld(0, 3.72*64, true)
+  earth = love.physics.newWorld(0, 9.80*64, true)
+  space = love.physics.newWorld(0, 0.1*64, true)
+  mars = love.physics.newWorld(0, 3.72*64, true)
   require "objects"
   Gamestate.registerEvents()
   score = 0
