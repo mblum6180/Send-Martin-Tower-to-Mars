@@ -21,6 +21,10 @@ function love.load()
   require "objects"
   Gamestate.registerEvents()
   score = 0
+  if arg[2] == "debug" then
+    debugMode = true
+    print("Debug mode = ", debugMode)
+  end
   Gamestate.switch(mainMenu)
 end
 

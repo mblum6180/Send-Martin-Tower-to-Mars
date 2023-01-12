@@ -36,7 +36,7 @@ function gameLevel01:update(dt)
     end
 
     if objects.tower.body:getY() < -375 then
-        objects.tower.fixture:destroy()
+        --objects.tower.fixture:destroy()
         system.level01over = true
     end
 
@@ -47,7 +47,9 @@ function gameLevel01:update(dt)
     if system.level01over then
         Gamestate.switch(gameLevel02)
     end
-    print(objects.tower.body:getLinearVelocity())
+    if debugMode then
+        print(objects.tower.body:getLinearVelocity())
+    end
 
 
 end
@@ -66,9 +68,11 @@ function gameLevel01:draw()
 end
 
 function gameLevel01:keypressed(key, scancode, isrepeat)
-    if key == "s" then
+    if debugMode then
+        if key == "s" then
         score = score + 1
         print(score)
+        end
     end
     if key == "escape" then
         love.event.quit()

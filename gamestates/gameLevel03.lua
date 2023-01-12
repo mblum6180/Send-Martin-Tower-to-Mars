@@ -47,19 +47,23 @@ end
 
 function gameLevel03:beginContact()
     local x, y = objects.tower.body:getLinearVelocity()
-    print (y)
-    print(objects.tower.body:getAngularVelocity())
-    if y < 100 then
-        print"landed"
-    else 
-        print"Boom!"
+    if debugMode then
+        print (y)
+        print(objects.tower.body:getAngularVelocity())
+        if y < 100 then
+            print"landed"
+        else 
+            print"Boom!"
+        end
     end
 end
 
 function gameLevel03:keypressed(key, scancode, isrepeat)
-    if key == "s" then
+    if debugMode then
+        if key == "s" then
         score = score + 1
         print(score)
+        end
     end
     if key == "escape" then
         love.event.quit()
