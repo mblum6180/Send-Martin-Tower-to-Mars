@@ -14,6 +14,10 @@ function love.load()
   system.level01over = false
   system.level02over = false
   system.level03over = false
+  system.BGScale = 1
+  system.BGcolorR = 1
+  system.BGcolorG = 1
+  system.BGcolorB = 1
   love.physics.setMeter(64)  -- physics setup
   earth = love.physics.newWorld(0, 9.80*64, true)
   space = love.physics.newWorld(0, 0.01*64, true)
@@ -21,6 +25,7 @@ function love.load()
   require "objects"
   Gamestate.registerEvents()
   score = 0
+  coolDown = 0
   if arg[2] == "debug" then
     debugMode = true
     print("Debug mode = ", debugMode)

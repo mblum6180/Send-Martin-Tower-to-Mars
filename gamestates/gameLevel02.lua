@@ -15,7 +15,7 @@ function gameLevel02:init()
     objects.ground.shape = love.physics.newRectangleShape(system.winWidth, 150)
     objects.ground.fixture = love.physics.newFixture(objects.ground.body, objects.ground.shape)
 
-    objects.tower.body = love.physics.newBody(space, love.math.random(0, system.winWidth), system.winHeight * 0.9, "dynamic")
+    objects.tower.body = love.physics.newBody(space, love.math.random(system.winWidth * 0.2, system.winWidth * 0.8), system.winHeight * 0.9, "dynamic")
     objects.tower.shape = love.physics.newRectangleShape(objects.tower.width, objects.tower.height + 75)
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
     objects.tower.fixture:setRestitution(0.3) 
@@ -25,7 +25,11 @@ end
 
 function gameLevel02:update(dt)
     space:update(dt) 
-
+    if coolDown > 0 then
+        coolDown = coolDown - 1 * dt
+    end
+    print (coolDown)
+    system.BGScale = system.BGScale + 0.005 * dt
     if objects.tower.body:getY() < 0 then
         --objects.tower.fixture:destroy()
         system.level02over = true
@@ -41,17 +45,26 @@ function gameLevel02:update(dt)
     elseif love.keyboard.isDown("left") then
       objects.tower.body:applyForce(-400, 0)
     end
-    if love.keyboard.isDown("up") then
-        objects.fire.body = love.physics.newBody(space, objects.tower.body:getX() + 15, objects.tower.body:getY() - 50, "dynamic")
-        objects.fire.shape = love.physics.newRectangleShape(objects.fire.width, objects.fire.height)
-        objects.fire.fixture = love.physics.newFixture(objects.fire.body, objects.fire.shape, 1)
-        objects.fire.body:applyForce(0, -3000)
+
+    if not objects.fire.body  then
+        if (love.keyboard.isDown("up") and coolDown <= 0)then
+            objects.fire.body = love.physics.newBody(space, objects.tower.body:getX() + 15, objects.tower.body:getY() - 50, "dynamic")
+            objects.fire.shape = love.physics.newRectangleShape(objects.fire.width, objects.fire.height)
+            objects.fire.fixture = love.physics.newFixture(objects.fire.body, objects.fire.shape, 1)
+            objects.fire.body:applyForce(0, -30000)
+            coolDown = 1
+        end
+    elseif objects.fire.body:getY() < 0 then
+        objects.fire.body = null
     end
+    gameLevel02:edge(objects.tower.body:getX(), objects.tower.body:getY())
+
 
 end
   
 function gameLevel02:draw()
-    love.graphics.draw(background, 0, 0)
+    love.graphics.setColor(system.BGcolorR, system.BGcolorG, system.BGcolorB)
+    love.graphics.draw(background, 0, 0, 0, system.BGScale)
     --love.graphics.setColor(0.53, 0.39, 0.32)
     --love.graphics.polygon("fill", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
   
@@ -87,6 +100,24 @@ function gameLevel02:keypressed(key, scancode, isrepeat)
         love.event.quit()
     elseif key == "space" then
         Gamestate.switch(gameLevel03)
+    end
+end
+
+function gameLevel02:edge(x, y)
+    if x < 100 then
+        if x < 10 then
+            objects.tower.body:applyForce(4000, 0)
+            system.BGcolorG,system.BGcolorB = 0.01, 0.01  
+        end
+        objects.tower.body:applyForce(400, 0)
+        system.BGcolorG,system.BGcolorB = 0.25, 0.25
+    elseif x > 1100 then
+        if x > 1170 then
+            objects.tower.body:applyForce(-4000, 0)
+        end
+        objects.tower.body:applyForce(-400, 0)
+    else
+        system.BGcolorG,system.BGcolorB = 1.0, 1.0
     end
 end
 
