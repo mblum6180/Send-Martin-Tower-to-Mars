@@ -1,0 +1,8 @@
+<config>
+  <!-- Folding Slots -->
+  <slot id='0' type='CPU'/>
+  <slot id='1' type='GPU'>
+    <pci-bus v='2'/>
+    <pci-slot v='0'/>
+  </slot>
+</config>

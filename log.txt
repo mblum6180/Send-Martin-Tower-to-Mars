@@ -1,0 +1,80 @@
+*********************** Log Started 2023-01-12T16:53:22Z ***********************
+16:53:22:******************************* libFAH ********************************
+16:53:22:         Date: Oct 20 2020
+16:53:22:         Time: 20:36:39
+16:53:22:     Revision: 5ca109d295a6245e2a2f590b3d0085ad5e567aeb
+16:53:22:       Branch: master
+16:53:22:     Compiler: GNU 8.3.0
+16:53:22:      Options: -faligned-new -std=c++11 -fsigned-char -ffunction-sections
+16:53:22:               -fdata-sections -O3 -funroll-loops -fno-pie
+16:53:22:     Platform: linux2 5.8.0-1-amd64
+16:53:22:         Bits: 64
+16:53:22:         Mode: Release
+16:53:22:****************************** FAHClient ******************************
+16:53:22:      Version: 7.6.21
+16:53:22:       Author: Joseph Coffland <joseph@cauldrondevelopment.com>
+16:53:22:    Copyright: 2020 foldingathome.org
+16:53:22:     Homepage: https://foldingathome.org/
+16:53:22:         Date: Oct 20 2020
+16:53:22:         Time: 20:39:00
+16:53:22:     Revision: 6efbf0e138e22d3963e6a291f78dcb9c6422a278
+16:53:22:       Branch: master
+16:53:22:     Compiler: GNU 8.3.0
+16:53:22:      Options: -faligned-new -std=c++11 -fsigned-char -ffunction-sections
+16:53:22:               -fdata-sections -O3 -funroll-loops -fno-pie
+16:53:22:     Platform: linux2 5.8.0-1-amd64
+16:53:22:         Bits: 64
+16:53:22:         Mode: Release
+16:53:22:******************************** CBang ********************************
+16:53:22:         Date: Oct 20 2020
+16:53:22:         Time: 18:37:59
+16:53:22:     Revision: 7e4ce85225d7eaeb775e87c31740181ca603de60
+16:53:22:       Branch: master
+16:53:22:     Compiler: GNU 8.3.0
+16:53:22:      Options: -faligned-new -std=c++11 -fsigned-char -ffunction-sections
+16:53:22:               -fdata-sections -O3 -funroll-loops -fno-pie -fPIC
+16:53:22:     Platform: linux2 5.8.0-1-amd64
+16:53:22:         Bits: 64
+16:53:22:         Mode: Release
+16:53:22:******************************* System ********************************
+16:53:22:          CPU: Intel(R) Xeon(R) CPU E5-2667 v4 @ 3.20GHz
+16:53:22:       CPU ID: GenuineIntel Family 6 Model 79 Stepping 1
+16:53:22:         CPUs: 16
+16:53:22:       Memory: 62.72GiB
+16:53:22:  Free Memory: 20.91GiB
+16:53:22:      Threads: POSIX_THREADS
+16:53:22:   OS Version: 6.0
+16:53:22:  Has Battery: false
+16:53:22:   On Battery: false
+16:53:22:   UTC Offset: -5
+16:53:22:          PID: 163608
+16:53:22:          CWD: /home/matthewblum/Development/Send Martin Tower to Mars
+16:53:22:           OS: Linux 6.0.12-76060006-generic x86_64
+16:53:22:      OS Arch: AMD64
+16:53:22:         GPUs: 1
+16:53:22:        GPU 0: Bus:2 Slot:0 Func:0 NVIDIA:5 GM204 [GeForce GTX 970] 3494
+16:53:22:CUDA Device 0: Platform:0 Device:0 Bus:2 Slot:0 Compute:5.2 Driver:12.0
+16:53:22:       OpenCL: Not detected: Failed to open dynamic library 'libOpenCL.so':
+16:53:22:               libOpenCL.so: cannot open shared object file: No such file or
+16:53:22:               directory
+16:53:22:***********************************************************************
+16:53:22:<config>
+16:53:22:  <!-- Folding Slots -->
+16:53:22:</config>
+16:53:22:Trying to access database...
+16:53:22:Successfully acquired database lock
+16:53:22:FS00:Initialized folding slot 00: cpu:14
+16:53:22:FS01:Initialized folding slot 01: gpu:2:0 GM204 [GeForce GTX 970] 3494
+16:53:24:Caught signal SIGINT(2) on PID 163608
+16:53:24:Exiting, please wait. . .
+16:53:24:Saving configuration to config.xml
+16:53:24:<config>
+16:53:24:  <!-- Folding Slots -->
+16:53:24:  <slot id='0' type='CPU'/>
+16:53:24:  <slot id='1' type='GPU'>
+16:53:24:    <pci-bus v='2'/>
+16:53:24:    <pci-slot v='0'/>
+16:53:24:  </slot>
+16:53:24:</config>
+16:53:24:Set client configured
+16:53:24:Clean exit

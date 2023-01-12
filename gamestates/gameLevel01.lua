@@ -5,6 +5,7 @@
 Gamestate = require 'libs.hump.gamestate'
 
 local gameLevel01 = {}
+
 function gameLevel01:init()
     launch = false
     timer = 1
@@ -35,12 +36,18 @@ function gameLevel01:update(dt)
     end
 
     if objects.tower.body:getY() < -375 then
-        Gamestate.switch(gameLevel02)
+        objects.tower.fixture:destroy()
+        system.level01over = true
     end
 
     if launch then 
         objects.tower.body:applyForce(0, -35000)
     end
+
+    if system.level01over then
+        Gamestate.switch(gameLevel02)
+    end
+    print(objects.tower.body:getLinearVelocity())
 
 
 end
@@ -53,7 +60,7 @@ function gameLevel01:draw()
     love.graphics.setColor(0.149, 0.361, 0.259, 0.4)
     love.graphics.polygon("fill", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
   
-    love.graphics.setColor(1.0, 1.0, 1.0)  
+    love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)  
     love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), 0, 3, 3)
 
 end

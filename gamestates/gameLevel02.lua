@@ -18,6 +18,8 @@ function gameLevel02:init()
     objects.tower.body = love.physics.newBody(space, love.math.random(0, system.winWidth), 0, "dynamic")
     objects.tower.shape = love.physics.newRectangleShape(objects.tower.width, objects.tower.height + 75)
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
+    objects.tower.fixture:setRestitution(0.3) 
+    objects.tower.fixture:setFriction(0.98)
 
 end
 
@@ -32,6 +34,7 @@ function gameLevel02:update(dt)
     if love.keyboard.isDown("up") then
         objects.tower.body:applyForce(0, -3000)
     end
+
 end
   
 function gameLevel02:draw()
