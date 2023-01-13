@@ -57,7 +57,7 @@ function gameLevel02:update(dt)
     elseif objects.fire.body:getY() < 0 then
         objects.fire.body = null
     end
-    gameLevel02:edge(objects.tower.body:getX(), objects.tower.body:getY())
+    edge(objects.tower.body:getX(), objects.tower.body:getY())
 
 
 end
@@ -100,26 +100,6 @@ function gameLevel02:keypressed(key, scancode, isrepeat)
         love.event.quit()
     elseif key == "space" then
         Gamestate.switch(gameLevel03)
-    end
-end
-
-function gameLevel02:edge(x, y)
-    if x < 100 then
-        objects.tower.body:applyForce(400, 0)
-        system.BGcolorG,system.BGcolorB = 0.25, 0.25
-        if x < 10 then
-            objects.tower.body:applyForce(4000, 0)
-            system.BGcolorG,system.BGcolorB = 0.01, 0.01  
-        end
-    elseif x > 1100 then
-        objects.tower.body:applyForce(-400, 0)
-        system.BGcolorG,system.BGcolorB = 0.25, 0.25
-        if x > 1170 then
-            objects.tower.body:applyForce(-4000, 0)
-            system.BGcolorG,system.BGcolorB = 0.01, 0.01  
-        end
-    else
-        system.BGcolorG,system.BGcolorB = 1.0, 1.0
     end
 end
 

@@ -32,9 +32,11 @@ function gameLevel03:update(dt)
     if love.keyboard.isDown("up") then
         objects.tower.body:applyForce(0, -3000)
     end
+    edge(objects.tower.body:getX(), objects.tower.body:getY())
 end
   
 function gameLevel03:draw()
+    love.graphics.setColor(system.BGcolorR, system.BGcolorG, system.BGcolorB)
     love.graphics.draw(background, 0, 0)
     love.graphics.setColor(0.53, 0.39, 0.32)
     love.graphics.polygon("fill", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
@@ -54,6 +56,7 @@ function gameLevel03:beginContact()
             print"landed"
         else 
             print"Boom!"
+            crash()
         end
     end
 end
@@ -70,6 +73,10 @@ function gameLevel03:keypressed(key, scancode, isrepeat)
     elseif key == "space" then
         love.event.quit()
     end
+end
+
+function gameLevel03:crash()
+
 end
 
 
