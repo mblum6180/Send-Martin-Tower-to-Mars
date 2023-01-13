@@ -56,7 +56,7 @@ function gameLevel03:beginContact()
             print"landed"
         else 
             print"Boom!"
-            crash()
+            gameLevel03:crash()
         end
     end
 end
@@ -76,7 +76,11 @@ function gameLevel03:keypressed(key, scancode, isrepeat)
 end
 
 function gameLevel03:crash()
-
+    --if objects.audio.crash then
+    --    objects.audio.crash:rewind()
+    --end
+    -- objects.audio.crash:play()
+    playSound(objects.audio.crash)
 end
 
 

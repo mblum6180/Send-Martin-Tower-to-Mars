@@ -67,3 +67,10 @@ function edge(x, y)
       system.BGcolorG,system.BGcolorB = 1.0, 1.0
   end
 end
+
+function playSound(sound)
+  sound:seek(0)
+  pitchMod = 0.8 + love.math.random(0, 10)/25
+  sound:setPitch(pitchMod)
+  sound:play()
+end
