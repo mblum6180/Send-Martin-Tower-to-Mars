@@ -98,8 +98,8 @@ function gameLevel02:keypressed(key, scancode, isrepeat)
     end
     if key == "escape" then
         love.event.quit()
-    elseif key == "space" then
-        Gamestate.switch(gameLevel03)
+    --elseif key == "space" then
+    --    Gamestate.switch(gameLevel03)
     end
 end
 

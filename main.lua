@@ -29,13 +29,12 @@ function love.load()
   if arg[2] == "debug" then
     debugMode = true
     print("Debug mode = ", debugMode)
-  end
-  if arg[3] then
-    print(arg[3])
-    Gamestate.switch(arg[2])
+    levelSelect(arg[3])
   else
-  Gamestate.switch(mainMenu)
+    Gamestate.switch(mainMenu)
   end
+
+  
 end
 
 function fade(dt,d,x)  --dt, Alpha, duration 
@@ -78,4 +77,18 @@ function playSound(sound)
   pitchMod = 0.8 + love.math.random(0, 10)/25
   sound:setPitch(pitchMod)
   sound:play()
+end
+
+function levelSelect(level)
+  print(level)
+  if level == "01" then
+    Gamestate.switch(gameLevel01)
+  elseif level == "02" then
+    Gamestate.switch(gameLevel02)
+  elseif level == "03" then
+    print("Hello")
+    Gamestate.switch(gameLevel03)
+  else
+    Gamestate.switch(mainMenu)
+  end
 end
