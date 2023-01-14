@@ -30,7 +30,12 @@ function love.load()
     debugMode = true
     print("Debug mode = ", debugMode)
   end
+  if arg[3] then
+    print(arg[3])
+    Gamestate.switch(arg[2])
+  else
   Gamestate.switch(mainMenu)
+  end
 end
 
 function fade(dt,d,x)  --dt, Alpha, duration 
