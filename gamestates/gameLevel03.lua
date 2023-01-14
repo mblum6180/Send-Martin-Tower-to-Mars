@@ -33,12 +33,12 @@ function gameLevel03:update(dt)
       objects.tower.body:applyForce(-400, 0)
     end
     if love.keyboard.isDown("up") then
-
-        objects.tower.body:applyForce(objects.tower.strength * math.cos(objects.tower.body:getAngle()), objects.tower.strength * math.sin(objects.tower.body:getAngle()))
-
-
-
-        --objects.tower.body:applyForce(0, -3000)
+        objects.tower.body:applyForce(objects.tower.strengthMain * math.cos(objects.tower.body:getAngle() - 1.57), objects.tower.strengthMain * math.sin(objects.tower.body:getAngle() - 1.57))
+    end
+    if love.keyboard.isDown("a") then
+        objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 3.14), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 3.14))
+    elseif love.keyboard.isDown("d") then
+        objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 0), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 0))
     end
     edge(objects.tower.body:getX(), objects.tower.body:getY())
 
