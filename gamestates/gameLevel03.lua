@@ -4,18 +4,17 @@ Gamestate = require 'libs.hump.gamestate'
 
 local gameLevel03 = {}
 function gameLevel03:init()
-    vertices  = {000,000, 001,002, 100,100, 200,200, 250,000, 300,200, 400,300, 500,30, system.winWidth,150, system.winWidth,500, 0,500}
+    objects.ground.landscape = gameLevel03:genLandscape()
     background = love.graphics.newImage("assets/marsmountain8bit.png") -- Background image
 
     mars:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
     love.graphics.setBackgroundColor(0.92, 0.70, 0.60)
     objects.ground.body = love.physics.newBody(mars, 0, love.graphics.getPixelHeight() * 0.5)
-    --objects.ground.shape = love.physics.newChainShape(true, 0, 0, 150, 150, system.winWidth, 150, system.winWidth, 300, 0, 300)
-    objects.ground.shape = love.physics.newChainShape(true, vertices, "static")
+    objects.ground.shape = love.physics.newChainShape(true, objects.ground.landscape, "static")
     objects.ground.fixture = love.physics.newFixture(objects.ground.body, objects.ground.shape)
 
-    objects.tower.body = love.physics.newBody(mars, love.math.random(0, system.winWidth), 0, "dynamic")
+    objects.tower.body = love.physics.newBody(mars, love.math.random(150, system.winWidth - 150), 0, "dynamic")
     objects.tower.shape = love.physics.newRectangleShape(objects.tower.width / 2, objects.tower.height / 2, objects.tower.width, objects.tower.height, 0)
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
     objects.tower.fixture:setRestitution(0.3) 
@@ -53,6 +52,37 @@ function gameLevel03:draw()
     love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), objects.tower.body:getAngle() )
     love.graphics.polygon("line", objects.tower.body:getWorldPoints(objects.tower.shape:getPoints()))
 
+end
+
+function gameLevel03:genLandscape()
+
+    local ground = {000,000, 001,002, --hack to test random landscape
+    100,love.math.random(0, system.winHeight)/2,
+    200,love.math.random(0, system.winHeight)/2, 
+    250,love.math.random(0, system.winHeight)/2, 
+    300,love.math.random(0, system.winHeight)/2, 
+    400,love.math.random(0, system.winHeight)/2, 
+    500,love.math.random(0, system.winHeight)/2, 
+    600,love.math.random(0, system.winHeight)/2,
+    700,love.math.random(0, system.winHeight)/2,
+    800,love.math.random(0, system.winHeight)/2, 
+    900,love.math.random(0, system.winHeight)/2, 
+    1000,love.math.random(0, system.winHeight)/2, 
+    1100,love.math.random(0, system.winHeight)/2,
+    1200,love.math.random(0, system.winHeight)/2
+    }
+    table.insert(ground, system.winWidth)
+    table.insert(ground, love.math.random(0, system.winHeight)/2)
+    table.insert(ground, system.winWidth)
+    table.insert(ground, 500)
+    table.insert(ground, 000)
+    table.insert(ground, 500)
+
+    for i,v in ipairs(ground) do print(i,v) end
+
+    
+
+    return ground
 end
 
 function gameLevel03:beginContact()
