@@ -10,8 +10,9 @@ objects.tower = {}
 objects.tower.image = love.graphics.newImage("assets/martin8bit.png")
 objects.tower.width = objects.tower.image:getWidth()
 objects.tower.height = objects.tower.image:getHeight()
-objects.tower.strengthMain = 3000
+objects.tower.strengthMain = 2000
 objects.tower.strengthSide = 300
+objects.tower.strengthTorque = 4000
 
 objects.fire = {}
 objects.fire.image = love.graphics.newImage("assets/Fireball1.png")
