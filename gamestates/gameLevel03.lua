@@ -4,7 +4,7 @@ Gamestate = require 'libs.hump.gamestate'
 
 local gameLevel03 = {}
 function gameLevel03:init()
-    vertices  = {000,000, 001,002, 100,100, 200,200, 300,200, 400,300, 500,30, system.winWidth,150, system.winWidth,300, 0,300}
+    vertices  = {000,000, 001,002, 100,100, 200,200, 250,000, 300,200, 400,300, 500,30, system.winWidth,150, system.winWidth,500, 0,500}
     background = love.graphics.newImage("assets/marsmountain8bit.png") -- Background image
 
     mars:setCallbacks(beginContact, endContact, preSolve, postSolve)
@@ -20,7 +20,13 @@ function gameLevel03:init()
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
     objects.tower.fixture:setRestitution(0.3) 
     objects.tower.fixture:setFriction(0.98)
-    
+
+
+
+    bgFill = {objects.ground.body:getWorldPoints(objects.ground.shape:getPoints())}
+    for i = #bgFill, #bgFill-1, -1 do
+        bgFill[i] = nul
+    end
 
 end
 
@@ -29,18 +35,16 @@ function gameLevel03:update(dt)
     gameLevel03:input()
     gameLevel03:dampen()
     edge(objects.tower.body:getX(), objects.tower.body:getY())
-    
 end
   
 function gameLevel03:draw()
     love.graphics.setColor(system.BGcolorR, system.BGcolorG, system.BGcolorB)
     love.graphics.draw(background, 0, 0)
     love.graphics.setColor(0.53, 0.39, 0.32)
-    --love.graphics.polygon("line", vertices)
     love.graphics.polygon("line", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
-    local triangles = love.math.triangulate(vertices)
+    local triangles = love.math.triangulate(bgFill)
 
-    for i, triangle in ipairs(triangles) do
+    for i, triangle in ipairs(triangles) do 
         love.graphics.polygon("fill", triangle)
     end
 
