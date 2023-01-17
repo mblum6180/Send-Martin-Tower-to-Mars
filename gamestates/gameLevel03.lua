@@ -56,7 +56,9 @@ end
 
 function gameLevel03:genLandscape()
 
-    local ground = {000,000, 001,002, --hack to test random landscape
+    local ground = {000,000, 001,002} --hack to test random landscape
+
+    local groundHills = {
     100,love.math.random(0, system.winHeight)/2,
     200,love.math.random(0, system.winHeight)/2, 
     250,love.math.random(0, system.winHeight)/2, 
@@ -71,12 +73,15 @@ function gameLevel03:genLandscape()
     1100,love.math.random(0, system.winHeight)/2,
     1200,love.math.random(0, system.winHeight)/2
     }
-    table.insert(ground, system.winWidth)
-    table.insert(ground, love.math.random(0, system.winHeight)/2)
-    table.insert(ground, system.winWidth)
-    table.insert(ground, 500)
-    table.insert(ground, 000)
-    table.insert(ground, 500)
+    for i,v in ipairs(groundHills) do
+        table.insert(ground, v)
+    end
+
+
+    local groundReturn = {system.winWidth,love.math.random(0, system.winHeight)/2, system.winWidth,500, 000,500}
+    for i,v in ipairs(groundReturn) do
+        table.insert(ground, v)
+    end
 
     for i,v in ipairs(ground) do print(i,v) end
 
