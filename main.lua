@@ -54,17 +54,17 @@ end
 
 function edge(x, y)
   if x < 100 then
-      objects.tower.body:applyForce(200, 0)
+      objects.tower.body:applyForce(100, 0)
       system.BGcolorG,system.BGcolorB = 0.25, 0.25
       if x < 10 then
-          objects.tower.body:applyForce(2000, 0)
+          objects.tower.body:applyForce(1000, 0)
           system.BGcolorG,system.BGcolorB = 0.01, 0.01  
       end
   elseif x > 1100 then
-      objects.tower.body:applyForce(-200, 0)
+      objects.tower.body:applyForce(-100, 0)
       system.BGcolorG,system.BGcolorB = 0.25, 0.25
       if x > 1170 then
-          objects.tower.body:applyForce(-2000, 0)
+          objects.tower.body:applyForce(-1000, 0)
           system.BGcolorG,system.BGcolorB = 0.01, 0.01  
       end
   else
