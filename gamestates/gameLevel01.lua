@@ -56,7 +56,7 @@ end
     
 function gameLevel01:draw()
     love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)
-    love.graphics.draw(background, 20, 0)
+    love.graphics.draw(background, 0, 0)
     love.graphics.setColor(1.0, 1.0, 1.0, 1)
 
     love.graphics.setColor(0.149, 0.361, 0.259, 0.4)

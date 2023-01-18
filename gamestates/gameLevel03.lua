@@ -37,7 +37,6 @@ end
 function gameLevel03:update(dt)
     mars:update(dt) 
     gameLevel03:input()
-    gameLevel03:dampen()
     edge(objects.tower.body:getX(), objects.tower.body:getY())
 end
   
@@ -46,11 +45,14 @@ function gameLevel03:draw()
     love.graphics.draw(objects.ground.background, 0, 0)
     love.graphics.setColor(0.53, 0.39, 0.32)
     love.graphics.polygon("line", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
-    local triangles = love.math.triangulate(bgFill)
+    
+    
+    local triangles = love.math.triangulate(bgFill) --  Draw Mountains 
 
     for i, triangle in ipairs(triangles) do 
         love.graphics.polygon("fill", triangle)
     end
+
 
 
     love.graphics.setColor(1.0, 1.0, 1.0)
@@ -61,15 +63,25 @@ end
 
 function gameLevel03:genLandscape()
 
-    local ground = {000,000, 001,002} --generate random landscape
+    local ground = {000,000, 001,200} --generate random landscape
 
 
     local slices = love.math.random(18,30)
     for i = 1, slices, 1 do
-        x = i * (system.winWidth / slices)
+        x = i * love.math.random(system.winWidth / slices -1, system.winWidth / slices)
         table.insert(ground, x)
-        --y = ground[#ground - 1] + 10
-        y = love.math.random(200, system.winHeight)/4
+
+        local platform = love.math.random(1, 100) --creates level platforms to land on
+        if platform < 10 then
+            y = ground[#ground - 1]
+        else
+            --y = ground[#ground - 1] + 10 --v1
+            --y = love.math.random(200, system.winHeight)/4 --v2
+            --y = love.math.random(ground[#ground - 1] - (system.winWidth / slices), 300) -- v3
+            y = love.math.random(ground[#ground - 1] - love.math.random(0,100), 300) -- v4
+        end
+            
+
         table.insert(ground, y)
     end
 
@@ -98,10 +110,6 @@ function gameLevel03:beginContact()
             gameLevel03:crash()
         end
     end
-end
-
-function gameLevel03:dampen()
-
 end
 
 

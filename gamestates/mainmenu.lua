@@ -21,7 +21,7 @@ function mainmenu:init()
     text = love.graphics.newImage("assets/Press-space-to-start8bit.png")
     textWidth = text:getWidth()
     textHeight = text:getHeight()
-    
+    objects.audio.crash:play()
 end
     
     
@@ -43,7 +43,7 @@ function mainmenu:update(dt)
         else textAlpha = 1
         end
     end
-    objects.audio.crash:play()
+
 end
     
 function mainmenu:draw()

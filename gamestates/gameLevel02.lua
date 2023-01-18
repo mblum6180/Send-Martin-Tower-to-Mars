@@ -15,6 +15,12 @@ function gameLevel02:init()
     objects.ground.shape = love.physics.newRectangleShape(system.winWidth, 150)
     objects.ground.fixture = love.physics.newFixture(objects.ground.body, objects.ground.shape)
 
+
+    objects.ground.bodyBox = love.physics.newBody(space, 0, 0)
+    objects.ground.shapeBox = love.physics.newChainShape(true, objects.ground.box, "static")
+    objects.ground.fixtureBox = love.physics.newFixture(objects.ground.bodyBox, objects.ground.shapeBox)
+
+
     objects.tower.body = love.physics.newBody(space, love.math.random(system.winWidth * 0.2, system.winWidth * 0.8), system.winHeight * 0.9, "dynamic")
     objects.tower.shape = love.physics.newRectangleShape(objects.tower.width, objects.tower.height + 75)
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
