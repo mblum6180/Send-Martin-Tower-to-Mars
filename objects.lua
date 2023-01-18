@@ -3,8 +3,8 @@
 objects = {} 
 
 objects.ground = {}
-
-
+objects.ground.background = love.graphics.newImage("assets/marsmountain8bit.png")
+objects.ground.box = {0,-100, system.winWidth,-100, system.winWidth,-110, 0,-110}
 
 objects.tower = {}
 objects.tower.image = love.graphics.newImage("assets/martin8bit.png")
