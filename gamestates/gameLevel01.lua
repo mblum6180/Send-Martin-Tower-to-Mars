@@ -11,6 +11,7 @@ function gameLevel01:init()
     timer = 1
     bgAlpha = 0
     bgFadein = 1
+    countDown = 0
     background = love.graphics.newImage("assets/CityBG8bit.png")
 
     objects.ground.body = love.physics.newBody(earth, system.winWidth/2, love.graphics.getPixelHeight() - 42)
@@ -21,8 +22,8 @@ function gameLevel01:init()
     objects.tower.shape = love.physics.newRectangleShape(objects.tower.width * 3, (objects.tower.height * 3) + 285) 
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
 
-    objects.tower.body:setX(system.winWidth/10)
-    objects.tower.body:setY(system.winHeight/2.7)
+    objects.tower.body:setX(system.winWidth * 0.69)
+    objects.tower.body:setY(system.winHeight * 0.7)
 end
     
     
@@ -51,6 +52,12 @@ function gameLevel01:update(dt)
         print(objects.tower.body:getLinearVelocity())
     end
 
+    if countDown >= 10 then
+        launch = true
+        countDown = 10
+    else
+        countDown = countDown - (countDown * .5) * dt
+    end
 
 end
     
@@ -65,6 +72,12 @@ function gameLevel01:draw()
     love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)  
     love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), 0, 3, 3)
 
+
+    love.graphics.setColor(1.0, 0.9, 0.9, bgAlpha)
+    love.graphics.rectangle("line", system.winWidth * 0.1, system.winHeight * 0.84, 750, 45)
+    love.graphics.setColor(1.0, 0.1, 0.1, bgAlpha)
+    love.graphics.rectangle("fill", system.winWidth * 0.1, system.winHeight * 0.84, countDown*75, 45)
+
 end
 
 function gameLevel01:keypressed(key, scancode, isrepeat)
@@ -77,7 +90,7 @@ function gameLevel01:keypressed(key, scancode, isrepeat)
     if key == "escape" then
         love.event.quit()
     elseif key == "space" then
-        launch = true
+        countDown = countDown + love.math.random(0.3, 1.2)
     end
 end
 
