@@ -20,7 +20,7 @@ function love.load()
   system.BGcolorB = 1
   love.physics.setMeter(64)  -- physics setup
   earth = love.physics.newWorld(0, 9.80*64, true)
-  space = love.physics.newWorld(0, 0.01*64, true)
+  space = love.physics.newWorld(0, 0.1*64, true)
   mars = love.physics.newWorld(0, 3.72*64, true)
   require "objects"
   Gamestate.registerEvents()

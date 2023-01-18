@@ -25,8 +25,13 @@ function gameLevel02:init()
     objects.tower.shape = love.physics.newRectangleShape(objects.tower.width, objects.tower.height + 75)
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
     objects.tower.fixture:setRestitution(0.3) 
-    objects.tower.fixture:setFriction(0.98)
+    objects.tower.fixture:setFriction(0.0)
 
+
+
+
+    gameLevel02:genPeep()
+    for i,v in ipairs(activePeeps) do print(i,v) end
 end
 
 function gameLevel02:update(dt)
@@ -34,7 +39,7 @@ function gameLevel02:update(dt)
     if coolDown > 0 then
         coolDown = coolDown - 1 * dt
     end
-    print (coolDown)
+    --print (coolDown)
     system.BGScale = system.BGScale + 0.005 * dt
     if objects.tower.body:getY() < 0 then
         --objects.tower.fixture:destroy()
@@ -80,6 +85,9 @@ function gameLevel02:draw()
         love.graphics.draw(objects.fire.image, objects.fire.body:getX(), objects.fire.body:getY(), 0, 3, 3)
     end
 
+    --love.graphics.draw(objects.spacePeep.image, objects.spacePeep.body:getX(), objects.spacePeep.body:getY() )
+
+
 end
 
 function gameLevel02:beginContact()
@@ -107,6 +115,18 @@ function gameLevel02:keypressed(key, scancode, isrepeat)
     --elseif key == "space" then
     --    Gamestate.switch(gameLevel03)
     end
+end
+
+function gameLevel02:genPeep() 
+    local instance = {}
+    instance.physics = {}
+    instance.physics.body = love.physics.newBody(space, love.math.random(system.winWidth * 0.2, system.winWidth * 0.8), system.winHeight * 0.1, "dynamic")
+    instance.physics.shape = love.physics.newRectangleShape(objects.spacePeep.width, objects.spacePeep.height)
+    instance.physics.fixture = love.physics.newFixture(instance.physics.body, instance.physics.shape, 1)
+
+    table.insert(activePeeps, instance)
+    for i,v in ipairs(instance) do print(i,v) end
+
 end
 
 

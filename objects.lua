@@ -1,5 +1,7 @@
 --! file: objects.lua
 
+activePeeps = {}
+
 objects = {} 
 
 objects.ground = {}
@@ -26,6 +28,11 @@ objects.fire = {}
 objects.fire.image = love.graphics.newImage("assets/Fireball1.png")
 objects.fire.width = objects.fire.image:getWidth()
 objects.fire.height = objects.fire.image:getHeight()
+
+objects.spacePeep = {}
+objects.spacePeep.image = love.graphics.newImage("assets/chick8bit.png")
+objects.spacePeep.width = objects.spacePeep.image:getWidth()
+objects.spacePeep.height = objects.spacePeep.image:getHeight()
 
 objects.audio = {}
 objects.audio.crash = love.audio.newSource("assets/explosion-fuzzy1.wav", "static")
