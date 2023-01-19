@@ -42,7 +42,7 @@ function gameLevel01:update(dt)
     end
 
     if launch then 
-        objects.tower.body:applyForce(0, -35000)
+        objects.tower.body:applyForce(0, -29000)
     end
 
     if system.level01over then
@@ -62,6 +62,9 @@ function gameLevel01:update(dt)
 end
     
 function gameLevel01:draw()
+    if launch then
+        love.graphics.translate(love.math.random(-5,5), love.math.random(-5,5))
+    end
     love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)
     love.graphics.draw(background, 0, 0)
     love.graphics.setColor(1.0, 1.0, 1.0, 1)
@@ -77,6 +80,8 @@ function gameLevel01:draw()
     love.graphics.rectangle("line", system.winWidth * 0.1, system.winHeight * 0.84, 750, 45)
     love.graphics.setColor(1.0, 0.1, 0.1, bgAlpha)
     love.graphics.rectangle("fill", system.winWidth * 0.1, system.winHeight * 0.84, countDown*75, 45)
+
+
 
 end
 

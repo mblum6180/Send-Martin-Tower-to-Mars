@@ -5,33 +5,25 @@ Gamestate = require 'libs.hump.gamestate'
 local gameLevel02 = {}
 function gameLevel02:init()
     background = love.graphics.newImage("assets/spaceBG.png") -- Background image
-
+    scroll = 0
+    scrollSpeed = 12
+    scrollTower = 0
     space:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
     love.graphics.setBackgroundColor(0.92, 0.70, 0.60)
 
 
-    objects.ground.body = love.physics.newBody(space, system.winWidth/2, system.winHeight)
-    objects.ground.shape = love.physics.newRectangleShape(system.winWidth, 150)
-    objects.ground.fixture = love.physics.newFixture(objects.ground.body, objects.ground.shape)
-
-
-    objects.ground.bodyBox = love.physics.newBody(space, 0, 0)
-    objects.ground.shapeBox = love.physics.newChainShape(true, objects.ground.box, "static")
-    objects.ground.fixtureBox = love.physics.newFixture(objects.ground.bodyBox, objects.ground.shapeBox)
-
-
     objects.tower.body = love.physics.newBody(space, love.math.random(system.winWidth * 0.2, system.winWidth * 0.8), system.winHeight * 0.9, "dynamic")
-    objects.tower.shape = love.physics.newRectangleShape(objects.tower.width, objects.tower.height + 75)
+    objects.tower.shape = love.physics.newRectangleShape(objects.tower.width, objects.tower.height)
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
     objects.tower.fixture:setRestitution(0.3) 
     objects.tower.fixture:setFriction(0.0)
 
 
+    objects.spacePeep.body = love.physics.newBody(space, love.math.random(system.winWidth * 0.2, system.winWidth * 0.8), system.winHeight * 0.4, "static")
+    objects.spacePeep.shape = love.physics.newRectangleShape(objects.spacePeep.width, objects.spacePeep.height )
+    objects.spacePeep.fixture = love.physics.newFixture(objects.spacePeep.body, objects.spacePeep.shape, 1)
 
-
-    gameLevel02:genPeep()
-    for i,v in ipairs(activePeeps) do print(i,v) end
 end
 
 function gameLevel02:update(dt)
@@ -50,6 +42,9 @@ function gameLevel02:update(dt)
     if system.level02over then
         Gamestate.switch(gameLevel03)
     end
+
+    scrollTower = scrollTower + (scrollSpeed / 4) * dt
+    objects.tower.body:setY(system.winHeight * 0.7 + -scroll - scrollTower) -- lock tower in place
 
     if love.keyboard.isDown("right") then
       objects.tower.body:applyForce(400, 0)
@@ -70,16 +65,19 @@ function gameLevel02:update(dt)
     end
     edge(objects.tower.body:getX(), objects.tower.body:getY())
 
-
+    scroll = scroll + (scrollSpeed * dt)
+    print(scroll)
 end
   
 function gameLevel02:draw()
     love.graphics.setColor(system.BGcolorR, system.BGcolorG, system.BGcolorB)
     love.graphics.draw(background, 0, 0, 0, system.BGScale)
-    --love.graphics.setColor(0.53, 0.39, 0.32)
-    --love.graphics.polygon("fill", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
+
+    love.graphics.translate(0, scroll)
   
     love.graphics.setColor(1.0, 1.0, 1.0)
+    love.graphics.draw(objects.spacePeep.image, objects.spacePeep.body:getX(), objects.spacePeep.body:getY() )
+
     love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY() )
     if objects.fire.body then
         love.graphics.draw(objects.fire.image, objects.fire.body:getX(), objects.fire.body:getY(), 0, 3, 3)
@@ -117,17 +115,7 @@ function gameLevel02:keypressed(key, scancode, isrepeat)
     end
 end
 
-function gameLevel02:genPeep() 
-    local instance = {}
-    instance.physics = {}
-    instance.physics.body = love.physics.newBody(space, love.math.random(system.winWidth * 0.2, system.winWidth * 0.8), system.winHeight * 0.1, "dynamic")
-    instance.physics.shape = love.physics.newRectangleShape(objects.spacePeep.width, objects.spacePeep.height)
-    instance.physics.fixture = love.physics.newFixture(instance.physics.body, instance.physics.shape, 1)
 
-    table.insert(activePeeps, instance)
-    for i,v in ipairs(instance) do print(i,v) end
-
-end
 
 
 return gameLevel02

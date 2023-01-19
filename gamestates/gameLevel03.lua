@@ -48,17 +48,20 @@ function gameLevel03:draw()
     
     
     local triangles = love.math.triangulate(bgFill) --  Draw Mountains 
-
     for i, triangle in ipairs(triangles) do 
         love.graphics.polygon("fill", triangle)
     end
-
-
 
     love.graphics.setColor(1.0, 1.0, 1.0)
     love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), objects.tower.body:getAngle() )
     love.graphics.polygon("line", objects.tower.body:getWorldPoints(objects.tower.shape:getPoints()))
 
+
+    love.graphics.setColor(0.63, 0.49, 0.42) --   Draw Foreground Mountains 
+    love.graphics.translate(0, system.winHeight * 0.04)
+    for i, triangle in ipairs(triangles) do 
+        love.graphics.polygon("fill", triangle)
+    end
 end
 
 function gameLevel03:genLandscape()
