@@ -4,7 +4,7 @@ Gamestate = require 'libs.hump.gamestate'
 
 local gameLevel02 = {}
 function gameLevel02:init()
-    background = love.graphics.newImage("assets/spaceBG.png") -- Background image
+    
     scroll = 0
     scrollSpeed = 12
     scrollTower = 0
@@ -14,14 +14,15 @@ function gameLevel02:init()
 
 
     objects.tower.body = love.physics.newBody(space, love.math.random(system.winWidth * 0.2, system.winWidth * 0.8), system.winHeight * 0.9, "dynamic")
-    objects.tower.shape = love.physics.newRectangleShape(objects.tower.width, objects.tower.height)
+    objects.tower.body:setLinearDamping(0.9)
+    objects.tower.shape = love.physics.newRectangleShape(objects.tower.width / 2, objects.tower.height / 2, objects.tower.width, objects.tower.height, 0)
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
     objects.tower.fixture:setRestitution(0.3) 
     objects.tower.fixture:setFriction(0.0)
 
 
-    objects.spacePeep.body = love.physics.newBody(space, love.math.random(system.winWidth * 0.2, system.winWidth * 0.8), system.winHeight * 0.4, "static")
-    objects.spacePeep.shape = love.physics.newRectangleShape(objects.spacePeep.width, objects.spacePeep.height )
+    objects.spacePeep.body = love.physics.newBody(space, love.math.random(system.winWidth * 0.2, system.winWidth * 0.8), system.winHeight * 0.1, "static")
+    objects.spacePeep.shape = love.physics.newRectangleShape(objects.spacePeep.width / 2, objects.spacePeep.height / 2, objects.spacePeep.width, objects.spacePeep.height, 0)
     objects.spacePeep.fixture = love.physics.newFixture(objects.spacePeep.body, objects.spacePeep.shape, 1)
 
 end
@@ -33,18 +34,19 @@ function gameLevel02:update(dt)
     end
     --print (coolDown)
     system.BGScale = system.BGScale + 0.005 * dt
-    if objects.tower.body:getY() < 0 then
+    if objects.tower.body:getY() < -2000 then
         --objects.tower.fixture:destroy()
         system.level02over = true
     end
 
 
     if system.level02over then
-        Gamestate.switch(gameLevel03)
+        Gamestate.switch(gameLevelGoal02)
     end
 
     scrollTower = scrollTower + (scrollSpeed / 4) * dt
     objects.tower.body:setY(system.winHeight * 0.7 + -scroll - scrollTower) -- lock tower in place
+    objects.tower.body:setAngle(0)
 
     if love.keyboard.isDown("right") then
       objects.tower.body:applyForce(400, 0)
@@ -71,19 +73,26 @@ end
   
 function gameLevel02:draw()
     love.graphics.setColor(system.BGcolorR, system.BGcolorG, system.BGcolorB)
-    love.graphics.draw(background, 0, 0, 0, system.BGScale)
+    love.graphics.draw(objects.ground.background02, 0, 0, 0, system.BGScale)
 
     love.graphics.translate(0, scroll)
   
     love.graphics.setColor(1.0, 1.0, 1.0)
-    love.graphics.draw(objects.spacePeep.image, objects.spacePeep.body:getX(), objects.spacePeep.body:getY() )
+    love.graphics.draw(objects.spacePeep.image, objects.spacePeep.body:getX(), objects.spacePeep.body:getY() ) -- Draw Space peep
+    if debugMode then
+        love.graphics.polygon("line", objects.spacePeep.body:getWorldPoints(objects.spacePeep.shape:getPoints()))
+    end
 
-    love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY() )
+    love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), objects.tower.body:getAngle()) -- Draw Tower
+    if debugMode then
+        love.graphics.polygon("line", objects.tower.body:getWorldPoints(objects.tower.shape:getPoints()))
+    end
+
     if objects.fire.body then
         love.graphics.draw(objects.fire.image, objects.fire.body:getX(), objects.fire.body:getY(), 0, 3, 3)
     end
 
-    --love.graphics.draw(objects.spacePeep.image, objects.spacePeep.body:getX(), objects.spacePeep.body:getY() )
+
 
 
 end

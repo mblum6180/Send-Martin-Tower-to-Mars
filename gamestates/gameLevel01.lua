@@ -12,7 +12,7 @@ function gameLevel01:init()
     bgAlpha = 0
     bgFadein = 1
     countDown = 0
-    background = love.graphics.newImage("assets/CityBG8bit.png")
+
 
     objects.ground.body = love.physics.newBody(earth, system.winWidth/2, love.graphics.getPixelHeight() - 42)
     objects.ground.shape = love.physics.newRectangleShape(system.winWidth, 150)
@@ -66,7 +66,7 @@ function gameLevel01:draw()
         love.graphics.translate(love.math.random(-5,5), love.math.random(-5,5))
     end
     love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)
-    love.graphics.draw(background, 0, 0)
+    love.graphics.draw(objects.ground.background01, 0, 0)
     love.graphics.setColor(1.0, 1.0, 1.0, 1)
 
     love.graphics.setColor(0.149, 0.361, 0.259, 0.4)

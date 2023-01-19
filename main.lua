@@ -6,6 +6,9 @@ function love.load()
   gameLevel01 = require 'gamestates.gameLevel01'
   gameLevel02 = require 'gamestates.gameLevel02'
   gameLevel03 = require 'gamestates.gameLevel03'
+  gameLevelGoal01 = require 'gamestates.gameLevelGoal01'
+  gameLevelGoal02 = require 'gamestates.gameLevelGoal02'
+  gameLevelGoal03 = require 'gamestates.gameLevelGoal03'
   pause = require 'gamestates.pause'
 
   system = {}

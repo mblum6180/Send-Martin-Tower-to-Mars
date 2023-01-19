@@ -42,7 +42,7 @@ end
   
 function gameLevel03:draw()
     love.graphics.setColor(system.BGcolorR, system.BGcolorG, system.BGcolorB)
-    love.graphics.draw(objects.ground.background, 0, 0)
+    love.graphics.draw(objects.ground.background03, 0, 0)
     love.graphics.setColor(0.53, 0.39, 0.32)
     love.graphics.polygon("line", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
     
@@ -54,8 +54,9 @@ function gameLevel03:draw()
 
     love.graphics.setColor(1.0, 1.0, 1.0)
     love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), objects.tower.body:getAngle() )
-    love.graphics.polygon("line", objects.tower.body:getWorldPoints(objects.tower.shape:getPoints()))
-
+    if debugMode then
+        love.graphics.polygon("line", objects.tower.body:getWorldPoints(objects.tower.shape:getPoints()))
+    end
 
     love.graphics.setColor(0.63, 0.49, 0.42) --   Draw Foreground Mountains 
     love.graphics.translate(0, system.winHeight * 0.04)

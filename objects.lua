@@ -5,7 +5,9 @@ activePeeps = {}
 objects = {} 
 
 objects.ground = {}
-objects.ground.background = love.graphics.newImage("assets/marsmountain8bit.png")
+objects.ground.background01 = love.graphics.newImage("assets/CityBG8bit.png") -- Background image
+objects.ground.background02 = love.graphics.newImage("assets/spaceBG.png") -- Background image
+objects.ground.background03 = love.graphics.newImage("assets/marsmountain8bit.png") -- Background image
 objects.ground.box = {
     -20,-100, --1
     system.winWidth + 20,-100, --2
