@@ -46,7 +46,7 @@ function gameLevel01:update(dt)
     end
 
     if system.level01over then
-        Gamestate.switch(gameLevel02)
+        Gamestate.switch(gameLevelGoal01)
     end
     if debugMode then
         print(objects.tower.body:getLinearVelocity())

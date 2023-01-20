@@ -64,7 +64,7 @@ function mainmenu:keypressed(key, scancode, isrepeat)
     if key == "escape" then
         love.event.quit()
     elseif key == "space" then
-        Gamestate.switch(gameLevel01)
+        Gamestate.switch(gameLevel02)
     end
 end
 
