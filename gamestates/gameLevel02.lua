@@ -23,9 +23,6 @@ function gameLevel02:init()
     objects.tower.fixture:setFriction(0.0)
 
 
-    objects.spacePeep.body = love.physics.newBody(space, love.math.random(system.winWidth * 0.2, system.winWidth * 0.8), system.winHeight * 0.1, "static")
-    objects.spacePeep.shape = love.physics.newRectangleShape(objects.spacePeep.width / 2, objects.spacePeep.height / 2, objects.spacePeep.width, objects.spacePeep.height, 0)
-    objects.spacePeep.fixture = love.physics.newFixture(objects.spacePeep.body, objects.spacePeep.shape, 1)
     gameLevel02:genItems(0)
 
 
@@ -35,7 +32,7 @@ function gameLevel02:update(dt)
     space:update(dt) 
 
     junkTimer = junkTimer + 1 * dt
-    if junkTimer > 0.8 then
+    if junkTimer > 0.5 then
         gameLevel02:genItems(#objects.items+1) --timer for junk
         junkTimer = 0
     end
@@ -94,20 +91,19 @@ function gameLevel02:draw()
 
     love.graphics.translate(0, scroll)
   
-    love.graphics.setColor(1.0, 1.0, 1.0)
-    love.graphics.draw(objects.spacePeep.image, objects.spacePeep.body:getX(), objects.spacePeep.body:getY() ) -- Draw Space peep
-    if debugMode then
-        love.graphics.polygon("line", objects.spacePeep.body:getWorldPoints(objects.spacePeep.shape:getPoints()))
-    end
+
+
 
     love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), objects.tower.body:getAngle()) -- Draw Tower
     if debugMode then
         love.graphics.polygon("line", objects.tower.body:getWorldPoints(objects.tower.shape:getPoints()))
     end
 
+
+    love.graphics.setColor(1.0, 1.0, 1.0)
     for i,v in ipairs (objects.items) do
         --print(i,v)
-        love.graphics.draw(objects.items[i].image, objects.items[i].body:getX(), objects.items[i].body:getY() ) -- Draw Space junk
+        love.graphics.draw(objects.items[i].image, objects.items[i].body:getX(), objects.items[i].body:getY(), objects.items[i].body:getAngle()  ) -- Draw Space junk
         if debugMode then
             love.graphics.polygon("line", objects.items[i].body:getWorldPoints(objects.items[i].shape:getPoints()))
         end
@@ -164,7 +160,7 @@ function gameLevel02:genItems(id)
     id.height = id.image:getHeight()
 
 
-    id.body = love.physics.newBody(space, love.math.random(0, system.winWidth), (0 - scroll - id.height), "static")
+    id.body = love.physics.newBody(space, love.math.random(0, system.winWidth), (0 - scroll - id.height), "dynamic")
     id.shape = love.physics.newRectangleShape(id.width / 2, id.height / 2, id.width, id.height, 0)
     id.fixture = love.physics.newFixture(id.body, id.shape, 1)
 

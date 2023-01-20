@@ -52,7 +52,7 @@ function gameLevel03:draw()
         love.graphics.polygon("fill", triangle)
     end
 
-    love.graphics.setColor(1.0, 1.0, 1.0)
+    love.graphics.setColor(1.0, 1.0, 1.0) -- Draw Tower
     love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), objects.tower.body:getAngle() )
     if debugMode then
         love.graphics.polygon("line", objects.tower.body:getWorldPoints(objects.tower.shape:getPoints()))
