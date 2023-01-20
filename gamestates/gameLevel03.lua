@@ -104,16 +104,16 @@ end
 
 function gameLevel03:beginContact()
     local x, y = objects.tower.body:getLinearVelocity()
-    if debugMode then
-        print (y)
-        print(objects.tower.body:getAngularVelocity())
-        if y < 100 then
-            print"landed"
-        else 
-            print"Boom!"
-            gameLevel03:crash()
-        end
+
+    print (y)
+    print(objects.tower.body:getAngularVelocity())
+    if y < 100 then
+        print"landed"
+    else 
+        print"Boom!"
+        gameLevel03:crash()
     end
+
 end
 
 

@@ -5,8 +5,9 @@ Gamestate = require 'libs.hump.gamestate'
 local gameLevel02 = {}
 function gameLevel02:init()
     
+    junkTimer = 0
     scroll = 0
-    scrollSpeed = 12
+    scrollSpeed = 42
     scrollTower = 0
     space:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
@@ -24,15 +25,28 @@ function gameLevel02:init()
     objects.spacePeep.body = love.physics.newBody(space, love.math.random(system.winWidth * 0.2, system.winWidth * 0.8), system.winHeight * 0.1, "static")
     objects.spacePeep.shape = love.physics.newRectangleShape(objects.spacePeep.width / 2, objects.spacePeep.height / 2, objects.spacePeep.width, objects.spacePeep.height, 0)
     objects.spacePeep.fixture = love.physics.newFixture(objects.spacePeep.body, objects.spacePeep.shape, 1)
+    gameLevel02:genItems(0)
+
 
 end
 
 function gameLevel02:update(dt)
     space:update(dt) 
-    if coolDown > 0 then
-        coolDown = coolDown - 1 * dt
+
+    junkTimer = junkTimer + 1 * dt
+    if junkTimer > 0.8 then
+        gameLevel02:genItems(#objects.items+1) --timer for junk
+        junkTimer = 0
     end
-    --print (coolDown)
+    for i,v in ipairs (objects.items) do
+        print(objects.items[i].body:getY())
+        if objects.items[i].body:getY() < -500 then
+             table.remove(objects.items, i)
+             print("remove",i)
+        end
+    end
+
+
     system.BGScale = system.BGScale + 0.005 * dt
     if objects.tower.body:getY() < -2000 then
         --objects.tower.fixture:destroy()
@@ -68,7 +82,7 @@ function gameLevel02:update(dt)
     edge(objects.tower.body:getX(), objects.tower.body:getY())
 
     scroll = scroll + (scrollSpeed * dt)
-    print(scroll)
+    --print(scroll)
 end
   
 function gameLevel02:draw()
@@ -88,9 +102,19 @@ function gameLevel02:draw()
         love.graphics.polygon("line", objects.tower.body:getWorldPoints(objects.tower.shape:getPoints()))
     end
 
+    for i,v in ipairs (objects.items) do
+        print(i,v)
+        love.graphics.draw(objects.items[i].image, objects.items[i].body:getX(), objects.items[i].body:getY() ) -- Draw Space junk
+        if debugMode then
+            love.graphics.polygon("line", objects.items[i].body:getWorldPoints(objects.items[i].shape:getPoints()))
+        end
+    end
+
+
     if objects.fire.body then
         love.graphics.draw(objects.fire.image, objects.fire.body:getX(), objects.fire.body:getY(), 0, 3, 3)
     end
+
 
 
 
@@ -116,14 +140,33 @@ function gameLevel02:keypressed(key, scancode, isrepeat)
         score = score + 1
         print(score)
         end
+        if key == "q" then
+            gameLevel02:genItems(1)
+            print("MORE!")
+        end
     end
     if key == "escape" then
         love.event.quit()
     --elseif key == "space" then
     --    Gamestate.switch(gameLevel03)
     end
-end
 
+
+end
+function gameLevel02:genItems(id)
+    index = id
+    id = {}
+    id.image = love.graphics.newImage("assets/chick8bit.png")
+    id.width = id.image:getWidth()
+    id.height = id.image:getHeight()
+
+
+    id.body = love.physics.newBody(space, love.math.random(0, system.winWidth), (0 - scroll - id.height), "static")
+    id.shape = love.physics.newRectangleShape(id.width / 2, id.height / 2, id.width, id.height, 0)
+    id.fixture = love.physics.newFixture(id.body, id.shape, 1)
+
+    table.insert(objects.items, index, id)
+end
 
 
 
