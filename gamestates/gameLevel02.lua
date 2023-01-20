@@ -9,12 +9,13 @@ function gameLevel02:init()
     scroll = 0
     scrollSpeed = 42
     scrollTower = 0
+    score = 0
     space:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
     love.graphics.setBackgroundColor(0.92, 0.70, 0.60)
 
 
-    objects.tower.body = love.physics.newBody(space, love.math.random(system.winWidth * 0.2, system.winWidth * 0.8), system.winHeight * 0.9, "dynamic")
+    objects.tower.body = love.physics.newBody(space, love.math.random(system.winWidth * 0.2, system.winWidth * 0.8), system.winHeight * 0.95, "dynamic")
     objects.tower.body:setLinearDamping(0.9)
     objects.tower.shape = love.physics.newRectangleShape(objects.tower.width / 2, objects.tower.height / 2, objects.tower.width, objects.tower.height, 0)
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
@@ -39,16 +40,18 @@ function gameLevel02:update(dt)
         junkTimer = 0
     end
     for i,v in ipairs (objects.items) do
-        print(objects.items[i].body:getY())
-        if objects.items[i].body:getY() < -500 then
+        --print(-objects.items[i].body:getY(), scroll)
+        if -objects.items[i].body:getY() < scroll - system.winHeight then
              table.remove(objects.items, i)
-             print("remove",i)
+             --print("remove",i)
+             score = score + 1
+            print (score)
         end
     end
 
 
     system.BGScale = system.BGScale + 0.005 * dt
-    if objects.tower.body:getY() < -2000 then
+    if objects.tower.body:getY() < -2500 then
         --objects.tower.fixture:destroy()
         system.level02over = true
     end
@@ -59,7 +62,7 @@ function gameLevel02:update(dt)
     end
 
     scrollTower = scrollTower + (scrollSpeed / 4) * dt
-    objects.tower.body:setY(system.winHeight * 0.7 + -scroll - scrollTower) -- lock tower in place
+    objects.tower.body:setY(system.winHeight * 0.95 + -scroll - scrollTower) -- lock tower in place
     objects.tower.body:setAngle(0)
 
     if love.keyboard.isDown("right") then
@@ -103,7 +106,7 @@ function gameLevel02:draw()
     end
 
     for i,v in ipairs (objects.items) do
-        print(i,v)
+        --print(i,v)
         love.graphics.draw(objects.items[i].image, objects.items[i].body:getX(), objects.items[i].body:getY() ) -- Draw Space junk
         if debugMode then
             love.graphics.polygon("line", objects.items[i].body:getWorldPoints(objects.items[i].shape:getPoints()))
