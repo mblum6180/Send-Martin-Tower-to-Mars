@@ -39,7 +39,7 @@ function gameLevel02:update(dt)
         gameLevel02:genItems(#objects.items+1) --timer for junk
         junkTimer = 0
     end
-    for i,v in ipairs (objects.items) do
+    for i in ipairs (objects.items) do
         --print(-objects.items[i].body:getY(), scroll)
         if -objects.items[i].body:getY() < scroll - system.winHeight then
              table.remove(objects.items, i)
