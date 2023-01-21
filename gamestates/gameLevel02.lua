@@ -44,6 +44,12 @@ function gameLevel02:update(dt)
              score = score + 1
             --print (score)
         end
+        if -objects.items[i].red == 0 then
+            table.remove(objects.items, i)
+            --print("remove",i)
+            score = score + 1
+           --print (score)
+       end
     end
 
 
@@ -126,7 +132,7 @@ function gameLevel02:beginContact(obj1,obj2)
         print(obj1,obj2)
     end
     if obj2:getUserData() then
-        obj2:getUserData().red = .1
+        obj2:getUserData().red = obj2:getUserData().red - .5
     end
 
 
