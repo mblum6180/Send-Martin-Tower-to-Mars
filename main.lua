@@ -51,8 +51,8 @@ function fade(dt,d,x)  --dt, Alpha, duration
 end
 
 
-function beginContact()
-  Gamestate.beginContact()
+function beginContact(obj1,obj2)
+  Gamestate.beginContact(obj1,obj2)
 end
 
 function edge(x, y)

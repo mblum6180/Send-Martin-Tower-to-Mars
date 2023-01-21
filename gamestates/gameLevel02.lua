@@ -42,7 +42,7 @@ function gameLevel02:update(dt)
              table.remove(objects.items, i)
              --print("remove",i)
              score = score + 1
-            print (score)
+            --print (score)
         end
     end
 
@@ -100,9 +100,10 @@ function gameLevel02:draw()
     end
 
 
-    love.graphics.setColor(1.0, 1.0, 1.0)
+
     for i,v in ipairs (objects.items) do
         --print(i,v)
+        love.graphics.setColor(objects.items[i].red, 1.0, 1.0)
         love.graphics.draw(objects.items[i].image, objects.items[i].body:getX(), objects.items[i].body:getY(), objects.items[i].body:getAngle()  ) -- Draw Space junk
         if debugMode then
             love.graphics.polygon("line", objects.items[i].body:getWorldPoints(objects.items[i].shape:getPoints()))
@@ -120,17 +121,15 @@ function gameLevel02:draw()
 
 end
 
-function gameLevel02:beginContact()
-    local x, y = objects.tower.body:getLinearVelocity()
+function gameLevel02:beginContact(obj1,obj2)
     if debugMode then
-        print (y)
-        print(objects.tower.body:getAngularVelocity())
-        if y < 100 then
-            print"landed"
-        else 
-            print"Boom!"
-        end
+        print(obj1,obj2)
     end
+    if obj2:getUserData() then
+        obj2:getUserData().red = .1
+    end
+
+
 end
 
 function gameLevel02:keypressed(key, scancode, isrepeat)
@@ -158,12 +157,14 @@ function gameLevel02:genItems(id)
     id.image = love.graphics.newImage("assets/chick8bit.png")
     id.width = id.image:getWidth()
     id.height = id.image:getHeight()
-
+    id.red = 1
+    id.green = 1
+    id.blue = 1
 
     id.body = love.physics.newBody(space, love.math.random(0, system.winWidth), (0 - scroll - id.height), "dynamic")
     id.shape = love.physics.newRectangleShape(id.width / 2, id.height / 2, id.width, id.height, 0)
     id.fixture = love.physics.newFixture(id.body, id.shape, 1)
-
+    id.fixture:setUserData(id)
     table.insert(objects.items, index, id)
 end
 

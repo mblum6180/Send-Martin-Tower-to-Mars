@@ -24,7 +24,7 @@ function gameLevel03:init()
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
     objects.tower.fixture:setRestitution(0.3) 
     objects.tower.fixture:setFriction(0.98)
-
+    objects.tower.fixture:setUserData(1)
 
 
     bgFill = {objects.ground.body:getWorldPoints(objects.ground.shape:getPoints())}
@@ -102,11 +102,15 @@ function gameLevel03:genLandscape()
     return ground
 end
 
-function gameLevel03:beginContact()
-    local x, y = objects.tower.body:getLinearVelocity()
+function love.keypressed(key, code)
+    Gamestate.keypressed(key, code) -- pass multiple arguments
+end
 
-    print (y)
-    print(objects.tower.body:getAngularVelocity())
+
+function gameLevel03:beginContact(obj1,obj2)
+    local x, y = objects.tower.body:getLinearVelocity()
+    --print (y)
+    --print(objects.tower.body:getAngularVelocity())
     if y < 100 then
         print"landed"
     else 
@@ -122,6 +126,9 @@ function gameLevel03:keypressed(key, scancode, isrepeat)
         if key == "s" then
         score = score + 1
         print(score)
+        end
+        if key == 'i' then
+            print(objects.tower.fixture:getUserData())
         end
     end
     if key == "escape" then
