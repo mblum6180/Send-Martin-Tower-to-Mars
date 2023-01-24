@@ -9,7 +9,6 @@ function gameLevel02:init()
     scroll = 0
     scrollSpeed = 42
     scrollTower = 0
-    score = 0
     space:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
     love.graphics.setBackgroundColor(0.92, 0.70, 0.60)
@@ -41,13 +40,13 @@ function gameLevel02:update(dt)
         if -objects.items[i].body:getY() < scroll - system.winHeight then
              table.remove(objects.items, i)
              --print("remove",i)
-             score = score + 1
+             system.score = system.score + 1
             --print (score)
         end
         if -objects.items[i].red == 0 then
             table.remove(objects.items, i)
             --print("remove",i)
-            score = score + 1
+            system.score = system.score + 1
            --print (score)
        end
     end
@@ -121,7 +120,8 @@ function gameLevel02:draw()
         love.graphics.draw(objects.fire.image, objects.fire.body:getX(), objects.fire.body:getY(), 0, 3, 3)
     end
 
-
+    love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)
+    love.graphics.print(math.floor(system.score02), system.winWidth * 0.1, system.winHeight * 0.1, 0, system.winWidth / 150, system.winWidth / 150)
 
 
 
@@ -141,8 +141,8 @@ end
 function gameLevel02:keypressed(key, scancode, isrepeat)
     if debugMode then
         if key == "s" then
-        score = score + 1
-        print(score)
+        system.score = system.score + 1
+        print(system.score)
         end
         if key == "q" then
             gameLevel02:genItems(1)

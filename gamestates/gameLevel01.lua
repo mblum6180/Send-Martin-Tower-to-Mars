@@ -43,6 +43,10 @@ function gameLevel01:update(dt)
 
     if launch then 
         objects.tower.body:applyForce(0, -29000)
+        objects.image.fireball.currentFrame = objects.image.fireball.currentFrame + 10 * dt
+        if objects.image.fireball.currentFrame >= 4 then
+            objects.image.fireball.currentFrame = 1
+        end
     end
 
     if system.level01over then
@@ -56,8 +60,11 @@ function gameLevel01:update(dt)
         launch = true
         countDown = 10
     else
-        countDown = countDown - (countDown * .5) * dt
+        countDown = countDown - (countDown * 1.2) * dt --set to 1.2 
+        system.score01 = system.score01 - 200 * dt
     end
+
+
 
 end
     
@@ -81,15 +88,20 @@ function gameLevel01:draw()
     love.graphics.setColor(1.0, 0.1, 0.1, bgAlpha)
     love.graphics.rectangle("fill", system.winWidth * 0.1, system.winHeight * 0.84, countDown*75, 45)
 
+    love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)
+    love.graphics.print(math.floor(system.score01), system.winWidth * 0.1, system.winHeight * 0.1, 0, system.winWidth / 150, system.winWidth / 150)
 
-
+    if launch then 
+        love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)
+        love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], objects.tower.body:getX(), objects.tower.body:getY(), 0, 3, 3)
+    end
 end
 
 function gameLevel01:keypressed(key, scancode, isrepeat)
     if debugMode then
         if key == "s" then
-        score = score + 1
-        print(score)
+        system.score = system.score + 1
+        print(system.score)
         end
     end
     if key == "escape" then
@@ -97,6 +109,7 @@ function gameLevel01:keypressed(key, scancode, isrepeat)
     elseif key == "space" then
         countDown = countDown + love.math.random(0.3, 1.2)
     end
+
 end
 
 return gameLevel01

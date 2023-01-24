@@ -1,8 +1,45 @@
 --! file: objects.lua
 
+system = {}
+system.winWidth = love.graphics.getPixelWidth()
+system.winHeight = love.graphics.getPixelHeight()
+system.level01over = false
+system.level02over = false
+system.level03over = false
+system.BGScale = 1
+system.BGcolorR = 1
+system.BGcolorG = 1
+system.BGcolorB = 1
+system.score01 = 4000
+system.score02 = 4000
+system.score03 = 4000
+system.score = 0
+
+
+
 activePeeps = {}
 
 objects = {} 
+objects.image = {}
+objects.image.fireball = {}
+objects.image.fireball.tex = love.graphics.newImage("assets/towerFireball.png")
+local width = objects.image.fireball.tex:getWidth()
+local height = objects.image.fireball.tex:getHeight() 
+objects.image.fireball.frames = {}
+local frame_width = 107
+local frame_height = 147
+maxFrames = 4
+for i=0,0 do
+    for j=0,3 do
+        table.insert(objects.image.fireball.frames, love.graphics.newQuad(j * frame_width, i * frame_height, frame_width, frame_height, width, height))
+        if #objects.image.fireball.frames == maxFrames then
+            break
+        end 
+    end
+end
+objects.image.fireball.currentFrame = 1
+
+
 
 objects.ground = {}
 objects.ground.background01 = love.graphics.newImage("assets/CityBG8bit.png") -- Background image
@@ -24,7 +61,6 @@ objects.tower.width = objects.tower.image:getWidth()
 objects.tower.height = objects.tower.image:getHeight()
 objects.tower.strengthMain = 2000
 objects.tower.strengthSide = 300
-objects.tower.strengthTorque = 4000
 
 objects.fire = {}
 objects.fire.image = love.graphics.newImage("assets/Fireball1.png")

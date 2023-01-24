@@ -11,24 +11,16 @@ function love.load()
   gameLevelGoal03 = require 'gamestates.gameLevelGoal03'
   gameIntro = require 'gamestates.gameIntro'
   pause = require 'gamestates.pause'
+  require "objects"
 
-  system = {}
-  system.winWidth = love.graphics.getPixelWidth()
-  system.winHeight = love.graphics.getPixelHeight()
-  system.level01over = false
-  system.level02over = false
-  system.level03over = false
-  system.BGScale = 1
-  system.BGcolorR = 1
-  system.BGcolorG = 1
-  system.BGcolorB = 1
+
   love.physics.setMeter(64)  -- physics setup
   earth = love.physics.newWorld(0, 9.80*64, true)
   space = love.physics.newWorld(0, 0.1*64, true)
   mars = love.physics.newWorld(0, 3.72*64, true)
-  require "objects"
+
   Gamestate.registerEvents()
-  score = 0
+  
   coolDown = 0
   if arg[2] == "debug" then
     debugMode = true
@@ -90,7 +82,6 @@ function levelSelect(level)
   elseif level == "02" then
     Gamestate.switch(gameLevel02)
   elseif level == "03" then
-    print("Hello")
     Gamestate.switch(gameLevel03)
   else
     Gamestate.switch(mainMenu)

@@ -63,6 +63,10 @@ function gameLevel03:draw()
     for i, triangle in ipairs(triangles) do 
         love.graphics.polygon("fill", triangle)
     end
+
+    love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)
+    love.graphics.print(math.floor(system.score03), system.winWidth * 0.1, system.winHeight * 0.1, 0, system.winWidth / 150, system.winWidth / 150)
+
 end
 
 function gameLevel03:genLandscape()
@@ -124,8 +128,8 @@ end
 function gameLevel03:keypressed(key, scancode, isrepeat)
     if debugMode then
         if key == "s" then
-        score = score + 1
-        print(score)
+        system.score = system.score + 1
+        system.print(score)
         end
         if key == 'i' then
             print(objects.tower.fixture:getUserData())
