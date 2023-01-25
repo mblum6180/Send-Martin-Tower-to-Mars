@@ -30,6 +30,11 @@ end
 function gameLevel02:update(dt)
     space:update(dt) 
 
+    if system.score02 <= 0 then 
+        system.score02 = 0
+        objects.tower.crashed = true
+    end
+
     objects.image.fireball.currentFrame = objects.image.fireball.currentFrame + 10 * dt
     if objects.image.fireball.currentFrame >= 4 then
         objects.image.fireball.currentFrame = 1
@@ -129,9 +134,12 @@ function gameLevel02:beginContact(obj1,obj2)
     if debugMode then
         print(obj1,obj2)
     end
-    if obj2:getUserData() then
-        obj2:getUserData().red = obj2:getUserData().red - .5
-        system.score02 = system.score02 - 200
+    if obj1:getUserData() == null then
+
+        if obj2:getUserData() then
+            obj2:getUserData().red = obj2:getUserData().red - .5
+            system.score02 = system.score02 - 200
+        end
     end
 
 

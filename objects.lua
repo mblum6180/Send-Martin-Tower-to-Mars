@@ -66,6 +66,7 @@ objects.tower.strengthMain = 2000
 objects.tower.strengthSide = 300
 objects.tower.fire = false
 objects.tower.empty = false
+objects.tower.crashed = false
 
 
 objects.spacePeep = {}

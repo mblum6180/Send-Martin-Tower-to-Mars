@@ -58,7 +58,7 @@ function gameLevel03:update(dt)
         playSound(objects.audio.fire,'pause',false)
     end
 
-    if objects.tower.empty == false then
+    if objects.tower.crashed == false then
         if system.landed then 
             system.landedTimer = system.landedTimer - 1 * dt
             print(system.landedTimer)
@@ -206,6 +206,7 @@ end
 function gameLevel03:crash()
     system.score03 = 0
     objects.tower.fire = false
+    objects.tower.crashed = true
     playSound(objects.audio.crash,'stop')
     playSound(objects.audio.crash,'play', true)
 end
