@@ -12,8 +12,10 @@ system.BGcolorG = 1
 system.BGcolorB = 1
 system.score01 = 4000
 system.score02 = 4000
-system.score03 = 4000
+system.score03 = 4000 --4000
 system.score = 0
+system.landed = false
+system.landedTimer = 2
 
 
 
@@ -63,11 +65,8 @@ objects.tower.strengthTorque = 2000
 objects.tower.strengthMain = 2000
 objects.tower.strengthSide = 300
 objects.tower.fire = false
+objects.tower.empty = false
 
-objects.fire = {}
-objects.fire.image = love.graphics.newImage("assets/Fireball1.png")
-objects.fire.width = objects.fire.image:getWidth()
-objects.fire.height = objects.fire.image:getHeight()
 
 objects.spacePeep = {}
 objects.spacePeep.image = love.graphics.newImage("assets/chick8bit.png")
@@ -78,4 +77,6 @@ objects.items = {}
 
 
 objects.audio = {}
-objects.audio.crash = love.audio.newSource("assets/explosion-fuzzy1.wav", "static")
+objects.audio.crash = love.audio.newSource("assets//audio/explosion-fuzzy1.ogg", "static")
+objects.audio.fire = love.audio.newSource("assets/audio/qubodupFireLoop.ogg", "static")
+objects.audio.launch = love.audio.newSource("assets/audio/rocket_launch.ogg", "static")

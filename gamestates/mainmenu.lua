@@ -21,7 +21,7 @@ function mainmenu:init()
     text = love.graphics.newImage("assets/Press-space-to-start8bit.png")
     textWidth = text:getWidth()
     textHeight = text:getHeight()
-    objects.audio.crash:play()
+    playSound(objects.audio.crash,'play',true)
 end
     
     

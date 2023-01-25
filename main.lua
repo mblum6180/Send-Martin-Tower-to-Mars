@@ -19,6 +19,7 @@ function love.load()
   space = love.physics.newWorld(0, 0.1*64, true)
   mars = love.physics.newWorld(0, 3.72*64, true)
 
+
   Gamestate.registerEvents()
   
   coolDown = 0
@@ -68,11 +69,21 @@ function edge(x, y)
   end
 end
 
-function playSound(sound)
-  sound:seek(0)
-  pitchMod = 0.8 + love.math.random(0, 10)/25
-  sound:setPitch(pitchMod)
-  sound:play()
+function playSound(sound,mode,pitchMod,x,y)
+  if x then 
+    sound:setDirection( x, y, 0)
+  end
+  if mode == 'play' then
+    if pitchMod == true then
+      pitchMod = 0.8 + love.math.random(0, 10)/25
+      sound:setPitch(pitchMod)
+    end
+    sound:play()
+  elseif mode == 'stop' then
+    sound:stop()
+  elseif mode == 'pause' then
+    sound:pause()
+  end
 end
 
 function levelSelect(level)

@@ -79,17 +79,7 @@ function gameLevel02:update(dt)
       objects.tower.body:applyForce(-400, 0)
     end
 
-    if not objects.fire.body  then
-        if (love.keyboard.isDown("up") and coolDown <= 0)then
-            objects.fire.body = love.physics.newBody(space, objects.tower.body:getX() + 15, objects.tower.body:getY() - 50, "dynamic")
-            objects.fire.shape = love.physics.newRectangleShape(objects.fire.width, objects.fire.height)
-            objects.fire.fixture = love.physics.newFixture(objects.fire.body, objects.fire.shape, 1)
-            objects.fire.body:applyForce(0, -30000)
-            coolDown = 1
-        end
-    elseif objects.fire.body:getY() < 0 then
-        objects.fire.body = null
-    end
+
     edge(objects.tower.body:getX(), objects.tower.body:getY())
 
     scroll = scroll + (scrollSpeed * dt)
@@ -122,9 +112,6 @@ function gameLevel02:draw()
     end
 
 
-    if objects.fire.body then
-        love.graphics.draw(objects.fire.image, objects.fire.body:getX(), objects.fire.body:getY(), 0, 3, 3)
-    end
 
     love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)
     love.graphics.print(math.floor(system.score02), system.winWidth * 0.1, system.winHeight * 0.1 + -scroll, 0, system.winWidth / 150, system.winWidth / 150)

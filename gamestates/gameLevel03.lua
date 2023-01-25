@@ -38,12 +38,35 @@ function gameLevel03:update(dt)
     mars:update(dt) 
     gameLevel03:input()
     edge(objects.tower.body:getX(), objects.tower.body:getY())
-    objects.image.fireball.currentFrame = objects.image.fireball.currentFrame + 10 * dt
-    if objects.image.fireball.currentFrame >= 4 then
-        objects.image.fireball.currentFrame = 1
+
+    
+    if system.score03 <= 0 then 
+        system.score03 = 0
+        objects.tower.empty = true
+        objects.tower.fire = false
     end
-    if objects.tower.fire then
-        system.score03 = system.score03 - 200 * dt
+    if objects.tower.fire then -- Fire
+        if objects.tower.empty == false then
+            system.score03 = system.score03 - 200 * dt
+                objects.image.fireball.currentFrame = objects.image.fireball.currentFrame + 25 * dt
+            if objects.image.fireball.currentFrame >= 4 then
+                objects.image.fireball.currentFrame = 1
+            end
+            playSound(objects.audio.fire,'play',false)
+        end
+    else 
+        playSound(objects.audio.fire,'pause',false)
+    end
+
+    if objects.tower.empty == false then
+        if system.landed then 
+            system.landedTimer = system.landedTimer - 1 * dt
+            print(system.landedTimer)
+            if system.landedTimer <= 0 then
+                print(system.landedTimer)
+                print("Winrar!")
+            end
+        end
     end
 end
   
@@ -132,10 +155,9 @@ function gameLevel03:beginContact(obj1,obj2)
     --print (y)
     --print(objects.tower.body:getAngularVelocity())
     if y < 100 then
-        print"landed"
+        gameLevel03:landed()
     else 
         print"Boom!"
-        system.score03 = 0
         gameLevel03:crash()
     end
 
@@ -160,30 +182,38 @@ function gameLevel03:keypressed(key, scancode, isrepeat)
 end
 
 function gameLevel03:input()
-    if love.keyboard.isDown("right") then
-        objects.tower.body:applyTorque(objects.tower.strengthTorque)
-      elseif love.keyboard.isDown("left") then
-        objects.tower.body:applyTorque(-objects.tower.strengthTorque)
-      end
-      if love.keyboard.isDown("up") then
-          objects.tower.body:applyForce(objects.tower.strengthMain * math.cos(objects.tower.body:getAngle() - 1.57), objects.tower.strengthMain * math.sin(objects.tower.body:getAngle() - 1.57))
-          objects.tower.fire = true
-      else objects.tower.fire = false
-      end
-      if love.keyboard.isDown("a") then
-          objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 3.14), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 3.14))
-      elseif love.keyboard.isDown("d") then
-          objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 0), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 0))
+
+    if objects.tower.empty == false then
+        if love.keyboard.isDown("right") then
+            objects.tower.body:applyTorque(objects.tower.strengthTorque)
+        elseif love.keyboard.isDown("left") then
+            objects.tower.body:applyTorque(-objects.tower.strengthTorque)
+        end
+        if love.keyboard.isDown("up") then
+            objects.tower.body:applyForce(objects.tower.strengthMain * math.cos(objects.tower.body:getAngle() - 1.57), objects.tower.strengthMain * math.sin(objects.tower.body:getAngle() - 1.57))
+            objects.tower.fire = true
+        else objects.tower.fire = false
+        end
+        if love.keyboard.isDown("a") then
+            objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 3.14), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 3.14))
+        elseif love.keyboard.isDown("d") then
+            objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 0), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 0))
+        end
     end
 end
 
 
 function gameLevel03:crash()
-    --if objects.audio.crash then
-    --    objects.audio.crash:rewind()
-    --end
-    -- objects.audio.crash:play()
-    playSound(objects.audio.crash)
+    system.score03 = 0
+    objects.tower.fire = false
+    playSound(objects.audio.crash,'stop')
+    playSound(objects.audio.crash,'play', true)
+end
+
+function gameLevel03:landed()
+    print("landed")
+    system.landed = true
+
 end
 
 
