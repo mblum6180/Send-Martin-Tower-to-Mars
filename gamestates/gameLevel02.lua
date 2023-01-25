@@ -30,6 +30,12 @@ end
 function gameLevel02:update(dt)
     space:update(dt) 
 
+    objects.image.fireball.currentFrame = objects.image.fireball.currentFrame + 10 * dt
+    if objects.image.fireball.currentFrame >= 4 then
+        objects.image.fireball.currentFrame = 1
+    end
+
+
     junkTimer = junkTimer + 1 * dt
     if junkTimer > 0.5 then
         gameLevel02:genItems(#objects.items+1) --timer for junk
@@ -121,7 +127,12 @@ function gameLevel02:draw()
     end
 
     love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)
-    love.graphics.print(math.floor(system.score02), system.winWidth * 0.1, system.winHeight * 0.1, 0, system.winWidth / 150, system.winWidth / 150)
+    love.graphics.print(math.floor(system.score02), system.winWidth * 0.1, system.winHeight * 0.1 + -scroll, 0, system.winWidth / 150, system.winWidth / 150)
+
+    love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)
+    love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
+    objects.tower.body:getX() - objects.tower.width/4, 
+    objects.tower.body:getY() + objects.tower.height * 0.9, objects.tower.body:getAngle(), 1, 1)
 
 
 
@@ -133,6 +144,7 @@ function gameLevel02:beginContact(obj1,obj2)
     end
     if obj2:getUserData() then
         obj2:getUserData().red = obj2:getUserData().red - .5
+        system.score02 = system.score02 - 200
     end
 
 

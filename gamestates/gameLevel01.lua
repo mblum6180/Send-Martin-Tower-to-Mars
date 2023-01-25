@@ -60,7 +60,7 @@ function gameLevel01:update(dt)
         launch = true
         countDown = 10
     else
-        countDown = countDown - (countDown * 1.2) * dt --set to 1.2 
+        countDown = countDown - (countDown * 0.2) * dt --set to 1.2 
         system.score01 = system.score01 - 200 * dt
     end
 
@@ -93,7 +93,8 @@ function gameLevel01:draw()
 
     if launch then 
         love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)
-        love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], objects.tower.body:getX(), objects.tower.body:getY(), 0, 3, 3)
+        love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
+        objects.tower.body:getX() - objects.tower.width/1.5, objects.tower.body:getY() + objects.tower.height * 2.8, 0, 3, 3)
     end
 end
 

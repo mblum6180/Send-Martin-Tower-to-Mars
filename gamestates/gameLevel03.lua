@@ -38,6 +38,13 @@ function gameLevel03:update(dt)
     mars:update(dt) 
     gameLevel03:input()
     edge(objects.tower.body:getX(), objects.tower.body:getY())
+    objects.image.fireball.currentFrame = objects.image.fireball.currentFrame + 10 * dt
+    if objects.image.fireball.currentFrame >= 4 then
+        objects.image.fireball.currentFrame = 1
+    end
+    if objects.tower.fire then
+        system.score03 = system.score03 - 200 * dt
+    end
 end
   
 function gameLevel03:draw()
@@ -66,6 +73,12 @@ function gameLevel03:draw()
 
     love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)
     love.graphics.print(math.floor(system.score03), system.winWidth * 0.1, system.winHeight * 0.1, 0, system.winWidth / 150, system.winWidth / 150)
+
+    if objects.tower.fire then
+        love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)
+        love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
+        objects.tower.body:getX() - objects.tower.width/2, objects.tower.body:getY() + objects.tower.height * 0.7, objects.tower.body:getAngle(), 1, 1)
+    end
 
 end
 
@@ -119,6 +132,7 @@ function gameLevel03:beginContact(obj1,obj2)
         print"landed"
     else 
         print"Boom!"
+        system.score03 = 0
         gameLevel03:crash()
     end
 
@@ -150,6 +164,8 @@ function gameLevel03:input()
       end
       if love.keyboard.isDown("up") then
           objects.tower.body:applyForce(objects.tower.strengthMain * math.cos(objects.tower.body:getAngle() - 1.57), objects.tower.strengthMain * math.sin(objects.tower.body:getAngle() - 1.57))
+          objects.tower.fire = true
+      else objects.tower.fire = false
       end
       if love.keyboard.isDown("a") then
           objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 3.14), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 3.14))
