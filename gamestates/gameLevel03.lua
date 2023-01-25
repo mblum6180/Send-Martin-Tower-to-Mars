@@ -22,6 +22,7 @@ function gameLevel03:init()
     objects.tower.body:setLinearDamping(0.6)
     objects.tower.shape = love.physics.newRectangleShape(objects.tower.width / 2, objects.tower.height / 2, objects.tower.width, objects.tower.height, 0)
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
+    objects.tower.fire = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
     objects.tower.fixture:setRestitution(0.3) 
     objects.tower.fixture:setFriction(0.98)
     objects.tower.fixture:setUserData(1)
@@ -74,10 +75,14 @@ function gameLevel03:draw()
     love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)
     love.graphics.print(math.floor(system.score03), system.winWidth * 0.1, system.winHeight * 0.1, 0, system.winWidth / 150, system.winWidth / 150)
 
-    if objects.tower.fire then
+    if objects.tower.fire then -- draw fireball
         love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)
         love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
-        objects.tower.body:getX() - objects.tower.width/2, objects.tower.body:getY() + objects.tower.height * 0.7, objects.tower.body:getAngle(), 1, 1)
+        objects.tower.body:getX(), objects.tower.body:getY(), objects.tower.body:getAngle())
+
+    end
+    if debugMode then
+        love.graphics.line(objects.tower.body:getX(), objects.tower.body:getY(),objects.tower.body:getX() +10, objects.tower.body:getY()+10)
     end
 
 end
