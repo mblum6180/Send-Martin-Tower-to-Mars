@@ -61,7 +61,7 @@ end
 function mainmenu:keypressed(key, scancode, isrepeat)
     if key == "escape" then
         love.event.quit()
-    elseif key == "space" then
+    elseif key == "space" or key =="left" or key =="right" or key =="down" or key =="up" then
 
         objects.audio.mainTheme:setVolume(0.42)
         Gamestate.switch(gameIntro)

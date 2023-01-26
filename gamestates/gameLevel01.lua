@@ -43,7 +43,8 @@ function gameLevel01:update(dt)
     end
 
     if launch then 
-        objects.tower.body:applyForce(0, -29000)
+        playSound(objects.audio.launch, "play")
+        objects.tower.body:applyForce(0, -31000)
         objects.image.fireball.currentFrame = objects.image.fireball.currentFrame + 10 * dt
         if objects.image.fireball.currentFrame >= 4 then
             objects.image.fireball.currentFrame = 1
@@ -61,11 +62,9 @@ function gameLevel01:update(dt)
         launch = true
         countDown = 10
     else
-        countDown = countDown - (countDown * 0.2) * dt --set to 1.2 
+        countDown = countDown - (countDown * 4.2) * dt --set to 1.2 
         system.score01 = system.score01 - 200 * dt
     end
-
-
 
 end
     
@@ -108,9 +107,13 @@ function gameLevel01:keypressed(key, scancode, isrepeat)
     end
     if key == "escape" then
         love.event.quit()
-    elseif key == "space" then
-        countDown = countDown + love.math.random(0.3, 1.2)
     end
+    if love.keyboard.isDown("right") then
+        countDown = countDown + love.math.random(0.8, 1.1)
+    elseif love.keyboard.isDown("left") then
+        countDown = countDown + love.math.random(0.8, 1.2)
+    end
+
 
 end
 

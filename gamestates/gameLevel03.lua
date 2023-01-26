@@ -42,7 +42,9 @@ end
 
 function gameLevel03:update(dt)
     mars:update(dt) 
-    gameLevel03:input()
+    if objects.tower.crashed == false then
+        gameLevel03:input()
+    end
     edge(objects.tower.body:getX(), objects.tower.body:getY())
 
     
@@ -53,18 +55,6 @@ function gameLevel03:update(dt)
     end
     if system.landedTimer == 0 then 
         objects.tower.empty = true
-    end
-    if objects.tower.fire then -- Fire
-        if objects.tower.empty == false then
-            system.score03 = system.score03 - 200 * dt
-                objects.image.fireball.currentFrame = objects.image.fireball.currentFrame + 25 * dt
-            if objects.image.fireball.currentFrame >= 4 then
-                objects.image.fireball.currentFrame = 1
-            end
-            playSound(objects.audio.fire,'play',false)
-        end
-    else 
-        playSound(objects.audio.fire,'pause',false)
     end
 
     if objects.tower.crashed == false then
@@ -80,7 +70,20 @@ function gameLevel03:update(dt)
                 print("Winrar!", objects.tower.body:getAngle())
             end
         end
+        if objects.tower.fire then -- Fire
+            if objects.tower.empty == false then
+                system.score03 = system.score03 - 200 * dt
+                    objects.image.fireball.currentFrame = objects.image.fireball.currentFrame + 25 * dt
+                if objects.image.fireball.currentFrame >= 4 then
+                    objects.image.fireball.currentFrame = 1
+                end
+                playSound(objects.audio.fire,'play',false)
+            end
+        else 
+            playSound(objects.audio.fire,'pause',false)
+        end
     end
+    
 end
   
 function gameLevel03:draw()
@@ -216,7 +219,9 @@ end
 
 
 function gameLevel03:crash()
-    system.score03 = system.score03 - 5000
+    if objects.tower.crashed == false then
+        system.score03 = system.score03 - 5000
+    end
     objects.tower.fire = false
     objects.tower.crashed = true
     playSound(objects.audio.crash,'stop')
