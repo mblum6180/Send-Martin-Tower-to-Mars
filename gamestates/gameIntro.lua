@@ -16,12 +16,7 @@ function mainmenu:init()
     textFadin = 2
 
 
-    background = love.graphics.newImage("assets/title.png")
-    title = love.graphics.newImage("assets/title8bit.png")
-    text = love.graphics.newImage("assets/Press-space-to-start8bit.png")
-    textWidth = text:getWidth()
-    textHeight = text:getHeight()
-    objects.audio.crash:play()
+
 end
     
     
@@ -48,11 +43,8 @@ end
     
 function mainmenu:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
-    love.graphics.draw(background, 0, 0)
-    love.graphics.setColor(255, 255, 255, titleAlpha)
-    love.graphics.draw(title, 500,100, 0, 3, 3) -- Draw title TEMP xy
-    love.graphics.setColor(255, 255, 255, textAlpha)
-    love.graphics.draw(text, windowWidth / 2, (windowHeight / 3) * 2, 0, 3, 3 , textWidth / 2, textHeight / 2) -- Draw title TEMP xy
+    love.graphics.printf("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when",
+    system.winWidth * 0.1, system.winHeight * 0.1, system.winWidth * .14, 'left', 0, 6, 6)
 
 end
 

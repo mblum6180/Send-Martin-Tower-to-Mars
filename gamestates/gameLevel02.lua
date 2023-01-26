@@ -4,11 +4,13 @@ Gamestate = require 'libs.hump.gamestate'
 
 local gameLevel02 = {}
 function gameLevel02:init()
-    
+    love.graphics.reset()
     junkTimer = 0
     scroll = 0
     scrollSpeed = 42
     scrollTower = 0
+    system.score02 = system.score01
+
     space:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
     love.graphics.setBackgroundColor(0.92, 0.70, 0.60)
@@ -42,7 +44,7 @@ function gameLevel02:update(dt)
 
 
     junkTimer = junkTimer + 1 * dt
-    if junkTimer > 0.5 then
+    if junkTimer > 0.3 then
         gameLevel02:genItems(#objects.items+1) --timer for junk
         junkTimer = 0
     end
@@ -56,8 +58,8 @@ function gameLevel02:update(dt)
         end
         if -objects.items[i].red == 0 then
             table.remove(objects.items, i)
-            --print("remove",i)
-            system.score = system.score + 1
+            system.score02 = system.score02 - 500
+            system.itemsDestroyed = system.itemsDestroyed + 1
            --print (score)
        end
     end
@@ -118,10 +120,10 @@ function gameLevel02:draw()
 
 
 
-    love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)
+    love.graphics.setColor(1.0, 0.0, 0.0, 1)
     love.graphics.print(math.floor(system.score02), system.winWidth * 0.1, system.winHeight * 0.1 + -scroll, 0, system.winWidth / 150, system.winWidth / 150)
 
-    love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)
+    love.graphics.setColor(1.0, 1.0, 1.0, 1)
     love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
     objects.tower.body:getX() - objects.tower.width/4, 
     objects.tower.body:getY() + objects.tower.height * 0.9, objects.tower.body:getAngle(), 1, 1)
@@ -138,7 +140,7 @@ function gameLevel02:beginContact(obj1,obj2)
 
         if obj2:getUserData() then
             obj2:getUserData().red = obj2:getUserData().red - .5
-            system.score02 = system.score02 - 200
+            system.score02 = system.score02 - 100
         end
     end
 

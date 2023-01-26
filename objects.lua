@@ -10,13 +10,14 @@ system.BGScale = 1
 system.BGcolorR = 1
 system.BGcolorG = 1
 system.BGcolorB = 1
-system.score01 = 4000
-system.score02 = 4000
-system.score03 = 4000 --4000
+system.score01 = 10000
+system.score02 = 0
+system.score03 = 0
 system.score = 0
 system.landed = false
 system.landedTimer = 2
-
+system.debounce = 0
+system.itemsDestroyed = 0
 
 
 activePeeps = {}

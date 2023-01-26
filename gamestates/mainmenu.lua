@@ -66,17 +66,6 @@ function mainmenu:keypressed(key, scancode, isrepeat)
         objects.audio.mainTheme:setVolume(0.42)
         Gamestate.switch(gameIntro)
     end
-    if key == "m" then
-        print(objects.audio.mainTheme:isPlaying())
-        if objects.audio.mainTheme:isPlaying() then
-            objects.audio.mainTheme:pause()
-        end
-        if objects.audio.mainTheme:isPlaying() == false then
-            print("score")
-            --objects.audio.mainTheme:play()
-        end
-    end
-
 
 end
 

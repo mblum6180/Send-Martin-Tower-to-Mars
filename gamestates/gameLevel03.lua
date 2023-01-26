@@ -4,6 +4,9 @@ Gamestate = require 'libs.hump.gamestate'
 
 local gameLevel03 = {}
 function gameLevel03:init()
+    love.graphics.reset()
+    system.score03 = system.score02
+
     objects.ground.landscape = gameLevel03:genLandscape()
 
     mars:setCallbacks(beginContact, endContact, preSolve, postSolve)
@@ -45,6 +48,9 @@ function gameLevel03:update(dt)
         objects.tower.empty = true
         objects.tower.fire = false
     end
+    if system.landedTimer == 0 then 
+        objects.tower.empty = true
+    end
     if objects.tower.fire then -- Fire
         if objects.tower.empty == false then
             system.score03 = system.score03 - 200 * dt
@@ -60,11 +66,15 @@ function gameLevel03:update(dt)
 
     if objects.tower.crashed == false then
         if system.landed then 
+            if system.landedTimer <= 0 then 
+                system.landedTimer = 0
+            else 
             system.landedTimer = system.landedTimer - 1 * dt
+            end
             print(system.landedTimer)
-            if system.landedTimer <= 0 then
+            if system.landedTimer == 0 then
                 print(system.landedTimer)
-                print("Winrar!")
+                print("Winrar!", objects.tower.body:getAngle())
             end
         end
     end
@@ -176,7 +186,7 @@ function gameLevel03:keypressed(key, scancode, isrepeat)
     if key == "escape" then
         love.event.quit()
     elseif key == "space" then
-        love.event.quit()
+        Gamestate.switch(gameLevelGoal03)
     end
 end
 

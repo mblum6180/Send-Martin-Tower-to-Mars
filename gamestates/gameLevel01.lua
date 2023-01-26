@@ -7,6 +7,7 @@ Gamestate = require 'libs.hump.gamestate'
 local gameLevel01 = {}
 
 function gameLevel01:init()
+    love.graphics.reset()
     launch = false
     timer = 1
     bgAlpha = 0
