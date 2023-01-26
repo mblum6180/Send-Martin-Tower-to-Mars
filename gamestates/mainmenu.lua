@@ -21,7 +21,9 @@ function mainmenu:init()
     text = love.graphics.newImage("assets/Press-space-to-start8bit.png")
     textWidth = text:getWidth()
     textHeight = text:getHeight()
-    playSound(objects.audio.crash,'play',true)
+
+    objects.audio.mainTheme:setLooping(true) -- play music forever
+    playSound(objects.audio.mainTheme,'play',false) -- play BG music
 end
     
     
@@ -57,15 +59,25 @@ function mainmenu:draw()
 end
 
 function mainmenu:keypressed(key, scancode, isrepeat)
-    if key == "s" then
-        score = score + 1
-        print(score)
-    end
     if key == "escape" then
         love.event.quit()
     elseif key == "space" then
+
+        objects.audio.mainTheme:setVolume(0.42)
         Gamestate.switch(gameIntro)
     end
+    if key == "m" then
+        print(objects.audio.mainTheme:isPlaying())
+        if objects.audio.mainTheme:isPlaying() then
+            objects.audio.mainTheme:pause()
+        end
+        if objects.audio.mainTheme:isPlaying() == false then
+            print("score")
+            --objects.audio.mainTheme:play()
+        end
+    end
+
+
 end
 
 

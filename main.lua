@@ -87,7 +87,7 @@ function playSound(sound,mode,pitchMod,x,y)
 end
 
 function levelSelect(level)
-  print(level)
+  --print(level)
   if level == "01" then
     Gamestate.switch(gameLevel01)
   elseif level == "02" then

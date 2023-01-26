@@ -81,3 +81,4 @@ objects.audio = {}
 objects.audio.crash = love.audio.newSource("assets//audio/explosion-fuzzy1.ogg", "static")
 objects.audio.fire = love.audio.newSource("assets/audio/qubodupFireLoop.ogg", "static")
 objects.audio.launch = love.audio.newSource("assets/audio/rocket_launch.ogg", "static")
+objects.audio.mainTheme = love.audio.newSource("assets/audio/Abandoned Steel Mill.ogg", "static")

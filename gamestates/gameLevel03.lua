@@ -167,8 +167,7 @@ end
 function gameLevel03:keypressed(key, scancode, isrepeat)
     if debugMode then
         if key == "s" then
-        system.score = system.score + 1
-        system.print(score)
+        print("s")
         end
         if key == 'i' then
             print(objects.tower.fixture:getUserData())
