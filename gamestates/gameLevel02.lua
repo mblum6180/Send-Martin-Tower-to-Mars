@@ -57,6 +57,7 @@ function gameLevel02:update(dt)
             --print (score)
         end
         if -objects.items[i].red == 0 then
+            playSound(objects.audio.itemBreak,'play')
             table.remove(objects.items, i)
             system.score02 = system.score02 - 500
             system.itemsDestroyed = system.itemsDestroyed + 1
@@ -139,6 +140,7 @@ function gameLevel02:beginContact(obj1,obj2)
     if obj1:getUserData() == null then
 
         if obj2:getUserData() then
+            playSound(objects.audio.itemBreak,'play', true)
             obj2:getUserData().red = obj2:getUserData().red - .5
             system.score02 = system.score02 - 100
         end

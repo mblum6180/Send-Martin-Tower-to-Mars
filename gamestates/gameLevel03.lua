@@ -5,6 +5,9 @@ Gamestate = require 'libs.hump.gamestate'
 local gameLevel03 = {}
 function gameLevel03:init()
     love.graphics.reset()
+    if debugMode then
+        system.score02 = 9000
+    end
     system.score03 = system.score02
 
     objects.ground.landscape = gameLevel03:genLandscape()
@@ -213,7 +216,7 @@ end
 
 
 function gameLevel03:crash()
-    system.score03 = 0
+    system.score03 = system.score03 - 5000
     objects.tower.fire = false
     objects.tower.crashed = true
     playSound(objects.audio.crash,'stop')

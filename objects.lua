@@ -42,6 +42,25 @@ for i=0,0 do
 end
 objects.image.fireball.currentFrame = 1
 
+objects.image.explosion = {}
+objects.image.explosion.tex = love.graphics.newImage("assets/explosion3.png")
+local width = objects.image.explosion.tex:getWidth()
+local height = objects.image.explosion.tex:getHeight() 
+objects.image.explosion.frames = {}
+local frame_width = 107
+local frame_height = 147
+maxFrames = 4
+for i=0,0 do
+    for j=0,3 do
+        table.insert(objects.image.explosion.frames, love.graphics.newQuad(j * frame_width, i * frame_height, frame_width, frame_height, width, height))
+        if #objects.image.explosion.frames == maxFrames then
+            break
+        end 
+    end
+end
+objects.image.explosion.currentFrame = 1
+
+
 
 
 objects.ground = {}
@@ -83,3 +102,4 @@ objects.audio.crash = love.audio.newSource("assets//audio/explosion-fuzzy1.ogg",
 objects.audio.fire = love.audio.newSource("assets/audio/qubodupFireLoop.ogg", "static")
 objects.audio.launch = love.audio.newSource("assets/audio/rocket_launch.ogg", "static")
 objects.audio.mainTheme = love.audio.newSource("assets/audio/Abandoned Steel Mill.ogg", "static")
+objects.audio.itemBreak = love.audio.newSource("assets/audio/rock_break.ogg", "static")
