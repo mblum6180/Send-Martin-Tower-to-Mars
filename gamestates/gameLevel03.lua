@@ -5,6 +5,7 @@ Gamestate = require 'libs.hump.gamestate'
 local gameLevel03 = {}
 function gameLevel03:init()
     love.graphics.reset()
+    objects.audio.fire:setVolume(1.0)
     if debugMode then
         system.score02 = 9000
     end
