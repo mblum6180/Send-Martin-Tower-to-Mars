@@ -108,10 +108,12 @@ function gameLevel01:keypressed(key, scancode, isrepeat)
     if key == "escape" then
         love.event.quit()
     end
-    if love.keyboard.isDown("right") then
+    if love.keyboard.isDown("right") and system.launch == "left" then
         countDown = countDown + love.math.random(0.8, 1.1)
-    elseif love.keyboard.isDown("left") then
+        system.launch = "right"
+    elseif love.keyboard.isDown("left") and system.launch == "right" then
         countDown = countDown + love.math.random(0.8, 1.2)
+        system.launch = "left"
     end
 
 

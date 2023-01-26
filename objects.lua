@@ -18,6 +18,7 @@ system.landed = false
 system.landedTimer = 2
 system.debounce = 0
 system.itemsDestroyed = 0
+system.launch = "left"
 
 
 activePeeps = {}
