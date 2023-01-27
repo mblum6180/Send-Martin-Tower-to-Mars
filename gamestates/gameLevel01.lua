@@ -62,7 +62,7 @@ function gameLevel01:update(dt)
         launch = true
         countDown = 10
     else
-        countDown = countDown - (countDown * 4.2) * dt --set to 1.2 
+        countDown = countDown - (countDown * 3.2) * dt --set to 1.2 
         system.score01 = system.score01 - 200 * dt
     end
 
