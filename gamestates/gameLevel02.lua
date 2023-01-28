@@ -115,10 +115,10 @@ function gameLevel02:draw()
 
 
 
-    for i,v in ipairs (objects.items) do
+    for i,v in ipairs (objects.items) do -- Draw Space junk
         --print(i,v)
         love.graphics.setColor(objects.items[i].red, 1.0, 1.0)
-        love.graphics.draw(objects.items[i].image, objects.items[i].body:getX(), objects.items[i].body:getY(), objects.items[i].body:getAngle()  ) -- Draw Space junk
+        love.graphics.draw(objects.items[i].image, objects.items[i].body:getX(), objects.items[i].body:getY(), objects.items[i].body:getAngle(), -1, 1, objects.items[i].width, 0 )
         if debugMode then
             love.graphics.polygon("line", objects.items[i].body:getWorldPoints(objects.items[i].shape:getPoints()))
         end
@@ -129,7 +129,7 @@ function gameLevel02:draw()
     love.graphics.setColor(1.0, 0.0, 0.0, 1)
     love.graphics.print(math.floor(system.score02), system.winWidth * 0.1, system.winHeight * 0.1 + -scroll, 0, system.winWidth / 150, system.winWidth / 150)
 
-    love.graphics.setColor(1.0, 1.0, 1.0, 1)
+    love.graphics.setColor(1.0, 1.0, 1.0, 1) -- Draw Flames
     love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
     objects.tower.body:getX() - objects.tower.width/4, 
     objects.tower.body:getY() + objects.tower.height * 0.9, objects.tower.body:getAngle(), 1, 1)
