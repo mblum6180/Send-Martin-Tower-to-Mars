@@ -12,7 +12,8 @@ function gameLevel01:init()
     timer = 1
     bgAlpha = 0
     bgFadein = 1
-    countDown = 0
+    countDown = 10
+    flow = 0
 
 
     objects.ground.body = love.physics.newBody(earth, system.winWidth/2, love.graphics.getPixelHeight() - 42)
@@ -58,11 +59,19 @@ function gameLevel01:update(dt)
         print(objects.tower.body:getLinearVelocity())
     end
 
-    if countDown >= 10 then
-        launch = true
-        countDown = 10
+    
+    if countDown > 0 then
+        countDown = countDown - 1 * dt
+        if countDown < 0 then
+            countDown = 0
+        end
+        flow = flow - (flow * 3.2) * dt --set to 1.2 
+        system.score01 = system.score01 + flow
+        
     else
-        countDown = countDown - (countDown * 3.2) * dt --set to 1.2 
+        launch = true
+        flow = 10
+        countDown = 0
     end
 
 end
@@ -82,13 +91,21 @@ function gameLevel01:draw()
     love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), 0, 3, 3)
 
 
-    love.graphics.setColor(1.0, 0.9, 0.9, bgAlpha)
+    love.graphics.setColor(1.0, 0.9, 0.9, bgAlpha)  -- Draw Bar 
     love.graphics.rectangle("line", system.winWidth * 0.1, system.winHeight * 0.84, 750, 45)
     love.graphics.setColor(1.0, 0.1, 0.1, bgAlpha)
-    love.graphics.rectangle("fill", system.winWidth * 0.1, system.winHeight * 0.84, countDown*75, 45)
+    love.graphics.rectangle("fill", system.winWidth * 0.1, system.winHeight * 0.84, flow*75, 45)
 
-    love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)
+    love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Score
     love.graphics.print(math.floor(system.score01), system.winWidth * 0.1, system.winHeight * 0.1, 0, system.winWidth / 150, system.winWidth / 150)
+
+    love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw CountDown
+    love.graphics.print(math.floor(countDown), system.winWidth * 0.1, system.winHeight * 0.65, 0, system.winWidth / 150, system.winWidth / 150)
+
+    if countDown == 0 then
+        love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Launch
+        love.graphics.print("Launch!!!", system.winWidth * 0.1, system.winHeight * 0.3, 0, system.winWidth / 99, system.winWidth / 99)
+    end
 
     if launch then 
         love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)
@@ -108,12 +125,10 @@ function gameLevel01:keypressed(key, scancode, isrepeat)
         love.event.quit()
     end
     if love.keyboard.isDown("right") and system.launch == "left" then
-        countDown = countDown + love.math.random(0.8, 1.1)
-        system.score01 = system.score01 + love.math.random(10, 50)
+        flow = flow + love.math.random(0.8, 1.1)
         system.launch = "right"
     elseif love.keyboard.isDown("left") and system.launch == "right" then
-        countDown = countDown + love.math.random(0.8, 1.2)
-        system.score01 = system.score01 + love.math.random(10, 50)
+        flow = flow + love.math.random(0.8, 1.2)
         system.launch = "left"
     end
 
