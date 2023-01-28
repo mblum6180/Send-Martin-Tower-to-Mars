@@ -31,6 +31,10 @@ function love.load()
     Gamestate.switch(mainMenu)
   end
 
+  if debugMode then
+    system.score02 = 90
+    system.score03 = 9000
+end
   
 end
 

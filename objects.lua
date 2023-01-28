@@ -20,6 +20,7 @@ system.debounce = 0
 system.itemsDestroyed = 0
 system.launch = "left"
 system.crashed = false
+system.winner = false
 
 
 activePeeps = {}

@@ -6,9 +6,6 @@ local gameLevel03 = {}
 function gameLevel03:init()
     love.graphics.reset()
     objects.audio.fire:setVolume(1.0)
-    if debugMode then
-        system.score02 = 9000
-    end
     system.score03 = system.score02
 
     objects.ground.landscape = gameLevel03:genLandscape()
@@ -58,17 +55,15 @@ function gameLevel03:update(dt)
         objects.tower.empty = true
     end
 
-    if objects.tower.crashed == false then
+    if objects.tower.crashed == false and system.winner == false then
         if system.landed then 
             if system.landedTimer <= 0 then 
                 system.landedTimer = 0
             else 
             system.landedTimer = system.landedTimer - 1 * dt
             end
-            print(system.landedTimer)
             if system.landedTimer == 0 then
-                print(system.landedTimer)
-                print("Winrar!", objects.tower.body:getAngle())
+                system.winner = true
             end
         end
         if objects.tower.fire then -- Fire
@@ -115,13 +110,18 @@ function gameLevel03:draw()
     love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)   -- Print Score
     love.graphics.print(math.floor(system.score03), system.winWidth * 0.1, system.winHeight * 0.1, 0, system.winWidth / 150, system.winWidth / 150)
 
-
+    if system.winner == true then
+        love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Winner
+        love.graphics.print("Landed!", system.winWidth * 0.1, system.winHeight * 0.3, 0, system.winWidth / 99, system.winWidth / 99)
+    end
 
     love.graphics.setColor(0.63, 0.49, 0.42) --   Draw Foreground Mountains --must be last
     love.graphics.translate(0, system.winHeight * 0.04)
     for i, triangle in ipairs(triangles) do 
         love.graphics.polygon("fill", triangle)
     end
+
+
 
 end
 

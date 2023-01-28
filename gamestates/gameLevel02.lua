@@ -35,11 +35,6 @@ end
 function gameLevel02:update(dt)
     space:update(dt) 
 
-    if system.score02 <= 0 then 
-        system.score02 = 0
-        objects.tower.crashed = true
-    end
-
     objects.image.fireball.currentFrame = objects.image.fireball.currentFrame + 10 * dt
     if objects.image.fireball.currentFrame >= 4 then
         objects.image.fireball.currentFrame = 1
@@ -77,19 +72,26 @@ function gameLevel02:update(dt)
     end
 
 
-    if system.level02over then
+    if system.level02over and system.crashed == false then
         playSound(objects.audio.fire,'stop')
         Gamestate.switch(gameLevelGoal02)
     end
+    if system.crashed == false then
+        scrollTower = scrollTower + (scrollSpeed / 4) * dt
+        objects.tower.body:setY(system.winHeight * 0.95 + -scroll - scrollTower) -- lock tower in place
+        objects.tower.body:setAngle(0)
+    end
 
-    scrollTower = scrollTower + (scrollSpeed / 4) * dt
-    objects.tower.body:setY(system.winHeight * 0.95 + -scroll - scrollTower) -- lock tower in place
-    objects.tower.body:setAngle(0)
 
-    if love.keyboard.isDown("right") then
-      objects.tower.body:applyForce(400, 0)
-    elseif love.keyboard.isDown("left") then
-      objects.tower.body:applyForce(-400, 0)
+
+    if system.crashed == false then
+        if love.keyboard.isDown("right") then
+        objects.tower.body:applyForce(400, 0)
+        elseif love.keyboard.isDown("left") then
+        objects.tower.body:applyForce(-400, 0)
+        end
+
+        system.score02 = system.score02 - 5 * dt
     end
 
 
@@ -97,6 +99,13 @@ function gameLevel02:update(dt)
 
     scroll = scroll + (scrollSpeed * dt)
     --print(scroll)
+
+    if system.score02 <= 0 then
+        system.score02 = 0
+        system.crashed = true
+        playSound(objects.audio.fire,'stop')
+    end
+
 end
   
 function gameLevel02:draw()
@@ -118,7 +127,9 @@ function gameLevel02:draw()
     for i,v in ipairs (objects.items) do -- Draw Space junk
         --print(i,v)
         love.graphics.setColor(objects.items[i].red, 1.0, 1.0)
-        love.graphics.draw(objects.items[i].image, objects.items[i].body:getX(), objects.items[i].body:getY(), objects.items[i].body:getAngle(), -1, 1, objects.items[i].width, 0 )
+
+        love.graphics.draw(objects.items[i].image, objects.items[i].body:getX(), objects.items[i].body:getY(), objects.items[i].body:getAngle(), objects.items[i].div, 1, objects.items[i].widthDiv, 0 )
+     
         if debugMode then
             love.graphics.polygon("line", objects.items[i].body:getWorldPoints(objects.items[i].shape:getPoints()))
         end
@@ -129,20 +140,25 @@ function gameLevel02:draw()
     love.graphics.setColor(1.0, 0.0, 0.0, 1)
     love.graphics.print(math.floor(system.score02), system.winWidth * 0.1, system.winHeight * 0.1 + -scroll, 0, system.winWidth / 150, system.winWidth / 150)
 
-    love.graphics.setColor(1.0, 1.0, 1.0, 1) -- Draw Flames
-    love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
-    objects.tower.body:getX() - objects.tower.width/4, 
-    objects.tower.body:getY() + objects.tower.height * 0.9, objects.tower.body:getAngle(), 1, 1)
 
+    if system.crashed == false then
+        love.graphics.setColor(1.0, 1.0, 1.0, 1) -- Draw Flames
+        love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
+        objects.tower.body:getX() - objects.tower.width/4, 
+        objects.tower.body:getY() + objects.tower.height * 0.9, objects.tower.body:getAngle(), 1, 1)
+    end
 
-
+    if system.crashed == true then
+        love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Crashed
+        love.graphics.print("Out of Fuel!", system.winWidth * 0.1, system.winHeight * 0.3  + -scroll, 0, system.winWidth / 99, system.winWidth / 99)
+    end
 end
 
 function gameLevel02:beginContact(obj1,obj2)
     if debugMode then
         print(obj1,obj2)
     end
-    if obj1:getUserData() == null then
+    if obj1:getUserData() == null and system.crashed == false then
 
         if obj2:getUserData() then
             playSound(objects.audio.itemBreak,'stop')
@@ -183,7 +199,13 @@ function gameLevel02:genItems(id)
     id.red = 1
     id.green = 1
     id.blue = 1
-
+    if math.random(0,100) < 50 then
+        id.div = '-1'
+        id.widthDiv = id.width
+    else 
+        id.div = '1'
+        id.widthDiv = 0
+    end
     id.body = love.physics.newBody(space, love.math.random(0, system.winWidth), (0 - scroll - id.height), "dynamic")
     id.shape = love.physics.newRectangleShape(id.width / 2, id.height / 2, id.width, id.height, 0)
     id.fixture = love.physics.newFixture(id.body, id.shape, 1)
