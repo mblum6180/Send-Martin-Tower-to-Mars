@@ -14,6 +14,7 @@ function gameLevel01:init()
     bgFadein = 1
     countDown = 10
     flow = 0
+    crashed = false
 
 
     objects.ground.body = love.physics.newBody(earth, system.winWidth/2, love.graphics.getPixelHeight() - 42)
@@ -43,15 +44,28 @@ function gameLevel01:update(dt)
         system.level01over = true
     end
 
-    if launch then 
+    if launch and crashed == false then 
         playSound(objects.audio.launch, "play")
-        objects.tower.body:applyForce(0, -31000)
+        if system.score01 > 0 then
+            objects.tower.body:applyForce(0, -31000)
+        end
+        if system.score01 > 0 then
+            system.score01 = system.score01 - 500 * dt
+        else 
+            system.score01 = 0
+        end
         objects.image.fireball.currentFrame = objects.image.fireball.currentFrame + 10 * dt
         if objects.image.fireball.currentFrame >= 4 then
             objects.image.fireball.currentFrame = 1
         end
     end
 
+    if launch and system.score01 <= 0 and objects.tower.body:getY() > 266 then
+        launch = false
+        system.score01 = 0
+        crashed = true
+    end
+    
     if system.level01over then
         Gamestate.switch(gameLevelGoal01)
     end
@@ -60,7 +74,7 @@ function gameLevel01:update(dt)
     end
 
     
-    if countDown > 0 then
+    if countDown > 0 and crashed == false then
         countDown = countDown - 1 * dt
         if countDown < 0 then
             countDown = 0
@@ -68,7 +82,7 @@ function gameLevel01:update(dt)
         flow = flow - (flow * 3.2) * dt --set to 1.2 
         system.score01 = system.score01 + flow
         
-    else
+    elseif crashed == false then
         launch = true
         flow = 10
         countDown = 0
@@ -102,9 +116,14 @@ function gameLevel01:draw()
     love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw CountDown
     love.graphics.print(math.floor(countDown), system.winWidth * 0.1, system.winHeight * 0.65, 0, system.winWidth / 150, system.winWidth / 150)
 
-    if countDown == 0 then
+    if countDown == 0 and crashed == false then
         love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Launch
-        love.graphics.print("Launch!!!", system.winWidth * 0.1, system.winHeight * 0.3, 0, system.winWidth / 99, system.winWidth / 99)
+        love.graphics.print("Launch!", system.winWidth * 0.1, system.winHeight * 0.3, 0, system.winWidth / 99, system.winWidth / 99)
+    end
+
+    if countDown == 0 and crashed == true then
+        love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Crashed
+        love.graphics.print("Crashed!", system.winWidth * 0.1, system.winHeight * 0.3, 0, system.winWidth / 99, system.winWidth / 99)
     end
 
     if launch then 
