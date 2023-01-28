@@ -57,7 +57,7 @@ function gameLevel03:update(dt)
         objects.tower.empty = true
     end
 
-    if objects.tower.crashed == false and system.winner == false then
+    if system.winner == false then
         if system.landed then 
             if system.landedTimer <= 0 then 
                 system.landedTimer = 0
@@ -81,6 +81,8 @@ function gameLevel03:update(dt)
             playSound(objects.audio.fire,'pause',false)
         end
     end
+
+
     
 end
   
@@ -112,11 +114,16 @@ function gameLevel03:draw()
     love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)   -- Print Score
     love.graphics.print(math.floor(system.score03), system.winWidth * 0.1, system.winHeight * 0.1, 0, system.winWidth / 150, system.winWidth / 150)
 
-    if system.winner == true then
+    if system.winner == true and objects.tower.crashed == false then
         love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Winner
         love.graphics.print("Landed!", system.winWidth * 0.1, system.winHeight * 0.3, 0, system.winWidth / 99, system.winWidth / 99)
         love.graphics.print("Landing Bonus "..bonus, system.winWidth * 0.1, system.winHeight * 0.55, 0, system.winWidth / 200, system.winWidth / 200)
 
+    end
+    if system.winner == true and objects.tower.crashed == true then
+        love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Crashed
+        love.graphics.print("Crashed!", system.winWidth * 0.1, system.winHeight * 0.3, 0, system.winWidth / 99, system.winWidth / 99)
+    
     end
     love.graphics.setColor(0.63, 0.49, 0.42) --   Draw Foreground Mountains --must be last
     love.graphics.translate(0, system.winHeight * 0.04)
@@ -188,6 +195,10 @@ function gameLevel03:beginContact(obj1,obj2)
     end
 end
 
+function gameLevel03:endContact(obj1,obj2)
+    print("not on Ground")
+    system.landed = false
+end
 
 function gameLevel03:keypressed(key, scancode, isrepeat)
     if debugMode then
@@ -200,8 +211,11 @@ function gameLevel03:keypressed(key, scancode, isrepeat)
     end
     if key == "escape" then
         love.event.quit()
-    elseif key == "space" then
+    elseif key == "space" or key =="left" or key =="right" or key =="down" or key =="up" then
+        if system.winner == true then
+        print(system.winner)
         Gamestate.switch(gameLevelGoal03)
+        end
     end
 end
 
@@ -218,11 +232,11 @@ function gameLevel03:input()
             objects.tower.fire = true
         else objects.tower.fire = false
         end
-        if love.keyboard.isDown("a") then
-            objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 3.14), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 3.14))
-        elseif love.keyboard.isDown("d") then
-            objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 0), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 0))
-        end
+        --if love.keyboard.isDown("a") then
+        --    objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 3.14), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 3.14))
+        --elseif love.keyboard.isDown("d") then
+        --    objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 0), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 0))
+        --end
     end
 end
 

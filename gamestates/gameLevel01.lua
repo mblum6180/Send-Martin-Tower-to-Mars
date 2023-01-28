@@ -49,7 +49,7 @@ function gameLevel01:update(dt)
             objects.tower.body:applyForce(0, -31000)
         end
         if system.score01 > 0 then
-            system.score01 = system.score01 - 500 * dt
+            system.score01 = system.score01 - 351 * dt
         else 
             system.score01 = 0
         end

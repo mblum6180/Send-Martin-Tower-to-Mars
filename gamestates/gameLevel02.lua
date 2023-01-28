@@ -46,22 +46,22 @@ function gameLevel02:update(dt)
         gameLevel02:genItems(#objects.items+1) --timer for junk
         junkTimer = 0
     end
-    for i in ipairs (objects.items) do --Process Space junk
+    for i in ipairs (objects.items) do
         --print(-objects.items[i].body:getY(), scroll)
-        if -objects.items[i].body:getY() < scroll - system.winHeight then -- remove junk past screen scroll
+        if -objects.items[i].body:getY() < scroll - system.winHeight then
              table.remove(objects.items, i)
-
+             --print("remove",i)
+             system.score = system.score + 1
+            --print (score)
         end
-
-        if objects.items[i].red == 0 then --remove junk if hit too many times
-            objects.items[i].destroyed = true
+        if -objects.items[i].red == 0 then
             playSound(objects.audio.itemBreak,'stop')
             playSound(objects.audio.itemBreak,'play')
             table.remove(objects.items, i)
             system.score02 = system.score02 - 500
             system.itemsDestroyed = system.itemsDestroyed + 1
-        end
-
+           --print (score)
+       end
     end
 
 
@@ -126,7 +126,7 @@ function gameLevel02:draw()
 
     for i,v in ipairs (objects.items) do -- Draw Space junk
         --print(i,v)
-        love.graphics.setColor(objects.items[i].red, objects.items[i].green, objects.items[i].blue)
+        love.graphics.setColor(objects.items[i].red, 1.0, 1.0)
 
         love.graphics.draw(objects.items[i].image, objects.items[i].body:getX(), objects.items[i].body:getY(), objects.items[i].body:getAngle(), objects.items[i].div, 1, objects.items[i].widthDiv, 0 )
      
@@ -156,16 +156,15 @@ end
 
 function gameLevel02:beginContact(obj1,obj2)
     if debugMode then
-        --print(obj1,obj2)
+        print(obj1,obj2)
     end
     if obj1:getUserData() == null and system.crashed == false then
 
         if obj2:getUserData() then
             playSound(objects.audio.itemBreak,'stop')
             playSound(objects.audio.itemBreak,'play', true)
-            obj2:getUserData().red = obj2:getUserData().red - love.math.random(0.4, 0.6)
-            if obj2:getUserData().red < 0 then obj2:getUserData().red = 0 end
-            system.score02 = system.score02 - love.math.random(25, 100)
+            obj2:getUserData().red = obj2:getUserData().red - .5
+            system.score02 = system.score02 - 100
         end
     end
 
@@ -200,7 +199,6 @@ function gameLevel02:genItems(id)
     id.red = 1
     id.green = 1
     id.blue = 1
-    id.destroyed = false
     if math.random(0,100) < 50 then
         id.div = '-1'
         id.widthDiv = id.width

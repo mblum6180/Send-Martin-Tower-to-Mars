@@ -53,6 +53,10 @@ function beginContact(obj1,obj2)
   Gamestate.beginContact(obj1,obj2)
 end
 
+function endContact(obj1,obj2)
+  Gamestate.endContact(obj1,obj2)
+end
+
 function edge(x, y)
   if x < 100 then
       objects.tower.body:applyForce(100, 0)

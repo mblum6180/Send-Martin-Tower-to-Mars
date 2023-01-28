@@ -50,13 +50,10 @@ function mainmenu:draw()
 end
 
 function mainmenu:keypressed(key, scancode, isrepeat)
-    if key == "s" then
-        score = score + 1
-        print(score)
-    end
+
     if key == "escape" then
         love.event.quit()
-    elseif key == "space" then
+    elseif key == "space" or key =="left" or key =="right" or key =="down" or key =="up"  then
         love.event.quit("restart")
     end
 end
