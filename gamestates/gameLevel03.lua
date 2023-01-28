@@ -7,6 +7,8 @@ function gameLevel03:init()
     love.graphics.reset()
     objects.audio.fire:setVolume(1.0)
     system.score03 = system.score02
+    bonus = 9000
+    landingSpeed = nil
 
     objects.ground.landscape = gameLevel03:genLandscape()
 
@@ -113,8 +115,9 @@ function gameLevel03:draw()
     if system.winner == true then
         love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Winner
         love.graphics.print("Landed!", system.winWidth * 0.1, system.winHeight * 0.3, 0, system.winWidth / 99, system.winWidth / 99)
-    end
+        love.graphics.print("Landing Bonus "..bonus, system.winWidth * 0.1, system.winHeight * 0.55, 0, system.winWidth / 200, system.winWidth / 200)
 
+    end
     love.graphics.setColor(0.63, 0.49, 0.42) --   Draw Foreground Mountains --must be last
     love.graphics.translate(0, system.winHeight * 0.04)
     for i, triangle in ipairs(triangles) do 
@@ -171,13 +174,18 @@ function gameLevel03:beginContact(obj1,obj2)
     local x, y = objects.tower.body:getLinearVelocity()
     --print (y)
     --print(objects.tower.body:getAngularVelocity())
+    if landingSpeed == nil then
+        landingSpeed = y
+        print(landingSpeed)
+    end
     if y < 100 then
         gameLevel03:landed()
+
     else 
         print"Boom!"
         gameLevel03:crash()
-    end
 
+    end
 end
 
 
