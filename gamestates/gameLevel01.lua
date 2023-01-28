@@ -63,7 +63,6 @@ function gameLevel01:update(dt)
         countDown = 10
     else
         countDown = countDown - (countDown * 3.2) * dt --set to 1.2 
-        system.score01 = system.score01 - 200 * dt
     end
 
 end
@@ -110,9 +109,11 @@ function gameLevel01:keypressed(key, scancode, isrepeat)
     end
     if love.keyboard.isDown("right") and system.launch == "left" then
         countDown = countDown + love.math.random(0.8, 1.1)
+        system.score01 = system.score01 + love.math.random(10, 50)
         system.launch = "right"
     elseif love.keyboard.isDown("left") and system.launch == "right" then
         countDown = countDown + love.math.random(0.8, 1.2)
+        system.score01 = system.score01 + love.math.random(10, 50)
         system.launch = "left"
     end
 
