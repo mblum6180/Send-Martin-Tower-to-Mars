@@ -16,11 +16,11 @@ system.score03 = 0
 system.score = 0
 system.landed = false
 system.landedTimer = 2
-system.debounce = 0
 system.itemsDestroyed = 0
 system.launch = "left"
 system.crashed = false
 system.winner = false
+system.timer = 0
 
 
 activePeeps = {}
