@@ -7,7 +7,7 @@ local mainmenu = {}
 function mainmenu:init()
     windowWidth = love.graphics.getWidth()
     windowHeight = love.graphics.getHeight()
-    timer = 1
+    system.timer = 1
     bgAlpha = 0
     titleAlpha = 0
     textAlpha = 0
@@ -28,19 +28,20 @@ end
     
     
 function mainmenu:update(dt)
-    timer = timer + dt
+    print(system.timer)
+    system.timer = system.timer + dt
     if bgAlpha ~= 1 then
-        if timer > bgFadein then 
+        if system.timer > bgFadein then 
             bgAlpha = fade(dt, bgAlpha, 0.9)
         end
     end
     if titleAlpha ~= 1 then
-        if timer > titleFadein then
+        if system.timer > titleFadein then
             titleAlpha = fade(dt,titleAlpha, 1.0)
         end
     end
-    if timer > textFadin then
-        if ((math.floor(timer)) % 2 == 0) then
+    if system.timer > textFadin then
+        if ((math.floor(system.timer)) % 2 == 0) then
             textAlpha = 0
         else textAlpha = 1
         end
@@ -61,10 +62,11 @@ end
 function mainmenu:keypressed(key, scancode, isrepeat)
     if key == "escape" then
         love.event.quit()
-    elseif key == "space" or key =="left" or key =="right" or key =="down" or key =="up" then
-
-        objects.audio.mainTheme:setVolume(0.42)
-        Gamestate.switch(gameIntro)
+    elseif system.timer >= 3 then
+        if key == "space" or key =="left" or key =="right" or key =="down" or key =="up" then
+            objects.audio.mainTheme:setVolume(0.42)
+            Gamestate.switch(gameIntro)
+        end
     end
 
 end
