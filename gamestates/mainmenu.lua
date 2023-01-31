@@ -28,7 +28,6 @@ end
     
     
 function mainmenu:update(dt)
-    print(system.timer)
     system.timer = system.timer + dt
     if bgAlpha ~= 1 then
         if system.timer > bgFadein then 

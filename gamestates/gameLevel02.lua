@@ -42,7 +42,7 @@ function gameLevel02:update(dt)
 
 
     junkTimer = junkTimer + 1 * dt
-    if junkTimer > 0.3 then
+    if junkTimer > love.math.random(0.2,0.4) then
         gameLevel02:genItems(#objects.items+1) --timer for junk
         junkTimer = 0
     end
@@ -50,9 +50,7 @@ function gameLevel02:update(dt)
         --print(-objects.items[i].body:getY(), scroll)
         if -objects.items[i].body:getY() < scroll - system.winHeight then
              table.remove(objects.items, i)
-             --print("remove",i)
-             system.score = system.score + 1
-            --print (score)
+
         end
         if -objects.items[i].red == 0 then
             playSound(objects.audio.itemBreak,'stop')
@@ -87,11 +85,13 @@ function gameLevel02:update(dt)
     if system.crashed == false then
         if love.keyboard.isDown("right") then
         objects.tower.body:applyForce(400, 0)
+        system.score02 = system.score02 - 2 * dt
         elseif love.keyboard.isDown("left") then
         objects.tower.body:applyForce(-400, 0)
+        system.score02 = system.score02 - 2 * dt
         end
 
-        system.score02 = system.score02 - 5 * dt
+        system.score02 = system.score02 - 1 * dt
     end
 
 
@@ -173,10 +173,6 @@ end
 
 function gameLevel02:keypressed(key, scancode, isrepeat)
     if debugMode then
-        if key == "s" then
-        system.score = system.score + 1
-        print(system.score)
-        end
         if key == "q" then
             gameLevel02:genItems(1)
             print("MORE!")
