@@ -66,7 +66,13 @@ function gameLevel03:update(dt)
             end
             if system.landedTimer == 0 then
                 system.winner = true
-                bonus = objects.tower.body:getAngle() --calculate bonus
+                bonus = math.abs(math.deg(objects.tower.body:getAngle())) --calculate bonus
+                if bonus >= 45 then
+                    bonus = 0
+                elseif bonus < 45 then
+                    bonus = (44 - bonus) * (100 - landingSpeed)
+                end
+
                 print(landingSpeed)
 
             end
@@ -120,7 +126,7 @@ function gameLevel03:draw()
     if system.winner == true and objects.tower.crashed == false then
         love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Winner
         love.graphics.print("Landed!", system.winWidth * 0.1, system.winHeight * 0.3, 0, system.winWidth / 99, system.winWidth / 99)
-        love.graphics.print("Landing Bonus "..bonus, system.winWidth * 0.1, system.winHeight * 0.55, 0, system.winWidth / 200, system.winWidth / 200)
+        love.graphics.print("Landing Bonus "..math.ceil(bonus), system.winWidth * 0.1, system.winHeight * 0.55, 0, system.winWidth / 200, system.winWidth / 200)
 
     end
     if system.winner == true and objects.tower.crashed == true then
