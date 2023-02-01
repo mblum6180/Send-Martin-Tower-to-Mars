@@ -66,6 +66,9 @@ function gameLevel03:update(dt)
             end
             if system.landedTimer == 0 then
                 system.winner = true
+                bonus = objects.tower.body:getAngle() --calculate bonus
+                print(landingSpeed)
+
             end
         end
         if objects.tower.fire then -- Fire
