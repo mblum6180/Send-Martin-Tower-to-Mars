@@ -100,8 +100,9 @@ function gameLevel02:update(dt)
     scroll = scroll + (scrollSpeed * dt)
     --print(scroll)
 
-    if system.score02 <= 0 then
+    if system.score02 <= 0 and system.crashed == false then
         system.score02 = 0
+        playSound(objects.audio.problem,'play',false)
         system.crashed = true
         playSound(objects.audio.fire,'stop')
     end

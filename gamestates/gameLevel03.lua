@@ -66,6 +66,9 @@ function gameLevel03:update(dt)
             end
             if system.landedTimer == 0 then
                 system.winner = true
+                if system.winner == true and objects.tower.crashed == false then
+                    playSound(objects.audio.landed,'play',false)
+                end
                 bonus = math.abs(math.deg(objects.tower.body:getAngle())) --calculate bonus
                 if bonus >= 45 then
                     bonus = 0
@@ -90,8 +93,6 @@ function gameLevel03:update(dt)
             playSound(objects.audio.fire,'pause',false)
         end
     end
-
-
     
 end
   
@@ -194,7 +195,7 @@ function gameLevel03:beginContact(obj1,obj2)
         landingSpeed = y
         print(landingSpeed)
     end
-    if y < math then
+    if y < 100 then
         gameLevel03:landed()
 
     else 

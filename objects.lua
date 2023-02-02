@@ -106,3 +106,7 @@ objects.audio.fire = love.audio.newSource("assets/audio/qubodupFireLoop.ogg", "s
 objects.audio.launch = love.audio.newSource("assets/audio/rocket_launch.ogg", "static")
 objects.audio.mainTheme = love.audio.newSource("assets/audio/Abandoned Steel Mill.ogg", "static")
 objects.audio.itemBreak = love.audio.newSource("assets/audio/rock_break.ogg", "static")
+objects.audio.marsBG = love.audio.newSource("assets/audio/SCAM_MIC_SOL001_RUN001.ogg", "static")
+objects.audio.countdown = love.audio.newSource("assets/audio/590320main_ringtone_apollo11_countdown.ogg", "static")
+objects.audio.landed = love.audio.newSource("assets/audio/569462main_eagle_has_landed.ogg", "static")
+objects.audio.problem = love.audio.newSource("assets/audio/574928main_houston_problem.ogg", "static")
