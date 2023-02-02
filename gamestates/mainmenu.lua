@@ -53,8 +53,11 @@ function mainmenu:draw()
     love.graphics.draw(background, 0, 0)
     love.graphics.setColor(255, 255, 255, titleAlpha)
     love.graphics.draw(title, 500,100, 0, 3, 3) -- Draw title 
+    love.graphics.printf(system.version, system.winWidth * 0.8, system.winHeight * 0.9, system.winWidth * .14, 'left', 0, 3, 3) -- draw version
     love.graphics.setColor(255, 255, 255, textAlpha)
     love.graphics.draw(text, windowWidth / 2, (windowHeight / 3) * 2, 0, 3, 3 , textWidth / 2, textHeight / 2) -- Draw title 
+
+   
 
 end
 

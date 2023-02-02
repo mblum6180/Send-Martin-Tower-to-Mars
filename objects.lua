@@ -22,6 +22,7 @@ system.crashed = false
 system.winner = false
 system.timer = 0
 system.bonus = 0
+system.version = "1.0 - Beta"
 
 
 activePeeps = {}
