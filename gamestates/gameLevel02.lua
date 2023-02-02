@@ -42,7 +42,7 @@ function gameLevel02:update(dt)
 
 
     junkTimer = junkTimer + 1 * dt
-    if junkTimer > love.math.random(0.2,0.4) then
+    if junkTimer > love.math.random(0.3,0.5) then
         gameLevel02:genItems(#objects.items+1) --timer for junk
         junkTimer = 0
     end

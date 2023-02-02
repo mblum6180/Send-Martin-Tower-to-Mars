@@ -194,7 +194,7 @@ function gameLevel03:beginContact(obj1,obj2)
         landingSpeed = y
         print(landingSpeed)
     end
-    if y < 100 then
+    if y < math then
         gameLevel03:landed()
 
     else 
