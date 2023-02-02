@@ -43,7 +43,7 @@ end
     
 function mainmenu:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
-    love.graphics.printf("You're launched Martin Tower into space.\n Next you'll need to navigate through the marshmallow field",
+    love.graphics.printf("Martin Tower is now flying through space toward Mars!\n\nNext, you'll need to navigate through the debris field.",
     system.winWidth * 0.1, system.winHeight * 0.1, system.winWidth * .14, 'left', 0, 6, 6)
 
 end

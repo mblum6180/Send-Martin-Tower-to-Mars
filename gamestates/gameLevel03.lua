@@ -7,7 +7,6 @@ function gameLevel03:init()
     love.graphics.reset()
     objects.audio.fire:setVolume(1.0)
     system.score03 = system.score02
-    bonus = 9000
     landingSpeed = nil
 
     objects.ground.landscape = gameLevel03:genLandscape()
@@ -69,11 +68,11 @@ function gameLevel03:update(dt)
                 if system.winner == true and objects.tower.crashed == false then
                     playSound(objects.audio.landed,'play',false)
                 end
-                bonus = math.abs(math.deg(objects.tower.body:getAngle())) --calculate bonus
-                if bonus >= 45 then
-                    bonus = 0
-                elseif bonus < 45 then
-                    bonus = (44 - bonus) * (100 - landingSpeed)
+                system.bonus = math.abs(math.deg(objects.tower.body:getAngle())) --calculate bonus
+                if system.bonus >= 45 then
+                    system.bonus = 0
+                elseif system.bonus < 45 then
+                    system.bonus = (44 - system.bonus) * (100 - landingSpeed)
                 end
 
                 print(landingSpeed)
@@ -127,7 +126,7 @@ function gameLevel03:draw()
     if system.winner == true and objects.tower.crashed == false then
         love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Winner
         love.graphics.print("Landed!", system.winWidth * 0.1, system.winHeight * 0.3, 0, system.winWidth / 99, system.winWidth / 99)
-        love.graphics.print("Landing Bonus "..math.ceil(bonus), system.winWidth * 0.1, system.winHeight * 0.55, 0, system.winWidth / 200, system.winWidth / 200)
+        love.graphics.print("Landing Bonus "..math.ceil(system.bonus), system.winWidth * 0.1, system.winHeight * 0.55, 0, system.winWidth / 200, system.winWidth / 200)
 
     end
     if system.winner == true and objects.tower.crashed == true then

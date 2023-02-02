@@ -190,7 +190,7 @@ end
 function gameLevel02:genItems(id)
     index = id
     id = {}
-    id.image = love.graphics.newImage("assets/chick8bit.png")
+    id.image = objects.spacePeep.image
     id.width = id.image:getWidth()
     id.height = id.image:getHeight()
     id.red = 1

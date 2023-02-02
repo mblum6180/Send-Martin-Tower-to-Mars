@@ -81,7 +81,6 @@ function gameLevel01:update(dt)
         if math.floor(countDown) == 9 then
             playSound(objects.audio.countdown,'play',false)
         end
-        print(countDown)
         flow = flow - (flow * 3.2) * dt --set to 1.2 
         system.score01 = system.score01 + flow
         

@@ -21,6 +21,7 @@ system.launch = "left"
 system.crashed = false
 system.winner = false
 system.timer = 0
+system.bonus = 0
 
 
 activePeeps = {}
@@ -93,7 +94,7 @@ objects.tower.crashed = false
 
 
 objects.spacePeep = {}
-objects.spacePeep.image = love.graphics.newImage("assets/chick8bit.png")
+objects.spacePeep.image = love.graphics.newImage("assets/asteroid.png")
 objects.spacePeep.width = objects.spacePeep.image:getWidth()
 objects.spacePeep.height = objects.spacePeep.image:getHeight()
 
