@@ -41,7 +41,7 @@ function gameLevel02:update(dt)
     end
 
 
-    junkTimer = junkTimer + 1 * dt
+    junkTimer = junkTimer + 1 *system.scaling * dt
     if junkTimer > love.math.random(0.3,0.5) then
         gameLevel02:genItems(#objects.items+1) --timer for junk
         junkTimer = 0
@@ -110,8 +110,8 @@ function gameLevel02:update(dt)
 end
   
 function gameLevel02:draw()
-    love.graphics.setColor(system.BGcolorR, system.BGcolorG, system.BGcolorB)
-    love.graphics.draw(objects.ground.background02, 0, 0, 0, system.BGScale * (system.winWidth / objects.ground.background03Width))
+    love.graphics.setColor(system.BGcolorR, system.BGcolorG, system.BGcolorB) -- draw Backgroud
+    love.graphics.draw(objects.ground.background02, 0, 0, 0, system.BGScale * system.scaling, (system.winHeight / objects.ground.background02Height))
 
     love.graphics.translate(0, scroll)
   
@@ -132,7 +132,8 @@ function gameLevel02:draw()
         love.graphics.draw(objects.items[i].image, objects.items[i].body:getX(), objects.items[i].body:getY(), objects.items[i].body:getAngle(), objects.items[i].div, 1, objects.items[i].widthDiv, 0 )
      
         if debugMode then
-            love.graphics.polygon("line", objects.items[i].body:getWorldPoints(objects.items[i].shape:getPoints()))
+            dx , dy = objects.items[i].body:getWorldPoints(objects.items[i].shape:getPoint())
+            love.graphics.circle("line", dx, dy, 10)
         end
     end
 
@@ -196,17 +197,11 @@ function gameLevel02:genItems(id)
     id.red = 1
     id.green = 1
     id.blue = 1
-    if math.random(0,100) < 50 then
-        id.div = '-1'
-        id.widthDiv = id.width
-    else 
-        id.div = '1'
-        id.widthDiv = 0
-    end
     id.body = love.physics.newBody(space, love.math.random(0, system.winWidth), (0 - scroll - id.height), "dynamic")
-    id.shape = love.physics.newRectangleShape(id.width / 2, id.height / 2, id.width, id.height, 0)
+    id.shape = love.physics.newCircleShape(id.width / 2)
     id.fixture = love.physics.newFixture(id.body, id.shape, 1)
     id.fixture:setUserData(id)
+    id.body:setAngle(love.math.random(0,6.283185))
     table.insert(objects.items, index, id)
 end
 

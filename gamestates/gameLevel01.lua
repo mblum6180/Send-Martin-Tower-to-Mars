@@ -96,15 +96,15 @@ function gameLevel01:draw()
     if launch then
         love.graphics.translate(love.math.random(-5,5), love.math.random(-5,5))
     end
-    love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)
-    love.graphics.draw(objects.ground.background01, 0, 0, 0, system.scaling)
+    love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha) -- draw Backgroud
+    love.graphics.draw(objects.ground.background01, 0, 0, 0,  system.scaling, (system.winHeight / objects.ground.background01Height))
     love.graphics.setColor(1.0, 1.0, 1.0, 1)
 
     love.graphics.setColor(0.149, 0.361, 0.259, 0.4)
     love.graphics.polygon("fill", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
   
     love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)  
-    love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), 0, 3, 3)
+    love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), 0, 3 * system.scaling)
 
 
     love.graphics.setColor(1.0, 0.9, 0.9, bgAlpha)  -- Draw Bar 

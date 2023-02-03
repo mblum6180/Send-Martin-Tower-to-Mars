@@ -96,8 +96,8 @@ function gameLevel03:update(dt)
 end
   
 function gameLevel03:draw()
-    love.graphics.setColor(system.BGcolorR, system.BGcolorG, system.BGcolorB)
-    love.graphics.draw(objects.ground.background03, 0, 0, 0, system.winWidth / objects.ground.background03Width) -- set scaling
+    love.graphics.setColor(system.BGcolorR, system.BGcolorG, system.BGcolorB) -- draw Background
+    love.graphics.draw(objects.ground.background03, 0, 0, 0,  system.scaling, (system.winHeight / objects.ground.background03Height)) -- set scaling
 
 
     love.graphics.setColor(0.53, 0.39, 0.32)

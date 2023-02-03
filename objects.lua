@@ -72,10 +72,13 @@ objects.image.explosion.currentFrame = 1
 objects.ground = {}
 objects.ground.background01 = love.graphics.newImage("assets/CityBG8bit.png") -- Background image
 objects.ground.background01Width = objects.ground.background01:getWidth()
+objects.ground.background01Height = objects.ground.background01:getHeight()
 objects.ground.background02 = love.graphics.newImage("assets/spaceBG.png") -- Background image
 objects.ground.background02Width = objects.ground.background01:getWidth()
+objects.ground.background02Height = objects.ground.background01:getHeight()
 objects.ground.background03 = love.graphics.newImage("assets/marsmountain8bit.png") -- Background image
 objects.ground.background03Width = objects.ground.background03:getWidth()
+objects.ground.background03Height = objects.ground.background03:getHeight()
 objects.ground.box = {
     -20,-100, --1
     system.winWidth + 20,-100, --2
