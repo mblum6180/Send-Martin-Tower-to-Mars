@@ -97,7 +97,8 @@ end
   
 function gameLevel03:draw()
     love.graphics.setColor(system.BGcolorR, system.BGcolorG, system.BGcolorB)
-    love.graphics.draw(objects.ground.background03, 0, 0)
+    love.graphics.draw(objects.ground.background03, 0, 0, 0, 2) -- set scaling
+
     love.graphics.setColor(0.53, 0.39, 0.32)
     love.graphics.polygon("line", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
     

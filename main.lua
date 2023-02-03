@@ -67,10 +67,10 @@ function edge(x, y)
           objects.tower.body:applyForce(1000, 0)
           system.BGcolorG,system.BGcolorB = 0.01, 0.01  
       end
-  elseif x > 1100 then
+  elseif x > system.winWidth - 100 then
       objects.tower.body:applyForce(-100, 0)
       system.BGcolorG,system.BGcolorB = 0.25, 0.25
-      if x > 1170 then
+      if x > system.winWidth - 10 then
           objects.tower.body:applyForce(-1000, 0)
           system.BGcolorG,system.BGcolorB = 0.01, 0.01  
       end
