@@ -97,7 +97,7 @@ function gameLevel01:draw()
         love.graphics.translate(love.math.random(-5,5), love.math.random(-5,5))
     end
     love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)
-    love.graphics.draw(objects.ground.background01, 0, 0)
+    love.graphics.draw(objects.ground.background01, 0, 0, 0, system.winWidth / objects.ground.background01Width)
     love.graphics.setColor(1.0, 1.0, 1.0, 1)
 
     love.graphics.setColor(0.149, 0.361, 0.259, 0.4)

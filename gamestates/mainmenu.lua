@@ -17,6 +17,7 @@ function mainmenu:init()
 
 
     background = love.graphics.newImage("assets/title.png")
+    backgroundWidth = background:getWidth()
     title = love.graphics.newImage("assets/title8bit.png")
     text = love.graphics.newImage("assets/Press-space-to-start8bit.png")
     textWidth = text:getWidth()
@@ -50,7 +51,7 @@ end
     
 function mainmenu:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
-    love.graphics.draw(background, 0, 0)
+    love.graphics.draw(background, 0, 0, 0, system.winWidth / backgroundWidth)
     love.graphics.setColor(255, 255, 255, titleAlpha)
     love.graphics.draw(title, 500,100, 0, 3, 3) -- Draw title 
     love.graphics.printf(system.version, system.winWidth * 0.8, system.winHeight * 0.9, system.winWidth * .14, 'left', 0, 3, 3) -- draw version

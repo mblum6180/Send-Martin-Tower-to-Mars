@@ -111,7 +111,7 @@ end
   
 function gameLevel02:draw()
     love.graphics.setColor(system.BGcolorR, system.BGcolorG, system.BGcolorB)
-    love.graphics.draw(objects.ground.background02, 0, 0, 0, system.BGScale)
+    love.graphics.draw(objects.ground.background02, 0, 0, 0, system.BGScale * (system.winWidth / objects.ground.background03Width))
 
     love.graphics.translate(0, scroll)
   
