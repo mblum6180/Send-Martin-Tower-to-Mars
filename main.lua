@@ -32,7 +32,7 @@ function love.load()
   end
 
   if debugMode then
-    system.score02 = 90
+    system.score02 = 9000
     system.score03 = 9000
 end
   

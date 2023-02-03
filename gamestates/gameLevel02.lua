@@ -42,8 +42,9 @@ function gameLevel02:update(dt)
 
 
     junkTimer = junkTimer + 1 *system.scaling * dt
-    if junkTimer > love.math.random(0.3,0.5) then
+    if junkTimer > love.math.random(0.3,0.6) then
         gameLevel02:genItems(#objects.items+1) --timer for junk
+        objects.items[#objects.items].body:applyForce(love.math.random(-200,200), love.math.random(-200, 200)) --apply force to give junk movement
         junkTimer = 0
     end
     for i in ipairs (objects.items) do
@@ -55,8 +56,8 @@ function gameLevel02:update(dt)
         if -objects.items[i].red == 0 then
             playSound(objects.audio.itemBreak,'stop')
             playSound(objects.audio.itemBreak,'play')
+            system.score02 = system.score02 - 500 *  objects.items[i].scale
             table.remove(objects.items, i)
-            system.score02 = system.score02 - 500
             system.itemsDestroyed = system.itemsDestroyed + 1
            --print (score)
        end
@@ -118,7 +119,7 @@ function gameLevel02:draw()
 
 
 
-    love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), objects.tower.body:getAngle(), system.scaling) -- Draw Tower
+    love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), objects.tower.body:getAngle(), system.scaling, system.scaling, 0,0) -- Draw Tower
     if debugMode then
         love.graphics.polygon("line", objects.tower.body:getWorldPoints(objects.tower.shape:getPoints()))
     end
@@ -129,11 +130,13 @@ function gameLevel02:draw()
         --print(i,v)
         love.graphics.setColor(objects.items[i].red, 1.0, 1.0)
 
-        love.graphics.draw(objects.items[i].image, objects.items[i].body:getX(), objects.items[i].body:getY(), objects.items[i].body:getAngle(), objects.items[i].div, 1, objects.items[i].widthDiv, 0 )
+        love.graphics.draw(objects.items[i].image, objects.items[i].body:getX(), objects.items[i].body:getY(), objects.items[i].body:getAngle(), objects.items[i].scale, objects.items[i].scale, objects.items[i].width / 2, objects.items[i].height / 2)
      
         if debugMode then
-            dx , dy = objects.items[i].body:getWorldPoints(objects.items[i].shape:getPoint())
-            love.graphics.circle("line", dx, dy, 10)
+            love.graphics.circle("line", objects.items[i].body:getX(), objects.items[i].body:getY(), objects.items[i].shape:getRadius())
+            --dr = objects.items[i].body:getWorldPoints(objects.items[i].shape:getRadius())
+            --dx , dy = objects.items[i].body:getWorldPoints(objects.items[i].shape:getPoint())
+            --love.graphics.circle("line", dx, dy, dr)
         end
     end
 
@@ -147,7 +150,7 @@ function gameLevel02:draw()
         love.graphics.setColor(1.0, 1.0, 1.0, 1) -- Draw Flames
         love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
         objects.tower.body:getX() - objects.tower.width/4, 
-        objects.tower.body:getY() + objects.tower.height * 0.9, objects.tower.body:getAngle(), 1, 1)
+        objects.tower.body:getY() + objects.tower.height * 0.9, objects.tower.body:getAngle(), system.scaling, system.scaling)
     end
 
     if system.crashed == true then
@@ -166,7 +169,7 @@ function gameLevel02:beginContact(obj1,obj2)
             playSound(objects.audio.itemBreak,'stop')
             playSound(objects.audio.itemBreak,'play', true)
             obj2:getUserData().red = obj2:getUserData().red - .5
-            system.score02 = system.score02 - 100
+            system.score02 = system.score02 - 50 *  obj2:getUserData().scale
         end
     end
 
@@ -197,11 +200,13 @@ function gameLevel02:genItems(id)
     id.red = 1
     id.green = 1
     id.blue = 1
+    id.scale = love.math.random(0.8,1.5)
     id.body = love.physics.newBody(space, love.math.random(0, system.winWidth), (0 - scroll - id.height), "dynamic")
-    id.shape = love.physics.newCircleShape(id.width / 2)
+    id.shape = love.physics.newCircleShape(id.width / 2 * id.scale * system.scaling)
     id.fixture = love.physics.newFixture(id.body, id.shape, 1)
     id.fixture:setUserData(id)
-    id.body:setAngle(love.math.random(0,6.283185))
+    id.body:setAngle(love.math.random(0,6.283185)) --6.283185
+    id.body:setAngularVelocity(love.math.random(-1.2,1.2))
     table.insert(objects.items, index, id)
 end
 
