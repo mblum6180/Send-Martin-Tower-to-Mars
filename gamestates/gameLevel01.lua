@@ -27,6 +27,8 @@ function gameLevel01:init()
     objects.tower.body:setX(system.winWidth * 0.69)
     objects.tower.body:setY(system.winHeight * 0.7)
 end
+
+
     
     
 function gameLevel01:update(dt)
@@ -113,7 +115,7 @@ function gameLevel01:draw()
     love.graphics.rectangle("fill", system.winWidth * 0.1, system.winHeight * 0.84, flow*75, 45)
 
     love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Score
-    love.graphics.setFont(screenFont)
+    love.graphics.setFont(scoreFont)
     love.graphics.print(math.floor(system.score01), system.winWidth * 0.1, system.winHeight * 0.1, 0, system.scaling,  system.scaling)
 
     love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw CountDown
@@ -133,7 +135,7 @@ function gameLevel01:draw()
     end
 
     if launch then 
-        love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)
+        love.graphics.setColor(1.0, 1.0, 1.0, 0.98)
         love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
         objects.tower.body:getX() - objects.tower.width / 2 * system.scaling, objects.tower.body:getY() + objects.tower.height * 2.8 * system.scaling, 0, 3 * system.scaling, 3 * system.scaling)
     end
@@ -142,8 +144,7 @@ end
 function gameLevel01:keypressed(key, scancode, isrepeat)
     if debugMode then
         if key == "s" then
-        system.score = system.score + 1
-        print(system.score)
+            system.level01over = true
         end
     end
     if key == "escape" then

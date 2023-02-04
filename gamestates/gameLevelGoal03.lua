@@ -60,6 +60,7 @@ function mainmenu:keypressed(key, scancode, isrepeat)
         love.event.quit()
     elseif system.timer >= 3 then
         if key == "space" or key =="left" or key =="right" or key =="down" or key =="up" then
+            reset()
             Gamestate.switch(mainMenu)
         end
     end

@@ -21,6 +21,8 @@ function love.load()
   mars = love.physics.newWorld(0, 3.72*64, true)
 
   screenFont = love.graphics.newFont('assets/font.ttf', 42)
+  scoreFont = love.graphics.newFont('assets/font.ttf', 128)
+  messageFont = love.graphics.newFont('assets/font.ttf', 80)
 
 
   Gamestate.registerEvents()
@@ -110,4 +112,38 @@ function levelSelect(level)
   else
     Gamestate.switch(mainMenu)
   end
+end
+
+function reset()
+  system.level01over = false
+  system.level02over = false
+  system.level03over = false
+  system.BGScale = 1
+  system.BGcolorR = 1
+  system.BGcolorG = 1
+  system.BGcolorB = 1
+  system.score01 = 0
+  system.score02 = 0
+  system.score03 = 0
+  system.score = 0
+  system.landed = false
+  system.landedTimer = 2
+  system.itemsDestroyed = 0
+  system.launch = "left"
+  system.crashed = false
+  system.winner = false
+  system.timer = 0
+  system.bonus = 0
+  
+  launch = false
+  timer = 1
+  bgAlpha = 0
+  bgFadein = 1
+  countDown = 10
+  flow = 0
+
+  objects.tower.body:setX(system.winWidth * 0.69)
+  objects.tower.body:setY(system.winHeight * 0.7)
+
+
 end

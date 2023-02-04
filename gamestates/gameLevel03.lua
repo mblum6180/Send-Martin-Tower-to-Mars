@@ -116,7 +116,7 @@ function gameLevel03:draw()
         love.graphics.polygon("line", objects.tower.body:getWorldPoints(objects.tower.shape:getPoints()))
     end
     if objects.tower.fire then -- draw fireball
-        love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)
+        love.graphics.setColor(1.0, 1.0, 1.0, 0.7)
         love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
         objects.tower.body:getX(), objects.tower.body:getY(), objects.tower.body:getAngle(),
         system.scaling, system.scaling,
@@ -124,7 +124,7 @@ function gameLevel03:draw()
     end
 
     love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)   -- Print Score
-    love.graphics.setFont(screenFont)
+    love.graphics.setFont(scoreFont)
     love.graphics.print(math.floor(system.score03), system.winWidth * 0.1, system.winHeight * 0.1, 0)
 
     if system.winner == true and objects.tower.crashed == false then

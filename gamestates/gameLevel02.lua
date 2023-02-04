@@ -42,7 +42,7 @@ function gameLevel02:update(dt)
 
 
     junkTimer = junkTimer + 1 *system.scaling * dt
-    if junkTimer > love.math.random(0.3,0.6) then
+    if junkTimer > love.math.random(0.3,08) then -- 0.3,0.8
         gameLevel02:genItems(#objects.items+1) --timer for junk
         objects.items[#objects.items].body:applyForce(love.math.random(-200,200), love.math.random(-200, 200)) --apply force to give junk movement
         junkTimer = 0
@@ -112,7 +112,7 @@ end
   
 function gameLevel02:draw()
     love.graphics.setColor(system.BGcolorR, system.BGcolorG, system.BGcolorB) -- draw Backgroud
-    love.graphics.draw(objects.ground.background02, 0, 0, 0, system.BGScale * system.scaling, (system.winHeight / objects.ground.background02Height))
+    love.graphics.draw(objects.ground.background02, 0, 0, 0, system.BGScale * system.scaling)
 
     love.graphics.translate(0, scroll)
   
@@ -143,12 +143,12 @@ function gameLevel02:draw()
 
 
     love.graphics.setColor(1.0, 0.0, 0.0, 1)
-    love.graphics.setFont(screenFont)
+    love.graphics.setFont(scoreFont)
     love.graphics.print(math.floor(system.score02), system.winWidth * 0.1, system.winHeight * 0.1 + -scroll, 0)
 
 
     if system.crashed == false then
-        love.graphics.setColor(1.0, 1.0, 1.0, 1) -- Draw Flames
+        love.graphics.setColor(1.0, 1.0, 1.0, 0.7) -- Draw Flames
         love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
         objects.tower.body:getX() - objects.tower.width/4  * system.scaling, 
         objects.tower.body:getY() + objects.tower.height * 0.9  * system.scaling, objects.tower.body:getAngle(), system.scaling, system.scaling)
@@ -180,9 +180,8 @@ end
 
 function gameLevel02:keypressed(key, scancode, isrepeat)
     if debugMode then
-        if key == "q" then
-            gameLevel02:genItems(1)
-            print("MORE!")
+        if key == "s" then
+            system.level02over = true
         end
     end
     if key == "escape" then
