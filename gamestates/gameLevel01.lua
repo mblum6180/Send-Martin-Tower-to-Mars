@@ -21,7 +21,7 @@ function gameLevel01:init()
     objects.ground.fixture = love.physics.newFixture(objects.ground.body, objects.ground.shape)
 
     objects.tower.body = love.physics.newBody(earth, love.math.random(0, system.winWidth), 0, "dynamic")
-    objects.tower.shape = love.physics.newRectangleShape(objects.tower.width * 3, (objects.tower.height * 3) + 285) 
+    objects.tower.shape = love.physics.newRectangleShape(objects.tower.width * 3 * system.scaling, (objects.tower.height * 3) + 285   * system.scaling) 
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
 
     objects.tower.body:setX(system.winWidth * 0.69)
@@ -131,7 +131,7 @@ function gameLevel01:draw()
     if launch then 
         love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)
         love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
-        objects.tower.body:getX() - objects.tower.width/1.5, objects.tower.body:getY() + objects.tower.height * 2.8, 0, 3, 3)
+        objects.tower.body:getX() - objects.tower.width / 2 * system.scaling, objects.tower.body:getY() + objects.tower.height * 2.8 * system.scaling, 0, 3 * system.scaling, 3 * system.scaling)
     end
 end
 

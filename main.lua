@@ -13,11 +13,14 @@ function love.load()
   pause = require 'gamestates.pause'
   require "objects"
 
+  love.graphics.setDefaultFilter('nearest', 'nearest')
 
-  love.physics.setMeter(64)  -- physics setup
+  love.physics.setMeter(64 * system.scaling)  -- physics setup
   earth = love.physics.newWorld(0, 9.80*64, true)
   space = love.physics.newWorld(0, 0.1*64, true)
   mars = love.physics.newWorld(0, 3.72*64, true)
+
+  screenFont = love.graphics.newFont('assets/font.ttf', 42)
 
 
   Gamestate.registerEvents()

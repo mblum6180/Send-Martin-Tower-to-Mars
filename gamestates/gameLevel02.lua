@@ -126,7 +126,6 @@ function gameLevel02:draw()
     end
 
 
-
     for i,v in ipairs (objects.items) do -- Draw Space junk
         --print(i,v)
         love.graphics.setColor(objects.items[i].red, 1.0, 1.0)

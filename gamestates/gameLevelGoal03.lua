@@ -43,12 +43,13 @@ end
     
 function mainmenu:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
+    love.graphics.setFont(screenFont)
     love.graphics.printf(("Debris Destroyed: "..system.itemsDestroyed.."\n"..
-    "Fuel: "..math.floor(system.score03).."\n"..
-    "Bonus: "..math.floor(system.bonus).."\n"..
-    "Final Score: "..math.floor(system.score03) + math.floor(system.bonus)),
-    system.winWidth * 0.1, system.winHeight * 0.1, system.winWidth * .14, 'left', 0, 6, 6)
-    love.graphics.printf("Press an arrow key to restart",system.winWidth * 0.1, system.winHeight * 0.7, system.winWidth * .14, 'left', 0, 4, 4)
+        "Fuel: "..math.floor(system.score03).."\n"..
+        "Bonus: "..math.floor(system.bonus).."\n"..
+        "Final Score: "..math.floor(system.score03) + math.floor(system.bonus)),
+        system.winWidth * 0.1, system.winHeight * 0.1, system.winWidth * 0.8, 'center', 0, system.scaling, system.scaling)
+    love.graphics.printf("Press an arrow key to restart",system.winWidth * 0.1, system.winHeight * 0.1, system.winWidth * 0.8, 'center', 0, system.scaling, system.scaling)
 
 
 end

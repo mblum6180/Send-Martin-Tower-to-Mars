@@ -25,7 +25,8 @@ function gameLevel03:init()
 
     objects.tower.body = love.physics.newBody(mars, love.math.random(150, system.winWidth - 150), 0, "dynamic")
     objects.tower.body:setLinearDamping(0.6)
-    objects.tower.shape = love.physics.newRectangleShape(objects.tower.width / 2, objects.tower.height / 2, objects.tower.width, objects.tower.height, 0)
+    objects.tower.shape = love.physics.newRectangleShape(objects.tower.width / 2 * system.scaling, objects.tower.height / 2 * system.scaling,
+         objects.tower.width * system.scaling, objects.tower.height * system.scaling, 0)
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
     objects.tower.fixture:setRestitution(0.3) 
     objects.tower.fixture:setFriction(0.98)
@@ -110,7 +111,7 @@ function gameLevel03:draw()
     end
 
     love.graphics.setColor(1.0, 1.0, 1.0) -- Draw Tower
-    love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), objects.tower.body:getAngle() )
+    love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), objects.tower.body:getAngle(), system.scaling, system.scaling, 0, 0 )
     if debugMode then
         love.graphics.polygon("line", objects.tower.body:getWorldPoints(objects.tower.shape:getPoints()))
     end
@@ -118,7 +119,7 @@ function gameLevel03:draw()
         love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)
         love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
         objects.tower.body:getX(), objects.tower.body:getY(), objects.tower.body:getAngle(),
-        1,1,
+        system.scaling, system.scaling,
         15,-120)
     end
 
