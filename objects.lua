@@ -23,7 +23,7 @@ system.winner = false
 system.timer = 0
 system.bonus = 0
 system.scaling = system.winWidth / 1280 -- Scaling factor for 1280 wide
-system.version = "1.0 - Beta"
+system.version = "0.11 - Beta"
 
 
 activePeeps = {}

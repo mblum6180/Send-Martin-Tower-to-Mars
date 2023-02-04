@@ -21,7 +21,7 @@ function gameLevel02:init()
 
     objects.tower.body = love.physics.newBody(space, love.math.random(system.winWidth * 0.2, system.winWidth * 0.8), system.winHeight * 0.95, "dynamic")
     objects.tower.body:setLinearDamping(0.9)
-    objects.tower.shape = love.physics.newRectangleShape(objects.tower.width / 2, objects.tower.height / 2, objects.tower.width * system.scaling, objects.tower.height * system.scaling, 0)
+    objects.tower.shape = love.physics.newRectangleShape(objects.tower.width / 2 * system.scaling, objects.tower.height / 2 * system.scaling, objects.tower.width * system.scaling, objects.tower.height * system.scaling, 0)
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
     objects.tower.fixture:setRestitution(0.3) 
     objects.tower.fixture:setFriction(0.0)
@@ -119,7 +119,8 @@ function gameLevel02:draw()
 
 
 
-    love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), objects.tower.body:getAngle(), system.scaling, system.scaling, 0,0) -- Draw Tower
+    love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), 
+        objects.tower.body:getAngle(), system.scaling, system.scaling, 0, 0) -- Draw Tower
     if debugMode then
         love.graphics.polygon("line", objects.tower.body:getWorldPoints(objects.tower.shape:getPoints()))
     end
@@ -149,8 +150,8 @@ function gameLevel02:draw()
     if system.crashed == false then
         love.graphics.setColor(1.0, 1.0, 1.0, 1) -- Draw Flames
         love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
-        objects.tower.body:getX() - objects.tower.width/4, 
-        objects.tower.body:getY() + objects.tower.height * 0.9, objects.tower.body:getAngle(), system.scaling, system.scaling)
+        objects.tower.body:getX() - objects.tower.width/4  * system.scaling, 
+        objects.tower.body:getY() + objects.tower.height * 0.9  * system.scaling, objects.tower.body:getAngle(), system.scaling, system.scaling)
     end
 
     if system.crashed == true then
@@ -202,7 +203,7 @@ function gameLevel02:genItems(id)
     id.blue = 1
     id.scale = love.math.random(0.8,1.5)
     id.body = love.physics.newBody(space, love.math.random(0, system.winWidth), (0 - scroll - id.height), "dynamic")
-    id.shape = love.physics.newCircleShape(id.width / 2 * id.scale * system.scaling)
+    id.shape = love.physics.newCircleShape(id.width / 2 * id.scale)
     id.fixture = love.physics.newFixture(id.body, id.shape, 1)
     id.fixture:setUserData(id)
     id.body:setAngle(love.math.random(0,6.283185)) --6.283185
