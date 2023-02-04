@@ -113,19 +113,23 @@ function gameLevel01:draw()
     love.graphics.rectangle("fill", system.winWidth * 0.1, system.winHeight * 0.84, flow*75, 45)
 
     love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Score
-    love.graphics.print(math.floor(system.score01), system.winWidth * 0.1, system.winHeight * 0.1, 0, system.winWidth / 150, system.winWidth / 150)
+    love.graphics.setFont(screenFont)
+    love.graphics.print(math.floor(system.score01), system.winWidth * 0.1, system.winHeight * 0.1, 0, system.scaling,  system.scaling)
 
     love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw CountDown
-    love.graphics.print(math.floor(countDown), system.winWidth * 0.1, system.winHeight * 0.65, 0, system.winWidth / 150, system.winWidth / 150)
+    love.graphics.setFont(screenFont)
+    love.graphics.print(math.floor(countDown), system.winWidth * 0.1, system.winHeight * 0.65, 0,  system.scaling,  system.scaling)
 
     if countDown == 0 and system.crashed == false then
         love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Launch
-        love.graphics.print("Launch!", system.winWidth * 0.1, system.winHeight * 0.3, 0, system.winWidth / 99, system.winWidth / 99)
+        love.graphics.setFont(screenFont)
+        love.graphics.print("Launch!", system.winWidth * 0.1, system.winHeight * 0.3, 0,  system.scaling,  system.scaling)
     end
 
     if countDown == 0 and system.crashed == true then
         love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Crashed
-        love.graphics.print("Crashed!", system.winWidth * 0.1, system.winHeight * 0.3, 0, system.winWidth / 99, system.winWidth / 99)
+        love.graphics.setFont(screenFont)
+        love.graphics.print("Crashed!", system.winWidth * 0.1, system.winHeight * 0.3, 0, system.scaling,  system.scaling)
     end
 
     if launch then 

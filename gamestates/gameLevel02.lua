@@ -143,7 +143,8 @@ function gameLevel02:draw()
 
 
     love.graphics.setColor(1.0, 0.0, 0.0, 1)
-    love.graphics.print(math.floor(system.score02), system.winWidth * 0.1, system.winHeight * 0.1 + -scroll, 0, system.winWidth / 150, system.winWidth / 150)
+    love.graphics.setFont(screenFont)
+    love.graphics.print(math.floor(system.score02), system.winWidth * 0.1, system.winHeight * 0.1 + -scroll, 0)
 
 
     if system.crashed == false then
@@ -155,7 +156,8 @@ function gameLevel02:draw()
 
     if system.crashed == true then
         love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Crashed
-        love.graphics.print("Out of Fuel!", system.winWidth * 0.1, system.winHeight * 0.3  + -scroll, 0, system.winWidth / 99, system.winWidth / 99)
+        love.graphics.setFont(screenFont)
+        love.graphics.print("Out of Fuel!", system.winWidth * 0.1, system.winHeight * 0.3  + -scroll, 0)
     end
 end
 

@@ -124,17 +124,20 @@ function gameLevel03:draw()
     end
 
     love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)   -- Print Score
-    love.graphics.print(math.floor(system.score03), system.winWidth * 0.1, system.winHeight * 0.1, 0, system.winWidth / 150, system.winWidth / 150)
+    love.graphics.setFont(screenFont)
+    love.graphics.print(math.floor(system.score03), system.winWidth * 0.1, system.winHeight * 0.1, 0)
 
     if system.winner == true and objects.tower.crashed == false then
         love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Winner
-        love.graphics.print("Landed!", system.winWidth * 0.1, system.winHeight * 0.3, 0, system.winWidth / 99, system.winWidth / 99)
-        love.graphics.print("Landing Bonus "..math.ceil(system.bonus), system.winWidth * 0.1, system.winHeight * 0.55, 0, system.winWidth / 200, system.winWidth / 200)
+        love.graphics.setFont(screenFont)
+        love.graphics.print("Landed!", system.winWidth * 0.1, system.winHeight * 0.3, 0)
+        love.graphics.print("Landing Bonus "..math.ceil(system.bonus), system.winWidth * 0.1, system.winHeight * 0.55, 0)
 
     end
     if system.winner == true and objects.tower.crashed == true then
         love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Crashed
-        love.graphics.print("Crashed!", system.winWidth * 0.1, system.winHeight * 0.3, 0, system.winWidth / 99, system.winWidth / 99)
+        love.graphics.setFont(screenFont)
+        love.graphics.print("Crashed!", system.winWidth * 0.1, system.winHeight * 0.3, 0)
     
     end
     love.graphics.setColor(0.63, 0.49, 0.42) --   Draw Foreground Mountains --must be last

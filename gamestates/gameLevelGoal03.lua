@@ -48,8 +48,8 @@ function mainmenu:draw()
         "Fuel: "..math.floor(system.score03).."\n"..
         "Bonus: "..math.floor(system.bonus).."\n"..
         "Final Score: "..math.floor(system.score03) + math.floor(system.bonus)),
-        system.winWidth * 0.1, system.winHeight * 0.1, system.winWidth * 0.8, 'center', 0, system.scaling, system.scaling)
-    love.graphics.printf("Press an arrow key to restart",system.winWidth * 0.1, system.winHeight * 0.1, system.winWidth * 0.8, 'center', 0, system.scaling, system.scaling)
+        system.winWidth * 0.1, system.winHeight * 0.1, system.winWidth * 0.8, 'center', 0)
+    love.graphics.printf("Press an arrow key to restart",system.winWidth * 0.1, system.winHeight * 0.8, system.winWidth * 0.8, 'center', 0)
 
 
 end
@@ -60,7 +60,7 @@ function mainmenu:keypressed(key, scancode, isrepeat)
         love.event.quit()
     elseif system.timer >= 3 then
         if key == "space" or key =="left" or key =="right" or key =="down" or key =="up" then
-            love.event.quit("restart")
+            Gamestate.switch(mainMenu)
         end
     end
 end

@@ -45,7 +45,7 @@ function mainmenu:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
     love.graphics.setFont(screenFont)
     love.graphics.printf("Launch Martin Tower on its mission to Mars!\n\nPress Left and Right repeatedly to fill up the fuel tank before launch.",
-        system.winWidth * 0.1, system.winHeight * 0.1, system.winWidth * 0.8, 'center', 0, system.scaling, system.scaling)
+        system.winWidth * 0.1, system.winHeight * 0.1, system.winWidth * 0.8, 'center', 0)
 
 end
 

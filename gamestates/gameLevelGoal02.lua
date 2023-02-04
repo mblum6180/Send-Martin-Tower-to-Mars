@@ -44,7 +44,7 @@ function mainmenu:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
     love.graphics.setFont(screenFont)
     love.graphics.printf("Congrats, you navigated the debris field successfully!\n\nNow to land Martin tower softly at its new home on Mars.",
-    system.winWidth * 0.1, system.winHeight * 0.1, system.winWidth * 0.8, 'center', 0, system.scaling, system.scaling)
+    system.winWidth * 0.1, system.winHeight * 0.1, system.winWidth * 0.8, 'center', 0)
 end
 
 function mainmenu:keypressed(key, scancode, isrepeat)
