@@ -1,10 +1,9 @@
 --! file: mainmenu.lua
 
 Gamestate = require 'libs.hump.gamestate'
+mainMenu = {}
 
-local mainmenu = {}
-
-function mainmenu:init()
+function mainMenu:enter()
     windowWidth = love.graphics.getWidth()
     windowHeight = love.graphics.getHeight()
     system.timer = 1
@@ -29,7 +28,7 @@ function mainmenu:init()
 end
     
     
-function mainmenu:update(dt)
+function mainMenu:update(dt)
     system.timer = system.timer + dt
     if bgAlpha ~= 1 then
         if system.timer > bgFadein then 
@@ -50,7 +49,7 @@ function mainmenu:update(dt)
 
 end
     
-function mainmenu:draw()
+function mainMenu:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
     love.graphics.draw(background, 0, 0, 0, system.winWidth / backgroundWidth, system.winHeight / backgroundHeight)
     love.graphics.setColor(255, 255, 255, titleAlpha)
@@ -64,7 +63,7 @@ function mainmenu:draw()
 
 end
 
-function mainmenu:keypressed(key, scancode, isrepeat)
+function mainMenu:keypressed(key, scancode, isrepeat)
     if key == "escape" then
         love.event.quit()
     elseif system.timer >= 3 then
@@ -78,4 +77,4 @@ end
 
 
 
-return mainmenu
+return mainMenu

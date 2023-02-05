@@ -2,8 +2,8 @@
 
 Gamestate = require 'libs.hump.gamestate'
 
-local gameLevel03 = {}
-function gameLevel03:init()
+gameLevel03 = {}
+function gameLevel03:enter()
     love.graphics.reset()
     objects.audio.fire:setVolume(1.0)
     system.score03 = system.score02

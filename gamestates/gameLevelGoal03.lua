@@ -1,10 +1,9 @@
 --! file: mainmenu.lua
 
 Gamestate = require 'libs.hump.gamestate'
+gameLevelGoal03 = {}
 
-local mainmenu = {}
-
-function mainmenu:init()
+function gameLevelGoal03:enter()
     love.graphics.reset()
     windowWidth = love.graphics.getWidth()
     windowHeight = love.graphics.getHeight()
@@ -20,7 +19,7 @@ function mainmenu:init()
 end
     
     
-function mainmenu:update(dt)
+function gameLevelGoal03:update(dt)
     system.timer = system.timer + dt
     if bgAlpha ~= 1 then
         if system.timer > bgFadein then 
@@ -41,7 +40,7 @@ function mainmenu:update(dt)
 
 end
     
-function mainmenu:draw()
+function gameLevelGoal03:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
     love.graphics.setFont(screenFont)
     love.graphics.printf(("Debris Destroyed: "..system.itemsDestroyed.."\n"..
@@ -54,13 +53,35 @@ function mainmenu:draw()
 
 end
 
-function mainmenu:keypressed(key, scancode, isrepeat)
+function gameLevelGoal03:keypressed(key, scancode, isrepeat)
 
     if key == "escape" then
         love.event.quit()
     elseif system.timer >= 3 then
         if key == "space" or key =="left" or key =="right" or key =="down" or key =="up" then
-            reset()
+            system.level01over = false
+            system.level02over = false
+            system.level03over = false
+            system.BGScale = 1
+            system.BGcolorR = 1
+            system.BGcolorG = 1
+            system.BGcolorB = 1
+            system.score01 = 0
+            system.score02 = 0
+            system.score03 = 0
+            system.score = 0
+            system.landed = false
+            system.landedTimer = 2
+            system.itemsDestroyed = 0
+            system.launch = "left"
+            system.crashed = false
+            system.winner = false
+            system.timer = 0
+            system.bonus = 0
+
+            objects.tower.fire = false
+            objects.tower.empty = false
+            objects.tower.crashed = false
             Gamestate.switch(mainMenu)
         end
     end
@@ -68,4 +89,4 @@ end
 
 
 
-return mainmenu
+return gameLevelGoal03

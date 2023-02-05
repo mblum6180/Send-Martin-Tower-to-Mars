@@ -2,9 +2,9 @@
 
 Gamestate = require 'libs.hump.gamestate'
 
-local mainmenu = {}
+gameLevelGoal02 = {}
 
-function mainmenu:init()
+function gameLevelGoal02:enter()
     love.graphics.reset()
     windowWidth = love.graphics.getWidth()
     windowHeight = love.graphics.getHeight()
@@ -19,7 +19,7 @@ function mainmenu:init()
 end
     
     
-function mainmenu:update(dt)
+function gameLevelGoal02:update(dt)
     system.timer = system.timer + dt
     if bgAlpha ~= 1 then
         if system.timer > bgFadein then 
@@ -40,18 +40,15 @@ function mainmenu:update(dt)
 
 end
     
-function mainmenu:draw()
+function gameLevelGoal02:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
     love.graphics.setFont(screenFont)
     love.graphics.printf("Congrats, you navigated the debris field successfully!\n\nNow to land Martin tower softly at its new home on Mars.",
     system.winWidth * 0.1, system.winHeight * 0.1, system.winWidth * 0.8, 'center', 0)
 end
 
-function mainmenu:keypressed(key, scancode, isrepeat)
-    if key == "s" then
-        score = score + 1
-        print(score)
-    end
+function gameLevelGoal02:keypressed(key, scancode, isrepeat)
+
     if key == "escape" then
         love.event.quit()
     elseif system.timer >= 3 then
@@ -63,4 +60,4 @@ end
 
 
 
-return mainmenu
+return gameLevelGoal02

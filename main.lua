@@ -10,7 +10,6 @@ function love.load()
   gameLevelGoal02 = require 'gamestates.gameLevelGoal02'
   gameLevelGoal03 = require 'gamestates.gameLevelGoal03'
   gameIntro = require 'gamestates.gameIntro'
-  pause = require 'gamestates.pause'
   require "objects"
 
   love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -26,7 +25,8 @@ function love.load()
 
 
   Gamestate.registerEvents()
-  
+
+
   coolDown = 0
   if arg[2] == "debug" then
     debugMode = true
@@ -39,7 +39,7 @@ function love.load()
   if debugMode then
     system.score02 = 9000
     system.score03 = 9000
-end
+  end
   
 end
 
@@ -114,36 +114,3 @@ function levelSelect(level)
   end
 end
 
-function reset()
-  system.level01over = false
-  system.level02over = false
-  system.level03over = false
-  system.BGScale = 1
-  system.BGcolorR = 1
-  system.BGcolorG = 1
-  system.BGcolorB = 1
-  system.score01 = 0
-  system.score02 = 0
-  system.score03 = 0
-  system.score = 0
-  system.landed = false
-  system.landedTimer = 2
-  system.itemsDestroyed = 0
-  system.launch = "left"
-  system.crashed = false
-  system.winner = false
-  system.timer = 0
-  system.bonus = 0
-  
-  launch = false
-  timer = 1
-  bgAlpha = 0
-  bgFadein = 1
-  countDown = 10
-  flow = 0
-
-  objects.tower.body:setX(system.winWidth * 0.69)
-  objects.tower.body:setY(system.winHeight * 0.7)
-
-
-end

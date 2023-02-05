@@ -1,10 +1,9 @@
---! file: mainmenu.lua
+--! file: gameIntro.lua
 
 Gamestate = require 'libs.hump.gamestate'
+gameIntro = {}
 
-local mainmenu = {}
-
-function mainmenu:init()
+function gameIntro:enter()
     windowWidth = love.graphics.getWidth()
     windowHeight = love.graphics.getHeight()
     system.timer = 1
@@ -20,7 +19,7 @@ function mainmenu:init()
 end
     
     
-function mainmenu:update(dt)
+function gameIntro:update(dt)
     system.timer = system.timer + dt
     if bgAlpha ~= 1 then
         if system.timer > bgFadein then 
@@ -41,7 +40,7 @@ function mainmenu:update(dt)
 
 end
     
-function mainmenu:draw()
+function gameIntro:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
     love.graphics.setFont(screenFont)
     love.graphics.printf("Launch Martin Tower on its mission to Mars!\n\nPress Left and Right repeatedly to fill up the fuel tank before launch.",
@@ -49,7 +48,7 @@ function mainmenu:draw()
 
 end
 
-function mainmenu:keypressed(key, scancode, isrepeat)
+function gameIntro:keypressed(key, scancode, isrepeat)
     if key == "s" then
         score = score + 1
         print(score)
@@ -65,4 +64,4 @@ end
 
 
 
-return mainmenu
+return gameIntro

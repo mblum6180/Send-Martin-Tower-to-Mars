@@ -4,9 +4,9 @@
 
 Gamestate = require 'libs.hump.gamestate'
 
-local gameLevel01 = {}
+gameLevel01 = {}
 
-function gameLevel01:init()
+function gameLevel01:enter()
     love.graphics.reset()
     launch = false
     timer = 1
@@ -48,7 +48,8 @@ function gameLevel01:update(dt)
     if launch and system.crashed == false then 
         playSound(objects.audio.launch, "play")
         if system.score01 > 0 then
-            objects.tower.body:applyForce(0, -31000)
+            --objects.tower.body:applyForce(0, -31000)
+            objects.tower.body:setY(objects.tower.body:getY() - 256 * dt)
         end
         if system.score01 > 0 then
             system.score01 = system.score01 - 351 * dt
@@ -142,12 +143,7 @@ function gameLevel01:draw()
 end
 
 function gameLevel01:keypressed(key, scancode, isrepeat)
-    if debugMode then
-        if key == "s" then
-            system.level01over = true
-        end
-    end
-    if key == "escape" then
+     if key == "escape" then
         love.event.quit()
     end
     if love.keyboard.isDown("right") and system.launch == "left" then

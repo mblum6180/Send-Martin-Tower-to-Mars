@@ -2,8 +2,9 @@
 
 Gamestate = require 'libs.hump.gamestate'
 
-local gameLevel02 = {}
-function gameLevel02:init()
+gameLevel02 = {}
+
+function gameLevel02:enter()
     love.graphics.reset()
     objects.audio.fire:setLooping(true)
     objects.audio.fire:setVolume(0.16)
