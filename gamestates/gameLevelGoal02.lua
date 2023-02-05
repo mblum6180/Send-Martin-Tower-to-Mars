@@ -16,6 +16,7 @@ function gameLevelGoal02:enter()
     titleFadein = 2
     textFadin = 2
 
+
 end
     
     

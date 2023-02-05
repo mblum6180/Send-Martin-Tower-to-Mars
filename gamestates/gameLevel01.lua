@@ -48,8 +48,8 @@ function gameLevel01:update(dt)
     if launch and system.crashed == false then 
         playSound(objects.audio.launch, "play")
         if system.score01 > 0 then
-            --objects.tower.body:applyForce(0, -31000)
-            objects.tower.body:setY(objects.tower.body:getY() - 256 * dt)
+            objects.tower.body:applyForce(0, -31000)
+            --objects.tower.body:setY(objects.tower.body:getY() - 256 * dt)
         end
         if system.score01 > 0 then
             system.score01 = system.score01 - 351 * dt
@@ -71,9 +71,7 @@ function gameLevel01:update(dt)
     if system.level01over then
         Gamestate.switch(gameLevelGoal01)
     end
-    if debugMode then
-        print(objects.tower.body:getLinearVelocity())
-    end
+
 
     
     if countDown > 0 and system.crashed == false then
@@ -154,6 +152,12 @@ function gameLevel01:keypressed(key, scancode, isrepeat)
         system.launch = "left"
     end
 
+
+end
+
+function gameLevel01:leave()
+
+    objects.tower.body:destroy()
 
 end
 

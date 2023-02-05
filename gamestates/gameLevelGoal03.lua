@@ -72,16 +72,18 @@ function gameLevelGoal03:keypressed(key, scancode, isrepeat)
             system.score = 0
             system.landed = false
             system.landedTimer = 2
-            system.itemsDestroyed = 0
             system.launch = "left"
             system.crashed = false
             system.winner = false
             system.timer = 0
             system.bonus = 0
-
+            objects.tower.strengthTorque = 2000
+            objects.tower.strengthMain = 2000
+            objects.tower.strengthSide = 300
             objects.tower.fire = false
             objects.tower.empty = false
             objects.tower.crashed = false
+
             Gamestate.switch(mainMenu)
         end
     end

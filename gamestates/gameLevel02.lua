@@ -43,14 +43,14 @@ function gameLevel02:update(dt)
 
 
     junkTimer = junkTimer + 1 *system.scaling * dt
-    if junkTimer > love.math.random(0.3,08) then -- 0.3,0.8
+    if junkTimer > love.math.random(0.3,8)  and Gamestate.current() == gameLevel02 then -- 0.3,0.8
         gameLevel02:genItems(#objects.items+1) --timer for junk
         objects.items[#objects.items].body:applyForce(love.math.random(-200,200), love.math.random(-200, 200)) --apply force to give junk movement
         junkTimer = 0
     end
     for i in ipairs (objects.items) do
         --print(-objects.items[i].body:getY(), scroll)
-        if -objects.items[i].body:getY() < scroll - system.winHeight then
+        if -objects.items[i].body:getY() < scroll - system.winHeight * 1.1 then
              table.remove(objects.items, i)
 
         end
@@ -78,13 +78,15 @@ function gameLevel02:update(dt)
     end
     if system.crashed == false then
         scrollTower = scrollTower + (scrollSpeed / 4) * dt
-        objects.tower.body:setY(system.winHeight * 0.95 + -scroll - scrollTower) -- lock tower in place
-        objects.tower.body:setAngle(0)
+        if Gamestate.current() == gameLevel02 then
+            objects.tower.body:setY(system.winHeight * 0.95 + -scroll - scrollTower) -- lock tower in place
+            objects.tower.body:setAngle(0)
+        end
     end
 
 
 
-    if system.crashed == false then
+    if system.crashed == false and Gamestate.current() == gameLevel02 then
         if love.keyboard.isDown("right") then
         objects.tower.body:applyForce(400, 0)
         system.score02 = system.score02 - 2 * dt
@@ -96,8 +98,10 @@ function gameLevel02:update(dt)
         system.score02 = system.score02 - 1 * dt
     end
 
-
-    edge(objects.tower.body:getX(), objects.tower.body:getY())
+    if Gamestate.current() == gameLevel02 then
+        edge(objects.tower.body:getX(), objects.tower.body:getY())
+    end
+   
 
     scroll = scroll + (scrollSpeed * dt)
     --print(scroll)
@@ -213,5 +217,13 @@ function gameLevel02:genItems(id)
 end
 
 
+function gameLevel02:leave()
+    for i in ipairs (objects.items) do
+        table.remove(objects.items, i)
+        print("Booooom!")
+    end
+    objects.tower.body:destroy()
+
+end
 
 return gameLevel02

@@ -7,7 +7,7 @@ function gameLevel03:enter()
     love.graphics.reset()
     objects.audio.fire:setVolume(1.0)
     system.score03 = system.score02
-    landingSpeed = nil
+    landingSpeed = 0
 
     objects.ground.landscape = gameLevel03:genLandscape()
 
@@ -272,5 +272,10 @@ function gameLevel03:landed()
 
 end
 
+function gameLevel03:leave()
+
+    objects.tower.body:destroy()
+
+end
 
 return gameLevel03
