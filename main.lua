@@ -1,27 +1,29 @@
 --! file: main.lua
 function love.load()
 
-  Gamestate = require 'libs.hump.gamestate' -- Game levels
-  mainMenu = require 'gamestates.mainmenu'
-  gameLevel01 = require 'gamestates.gameLevel01'
-  gameLevel02 = require 'gamestates.gameLevel02'
-  gameLevel03 = require 'gamestates.gameLevel03'
-  gameLevelGoal01 = require 'gamestates.gameLevelGoal01'
-  gameLevelGoal02 = require 'gamestates.gameLevelGoal02'
-  gameLevelGoal03 = require 'gamestates.gameLevelGoal03'
-  gameIntro = require 'gamestates.gameIntro'
-  require "objects"
+Gamestate = require 'libs.hump.gamestate' -- Game levels
+mainMenu = require 'gamestates.mainmenu'
+gameLevel01 = require 'gamestates.gameLevel01'
+gameLevel02 = require 'gamestates.gameLevel02'
+gameLevel03 = require 'gamestates.gameLevel03'
+gameLevelGoal01 = require 'gamestates.gameLevelGoal01'
+gameLevelGoal02 = require 'gamestates.gameLevelGoal02'
+gameLevelGoal03 = require 'gamestates.gameLevelGoal03'
+gameIntro = require 'gamestates.gameIntro'
+require "objects"
+
 
   love.graphics.setDefaultFilter('nearest', 'nearest')
 
-  love.physics.setMeter(64 * system.scaling)  -- physics setup
-  earth = love.physics.newWorld(0, 9.80*64, true)
-  space = love.physics.newWorld(0, 0.1*64, true)
-  mars = love.physics.newWorld(0, 3.72*64, true)
+  love.physics.setMeter(64 * system.scaling)  -- physics setup, set the meter to 64 pixels
+  earth = love.physics.newWorld(0, 9.80*64, true)  -- create a new world with gravity of 9.8 m/s^2
+  space = love.physics.newWorld(0, 0.1*64, true)  -- create a new world with gravity of 0.1 m/s^2
+  mars = love.physics.newWorld(0, 3.72*64, true)  -- create a new world with gravity of 3.72 m/s^2
 
-  screenFont = love.graphics.newFont('assets/font.ttf', 42)
-  scoreFont = love.graphics.newFont('assets/font.ttf', 128)
-  messageFont = love.graphics.newFont('assets/font.ttf', 80)
+  screenFont = love.graphics.newFont('assets/font.ttf', 42)  -- create a new font with a size of 42
+  scoreFont = love.graphics.newFont('assets/font.ttf', 128)  -- create a new font with a size of 128
+  messageFont = love.graphics.newFont('assets/font.ttf', 80)  -- create a new font with a size of 80
+
 
 
   Gamestate.registerEvents()
@@ -43,10 +45,10 @@ function love.load()
   
 end
 
-function fade(dt,d,x)  --dt, Alpha, duration 
-  if d < 1 then
-    d = d + x * dt
-  else d = 1
+function fade(dt,d,x)  --dt, Alpha, duration
+  if d < 1 then --if the alpha is less than 1
+    d = d + x * dt --add the alpha to the duration
+  else d = 1 --if the alpha is greater than 1, set it to 1
   end
   --print(d)
   return d

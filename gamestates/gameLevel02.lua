@@ -14,7 +14,7 @@ function gameLevel02:enter()
     scrollSpeed = 42
     scrollTower = 0
     system.score02 = system.score01
-
+    objects.items = {}
     space:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
     love.graphics.setBackgroundColor(0.92, 0.70, 0.60)
@@ -26,10 +26,6 @@ function gameLevel02:enter()
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
     objects.tower.fixture:setRestitution(0.3) 
     objects.tower.fixture:setFriction(0.0)
-
-
-    gameLevel02:genItems(0)
-
 
 end
 
@@ -44,21 +40,38 @@ function gameLevel02:update(dt)
 
     junkTimer = junkTimer + 1 *system.scaling * dt
     if junkTimer > love.math.random(0.3,8)  and Gamestate.current() == gameLevel02 then -- 0.3,0.8
-        gameLevel02:genItems(#objects.items+1) --timer for junk
-        objects.items[#objects.items].body:applyForce(love.math.random(-200,200), love.math.random(-200, 200)) --apply force to give junk movement
+        gameLevel02:genItems() --timer for junk
         junkTimer = 0
     end
+
+    bodies = space:getBodies()
+    for i, body in ipairs(bodies) do
+        local userData = body:getUserData()
+        local x, y = body:getPosition()
+        --print(userData)
+        if userData == "junk" then
+            print(scroll - system.winHeight * 0.7 )
+            if y < scroll - system.winHeight * 1.1 then
+                body:destroy()
+                print("BOOOOOM")
+            end
+        end
+    end
+
+
     for i in ipairs (objects.items) do
         --print(-objects.items[i].body:getY(), scroll)
-        if -objects.items[i].body:getY() < scroll - system.winHeight * 1.1 then
-             table.remove(objects.items, i)
+        if objects.items[i].body:getY() < scroll - system.winHeight * 1.1 then
+             --table.remove(objects.items, i)
+             objects.items[i].body:destroy()
 
         end
-        if -objects.items[i].red == 0 then
+        if objects.items[i].red == 0 then
             playSound(objects.audio.itemBreak,'stop')
             playSound(objects.audio.itemBreak,'play')
             system.score02 = system.score02 - 500 *  objects.items[i].scale
-            table.remove(objects.items, i)
+            --table.remove(objects.items, i)
+            objects.items[i].body:destroy()
             system.itemsDestroyed = system.itemsDestroyed + 1
            --print (score)
        end
@@ -131,19 +144,39 @@ function gameLevel02:draw()
     end
 
 
-    for i,v in ipairs (objects.items) do -- Draw Space junk
-        --print(i,v)
-        love.graphics.setColor(objects.items[i].red, 1.0, 1.0)
+    bodies = space:getBodies()
+    for i, body in ipairs(bodies) do
+        local userData = body:getUserData()
+        --print(userData)
+        if userData == "junk" then
+            local x, y = body:getPosition()
+            local angle = body:getAngle()
+            love.graphics.draw(objects.spacePeep.image, x, y)
 
-        love.graphics.draw(objects.items[i].image, objects.items[i].body:getX(), objects.items[i].body:getY(), objects.items[i].body:getAngle(), objects.items[i].scale, objects.items[i].scale, objects.items[i].width / 2, objects.items[i].height / 2)
+            if debugMode then
+        --        love.graphics.circle("line", objects.items[i].body:getX(), objects.items[i].body:getY(), objects.items[i].shape:getRadius())
+                --dr = objects.items[i].body:getWorldPoints(objects.items[i].shape:getRadius())
+                --dx , dy = objects.items[i].body:getWorldPoints(objects.items[i].shape:getPoint())
+                love.graphics.circle("line", x, y, 10)
+            end
+        end
+    end
+    
+
+
+    --for i,v in ipairs (junk) do -- Draw Space junk
+    --    print(i,v)
+    --    love.graphics.setColor(objects.items[i].red, 1.0, 1.0)
+
+    --    love.graphics.draw(objects.items[i].image, objects.items[i].body:getX(), objects.items[i].body:getY(), objects.items[i].body:getAngle(), objects.items[i].scale, objects.items[i].scale, objects.items[i].width / 2, objects.items[i].height / 2)
      
-        if debugMode then
-            love.graphics.circle("line", objects.items[i].body:getX(), objects.items[i].body:getY(), objects.items[i].shape:getRadius())
+    --    if debugMode then
+    --        love.graphics.circle("line", objects.items[i].body:getX(), objects.items[i].body:getY(), objects.items[i].shape:getRadius())
             --dr = objects.items[i].body:getWorldPoints(objects.items[i].shape:getRadius())
             --dx , dy = objects.items[i].body:getWorldPoints(objects.items[i].shape:getPoint())
             --love.graphics.circle("line", dx, dy, dr)
-        end
-    end
+    --    end
+    --end
 
 
 
@@ -186,7 +219,7 @@ end
 function gameLevel02:keypressed(key, scancode, isrepeat)
     if debugMode then
         if key == "s" then
-            system.level02over = true
+            objects.items = {}
         end
     end
     if key == "escape" then
@@ -197,31 +230,27 @@ function gameLevel02:keypressed(key, scancode, isrepeat)
 
 
 end
-function gameLevel02:genItems(id)
-    index = id
-    id = {}
-    id.image = objects.spacePeep.image
-    id.width = id.image:getWidth()
-    id.height = id.image:getHeight()
-    id.red = 1
-    id.green = 1
-    id.blue = 1
-    id.scale = love.math.random(0.8,1.5)
-    id.body = love.physics.newBody(space, love.math.random(0, system.winWidth), (0 - scroll - id.height), "dynamic")
-    id.shape = love.physics.newCircleShape(id.width / 2 * id.scale)
-    id.fixture = love.physics.newFixture(id.body, id.shape, 1)
-    id.fixture:setUserData(id)
-    id.body:setAngle(love.math.random(0,6.283185)) --6.283185
-    id.body:setAngularVelocity(love.math.random(-1.2,1.2))
-    table.insert(objects.items, index, id)
+function gameLevel02:genItems()
+    local image = objects.spacePeep.image
+    local width = image:getWidth()
+    local height = image:getHeight()
+    local red = 1
+    local green = 1
+    local blue = 1
+    local scale = love.math.random(0.8,1.5)
+    local body = love.physics.newBody(space, love.math.random(0, system.winWidth), (0 - scroll - height), "dynamic")
+    local shape = love.physics.newCircleShape(width / 2 * scale)
+    local fixture = love.physics.newFixture(body, shape, 1)
+    body:setUserData("junk")
+    body:setAngle(love.math.random(0,6.283185)) --6.283185
+    body:setAngularVelocity(love.math.random(-1.2,1.2))
+    body:applyForce(love.math.random(-200,200), love.math.random(-200, 200)) --apply force to give junk movement
+
+    --table.insert(objects.items, index, id)
 end
 
 
 function gameLevel02:leave()
-    for i in ipairs (objects.items) do
-        table.remove(objects.items, i)
-        print("Booooom!")
-    end
     objects.tower.body:destroy()
 
 end

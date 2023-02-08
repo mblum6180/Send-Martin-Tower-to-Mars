@@ -8,7 +8,7 @@ function gameLevel03:enter()
     objects.audio.fire:setVolume(1.0)
     system.score03 = system.score02
     landingSpeed = 0
-
+    objects.ground.landscape = {}
     objects.ground.landscape = gameLevel03:genLandscape()
 
     mars:setCallbacks(beginContact, endContact, preSolve, postSolve)
