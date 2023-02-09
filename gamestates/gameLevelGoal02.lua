@@ -57,6 +57,11 @@ function gameLevelGoal02:keypressed(key, scancode, isrepeat)
             Gamestate.switch(gameLevel03)
         end
     end
+    if key == "m" and objects.audio.mainTheme:isPlaying() then
+        playSound(objects.audio.mainTheme,'pause',false) -- pause BG music
+    elseif key == "m" then
+        playSound(objects.audio.mainTheme,'play',false) -- unpause BG music
+    end
 end
 
 

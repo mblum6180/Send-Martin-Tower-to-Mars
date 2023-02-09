@@ -187,9 +187,6 @@ function gameLevel03:genLandscape()
     return ground
 end
 
-function love.keypressed(key, code)
-    Gamestate.keypressed(key, code) -- pass multiple arguments
-end
 
 
 function gameLevel03:beginContact(obj1,obj2)
@@ -231,6 +228,11 @@ function gameLevel03:keypressed(key, scancode, isrepeat)
         print(system.winner)
         Gamestate.switch(gameLevelGoal03)
         end
+    end
+    if key == "m" and objects.audio.mainTheme:isPlaying() then
+        playSound(objects.audio.mainTheme,'pause',false) -- pause BG music
+    elseif key == "m" then
+        playSound(objects.audio.mainTheme,'play',false) -- unpause BG music
     end
 end
 

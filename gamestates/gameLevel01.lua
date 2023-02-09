@@ -151,6 +151,11 @@ function gameLevel01:keypressed(key, scancode, isrepeat)
         flow = flow + love.math.random(0.8, 1.2)
         system.launch = "left"
     end
+    if key == "m" and objects.audio.mainTheme:isPlaying() then
+        playSound(objects.audio.mainTheme,'pause',false) -- pause BG music
+    elseif key == "m" then
+        playSound(objects.audio.mainTheme,'play',false) -- unpause BG music
+    end
 
 
 end
