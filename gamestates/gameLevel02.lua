@@ -22,11 +22,17 @@ function gameLevel02:enter()
 
     objects.tower.body = love.physics.newBody(space, love.math.random(system.winWidth * 0.2, system.winWidth * 0.8), system.winHeight * 0.95, "dynamic")
     objects.tower.body:setLinearDamping(0.9)
+    info = {
+        name = "tower",
+        color = {1, 1, 1},
+        scale = 1
+    }
+    objects.tower.body:setUserData(info)
     objects.tower.shape = love.physics.newRectangleShape(objects.tower.width / 2 * system.scaling, objects.tower.height / 2 * system.scaling, objects.tower.width * system.scaling, objects.tower.height * system.scaling, 0)
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
     objects.tower.fixture:setRestitution(0.3) 
     objects.tower.fixture:setFriction(0.0)
-    objects.tower.fixture:setUserData("tower")
+
 
 end
 
@@ -47,11 +53,15 @@ function gameLevel02:update(dt)
     for i, body in ipairs(bodies) do
         local userData = body:getUserData()
         local x, y = body:getPosition()
-        if userData == "junk" then
+        if userData.name == "junk" then
             if -y < scroll - system.winHeight * 1.1 then
                 body:destroy()
-                --print("BOOOOOM")
+                print("BOOOOOM")
             end
+        end
+        if userData.color[1] <= 0 then
+            body:destroy()
+            print("BOOOOOM")
         end
     end
 
@@ -144,8 +154,7 @@ function gameLevel02:draw()
     bodies = space:getBodies()
     for i, body in ipairs(bodies) do
         local userData = body:getUserData()
-        --print(userData)
-        if userData == "junk" then
+        if userData.name == "junk" then
             local x, y = body:getPosition()
             local angle = body:getAngle()
             love.graphics.draw(objects.spacePeep.image, x, y)
@@ -198,17 +207,18 @@ end
 
 function gameLevel02:beginContact(obj1,obj2)
     if debugMode then
-        print(obj1,obj2, obj1:getUserData(), obj2:getUserData())
+        print(obj1,obj2, obj1:getBody():getUserData().name, obj2:getBody():getUserData().name)
 
     end
-    if obj1:getUserData() == "junk" and system.crashed == false then
+    if obj1:getBody():getUserData().name == "tower" and system.crashed == false then
             playSound(objects.audio.itemBreak,'stop')
             playSound(objects.audio.itemBreak,'play', true)
-            --obj1:getUserData().red = obj1:getUserData().red - .5
+            obj2:getBody():getUserData().color[1] = obj2:getBody():getUserData().color[1] - .5
             system.score02 = system.score02 - 50 -- *  obj1:getUserData().scale
             print("Bang1")
     end
-    if obj2:getUserData() =="junk" then
+
+    if obj1:getBody():getUserData().name =="tower" and system.crashed == false  then
         playSound(objects.audio.itemBreak,'stop')
         playSound(objects.audio.itemBreak,'play', true)
         --obj2:getUserData().red = obj2:getUserData().red - .5
@@ -246,8 +256,13 @@ function gameLevel02:genItems()
         local body = love.physics.newBody(space, love.math.random(0, system.winWidth), (0 - scroll - height), "dynamic")
         local shape = love.physics.newCircleShape(width / 2 * scale)
         local fixture = love.physics.newFixture(body, shape, 1)
-        body:setUserData("junk")
-        fixture:setUserData("junk")
+        info = {
+            name = "junk",
+            color = {1, 1, 1},
+            scale = 1
+        }
+        body:setUserData(info)
+        --print(body:getUserData())
         body:setAngle(love.math.random(0,6.283185)) --6.283185
         body:setAngularVelocity(love.math.random(-1.2,1.2))
         body:applyForce(love.math.random(-200,200), love.math.random(-200, 200)) --apply force to give junk movement
