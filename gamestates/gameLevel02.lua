@@ -26,6 +26,7 @@ function gameLevel02:enter()
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
     objects.tower.fixture:setRestitution(0.3) 
     objects.tower.fixture:setFriction(0.0)
+    objects.tower.fixture:setUserData("tower")
 
 end
 
@@ -39,21 +40,17 @@ function gameLevel02:update(dt)
 
 
     junkTimer = junkTimer + 1 *system.scaling * dt
-    if junkTimer > love.math.random(0.3,8)  and Gamestate.current() == gameLevel02 then -- 0.3,0.8
-        gameLevel02:genItems() --timer for junk
-        junkTimer = 0
-    end
+    gameLevel02:genItems() --timer for junk
 
-    bodies = space:getBodies()
+
+    bodies = space:getBodies() -- Junk cleanup 
     for i, body in ipairs(bodies) do
         local userData = body:getUserData()
         local x, y = body:getPosition()
-        --print(userData)
         if userData == "junk" then
-            print(scroll - system.winHeight * 0.7 )
-            if y < scroll - system.winHeight * 1.1 then
+            if -y < scroll - system.winHeight * 1.1 then
                 body:destroy()
-                print("BOOOOOM")
+                --print("BOOOOOM")
             end
         end
     end
@@ -201,17 +198,24 @@ end
 
 function gameLevel02:beginContact(obj1,obj2)
     if debugMode then
-        print(obj1,obj2)
-    end
-    if obj1:getUserData() == null and system.crashed == false then
+        print(obj1,obj2, obj1:getUserData(), obj2:getUserData())
 
-        if obj2:getUserData() then
+    end
+    if obj1:getUserData() == "junk" and system.crashed == false then
             playSound(objects.audio.itemBreak,'stop')
             playSound(objects.audio.itemBreak,'play', true)
-            obj2:getUserData().red = obj2:getUserData().red - .5
-            system.score02 = system.score02 - 50 *  obj2:getUserData().scale
-        end
+            --obj1:getUserData().red = obj1:getUserData().red - .5
+            system.score02 = system.score02 - 50 -- *  obj1:getUserData().scale
+            print("Bang1")
     end
+    if obj2:getUserData() =="junk" then
+        playSound(objects.audio.itemBreak,'stop')
+        playSound(objects.audio.itemBreak,'play', true)
+        --obj2:getUserData().red = obj2:getUserData().red - .5
+        system.score02 = system.score02 - 50 -- *  obj2:getUserData().scale
+        print("Bang2")
+    end
+
 
 
 end
@@ -231,28 +235,36 @@ function gameLevel02:keypressed(key, scancode, isrepeat)
 
 end
 function gameLevel02:genItems()
-    local image = objects.spacePeep.image
-    local width = image:getWidth()
-    local height = image:getHeight()
-    local red = 1
-    local green = 1
-    local blue = 1
-    local scale = love.math.random(0.8,1.5)
-    local body = love.physics.newBody(space, love.math.random(0, system.winWidth), (0 - scroll - height), "dynamic")
-    local shape = love.physics.newCircleShape(width / 2 * scale)
-    local fixture = love.physics.newFixture(body, shape, 1)
-    body:setUserData("junk")
-    body:setAngle(love.math.random(0,6.283185)) --6.283185
-    body:setAngularVelocity(love.math.random(-1.2,1.2))
-    body:applyForce(love.math.random(-200,200), love.math.random(-200, 200)) --apply force to give junk movement
-
-    --table.insert(objects.items, index, id)
+    if junkTimer > love.math.random(0.3,8)  and Gamestate.current() == gameLevel02 then -- 0.3,0.8
+        local image = objects.spacePeep.image
+        local width = image:getWidth()
+        local height = image:getHeight()
+        local red = 1
+        local green = 1
+        local blue = 1
+        local scale = love.math.random(0.8,1.5)
+        local body = love.physics.newBody(space, love.math.random(0, system.winWidth), (0 - scroll - height), "dynamic")
+        local shape = love.physics.newCircleShape(width / 2 * scale)
+        local fixture = love.physics.newFixture(body, shape, 1)
+        body:setUserData("junk")
+        fixture:setUserData("junk")
+        body:setAngle(love.math.random(0,6.283185)) --6.283185
+        body:setAngularVelocity(love.math.random(-1.2,1.2))
+        body:applyForce(love.math.random(-200,200), love.math.random(-200, 200)) --apply force to give junk movement
+        junkTimer = 0
+    end
 end
 
 
 function gameLevel02:leave()
-    objects.tower.body:destroy()
+    --objects.tower.body:destroy()
 
+    bodies = space:getBodies()
+    for i, body in ipairs(bodies) do
+        body:destroy()
+         print("BOOOOOM")
+
+    end
 end
 
 return gameLevel02
