@@ -44,7 +44,7 @@ end
 function gameLevelGoal01:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
     love.graphics.setFont(screenFont)
-    love.graphics.printf("Martin Tower is now flying through space toward Mars!\n\nNext, you'll need to navigate through the debris field.",
+    love.graphics.printf("Martin Tower is flying through the vast emptiness of space on its way to Mars!\nBut beware, navigating the treacherous meteoroid field will test your skills.\n\nIf Martin Tower collides with a meteoroid, precious fuel will be lost.\n\nAre you ready to tackle this challenge?",
         system.winWidth * 0.1, system.winHeight * 0.1, system.winWidth * 0.8, 'center', 0)
 
 end

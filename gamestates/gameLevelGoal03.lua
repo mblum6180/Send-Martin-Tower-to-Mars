@@ -43,12 +43,13 @@ end
 function gameLevelGoal03:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
     love.graphics.setFont(screenFont)
-    love.graphics.printf(("Debris Destroyed: "..system.itemsDestroyed.."\n"..
+    love.graphics.printf("Congratulations!\n\nMartin Tower has safely landed on the red planet, Mars. Your expert navigation skills and quick reflexes made this historic mission a success.\n\nWell done!",system.winWidth * 0.1, system.winHeight * 0.05, system.winWidth * 0.8, 'center', 0)
+    love.graphics.printf(("Meteoroids hit: "..system.itemsDestroyed.."\n"..
         "Fuel: "..math.floor(system.score03).."\n"..
         "Bonus: "..math.floor(system.bonus).."\n"..
         "Final Score: "..math.floor(system.score03) + math.floor(system.bonus)),
-        system.winWidth * 0.1, system.winHeight * 0.1, system.winWidth * 0.8, 'center', 0)
-    love.graphics.printf("Press an arrow key to restart",system.winWidth * 0.1, system.winHeight * 0.8, system.winWidth * 0.8, 'center', 0)
+        system.winWidth * 0.1, system.winHeight * 0.6, system.winWidth * 0.8, 'center', 0)
+    love.graphics.printf("Press an arrow key to restart",system.winWidth * 0.1, system.winHeight * 0.9, system.winWidth * 0.8, 'center', 0)
 
 
 end

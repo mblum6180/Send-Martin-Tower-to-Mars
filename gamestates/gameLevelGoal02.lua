@@ -44,7 +44,7 @@ end
 function gameLevelGoal02:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
     love.graphics.setFont(screenFont)
-    love.graphics.printf("Congrats, you navigated the debris field successfully!\n\nNow to land Martin tower softly at its new home on Mars.",
+    love.graphics.printf("Well done! You navigated the dangerous meteoroid field with ease.\n\nNext, it's time to softly land Martin Tower at its new home on the red planet, Mars.",
     system.winWidth * 0.1, system.winHeight * 0.1, system.winWidth * 0.8, 'center', 0)
 end
 
