@@ -164,7 +164,7 @@ function gameLevel01:leave()
     bodies = earth:getBodies()
     for i, body in ipairs(bodies) do
         body:destroy()
-         print("BOOOOOM")
+         --print("BOOOOOM")
 
     end
 end

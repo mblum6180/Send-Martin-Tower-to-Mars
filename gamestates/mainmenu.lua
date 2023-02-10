@@ -24,7 +24,9 @@ function mainMenu:enter()
     textHeight = text:getHeight()
 
     objects.audio.mainTheme:setLooping(true) -- play music forever
-    playSound(objects.audio.mainTheme,'play',false) -- play BG music
+    if objects.audio.mainTheme:tell() == 0 then --check if at start
+        playSound(objects.audio.mainTheme,'play',false) -- play BG music
+    end
 end
     
     

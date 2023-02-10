@@ -76,7 +76,7 @@ function gameLevel03:update(dt)
                     system.bonus = (44 - system.bonus) * (100 - landingSpeed)
                 end
 
-                print(landingSpeed)
+                --print(landingSpeed)
 
             end
         end
@@ -164,9 +164,6 @@ function gameLevel03:genLandscape()
         if platform < 10 then
             y = ground[#ground - 1]
         else
-            --y = ground[#ground - 1] + 10 --v1
-            --y = love.math.random(200, system.winHeight)/4 --v2
-            --y = love.math.random(ground[#ground - 1] - (system.winWidth / slices), 300) -- v3
             y = love.math.random(ground[#ground - 1] - love.math.random(0,100), 300) -- v4
         end
             
@@ -180,10 +177,7 @@ function gameLevel03:genLandscape()
         table.insert(ground, v)
     end
 
-    --for i,v in ipairs(ground) do print(i,v) end
-
-    
-
+ 
     return ground
 end
 
@@ -195,20 +189,20 @@ function gameLevel03:beginContact(obj1,obj2)
     --print(objects.tower.body:getAngularVelocity())
     if landingSpeed == nil then
         landingSpeed = y
-        print(landingSpeed)
+        --print(landingSpeed)
     end
     if y < 100 then
         gameLevel03:landed()
 
     else 
-        print"Boom!"
+        --print"Boom!"
         gameLevel03:crash()
 
     end
 end
 
 function gameLevel03:endContact(obj1,obj2)
-    print("not on Ground")
+    --print("not on Ground")
     system.landed = false
 end
 
@@ -225,8 +219,8 @@ function gameLevel03:keypressed(key, scancode, isrepeat)
         love.event.quit()
     elseif key == "space" or key =="left" or key =="right" or key =="down" or key =="up" then
         if system.winner == true then
-        print(system.winner)
-        Gamestate.switch(gameLevel03)
+        --print(system.winner)
+        Gamestate.switch(gameLevelGoal03)
         end
     end
     if key == "m" and objects.audio.mainTheme:isPlaying() then
@@ -269,7 +263,7 @@ function gameLevel03:crash()
 end
 
 function gameLevel03:landed()
-    print("landed")
+    --print("landed")
     system.landed = true
 
 end
@@ -278,7 +272,7 @@ function gameLevel03:leave()
     bodies = mars:getBodies()
     for i, body in ipairs(bodies) do
         body:destroy()
-         print("BOOOOOM")
+         --print("BOOOOOM")
     end
 end
 

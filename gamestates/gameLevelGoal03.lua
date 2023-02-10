@@ -67,7 +67,7 @@ function gameLevelGoal03:keypressed(key, scancode, isrepeat)
             system.BGcolorR = 1
             system.BGcolorG = 1
             system.BGcolorB = 1
-            system.score01 = 0
+            system.score01 = math.floor(system.score03) + math.floor(system.bonus)
             system.score02 = 0
             system.score03 = 0
             system.score = 0

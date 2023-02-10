@@ -69,7 +69,6 @@ function gameLevel02:update(dt)
     for i in ipairs (objects.items) do
         --print(-objects.items[i].body:getY(), scroll)
         if objects.items[i].body:getY() < scroll - system.winHeight * 1.1 then
-             --table.remove(objects.items, i)
              objects.items[i].body:destroy()
 
         end
@@ -77,7 +76,6 @@ function gameLevel02:update(dt)
             playSound(objects.audio.itemBreak,'stop')
             playSound(objects.audio.itemBreak,'play')
             system.score02 = system.score02 - 500 *  objects.items[i].scale
-            --table.remove(objects.items, i)
             objects.items[i].body:destroy()
             system.itemsDestroyed = system.itemsDestroyed + 1
            --print (score)
@@ -142,8 +140,6 @@ function gameLevel02:draw()
     love.graphics.translate(0, scroll)
   
 
-
-
     love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), 
         objects.tower.body:getAngle(), system.scaling, system.scaling, 0, 0) -- Draw Tower
     if debugMode then
@@ -169,24 +165,6 @@ function gameLevel02:draw()
         end
     end
     
-
-
-    --for i,v in ipairs (junk) do -- Draw Space junk
-    --    print(i,v)
-    --    love.graphics.setColor(objects.items[i].red, 1.0, 1.0)
-
-    --    love.graphics.draw(objects.items[i].image, objects.items[i].body:getX(), objects.items[i].body:getY(), objects.items[i].body:getAngle(), objects.items[i].scale, objects.items[i].scale, objects.items[i].width / 2, objects.items[i].height / 2)
-     
-    --    if debugMode then
-    --        love.graphics.circle("line", objects.items[i].body:getX(), objects.items[i].body:getY(), objects.items[i].shape:getRadius())
-            --dr = objects.items[i].body:getWorldPoints(objects.items[i].shape:getRadius())
-            --dx , dy = objects.items[i].body:getWorldPoints(objects.items[i].shape:getPoint())
-            --love.graphics.circle("line", dx, dy, dr)
-    --    end
-    --end
-
-
-
     love.graphics.setColor(1.0, 0.0, 0.0, 1)
     love.graphics.setFont(scoreFont)
     love.graphics.print(math.floor(system.score02), system.winWidth * 0.1, system.winHeight * 0.1 + -scroll, 0)
@@ -212,16 +190,18 @@ function gameLevel02:beginContact(obj1,obj2)
 
     end
     if obj1:getBody():getUserData().name == "tower" and system.crashed == false then
-            playSound(objects.audio.itemBreak,'stop')
-            playSound(objects.audio.itemBreak,'play', true)
-            obj2:getBody():getUserData().color[1] = obj2:getBody():getUserData().color[1] - .5
-            system.score02 = system.score02 - 50 *   obj2:getBody():getUserData().size
-            --print("Bang1")
+        playSound(objects.audio.itemBreak,'stop')
+        playSound(objects.audio.itemBreak,'play', true)
+        system.itemsDestroyed = system.itemsDestroyed + 1
+        obj2:getBody():getUserData().color[1] = obj2:getBody():getUserData().color[1] - .5
+        system.score02 = system.score02 - 50 *   obj2:getBody():getUserData().size
+        --print("Bang1")
     end
 
     if obj2:getBody():getUserData().name =="tower" and system.crashed == false  then
         playSound(objects.audio.itemBreak,'stop')
         playSound(objects.audio.itemBreak,'play', true)
+        system.itemsDestroyed = system.itemsDestroyed + 1
         obj1:getBody():getUserData().color[1] = obj1:getBody():getUserData().color[1] - .5
         system.score02 = system.score02 - 50 * obj1:getBody():getUserData().size
         --print("Bang2")
