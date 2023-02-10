@@ -156,9 +156,18 @@ function gameLevel01:keypressed(key, scancode, isrepeat)
     elseif key == "m" then
         playSound(objects.audio.mainTheme,'play',false) -- unpause BG music
     end
-
-
 end
+
+function gameLevel01:touchpressed(id, x, y, dx, dy, pressure)
+    if x < love.graphics.getWidth() / 2 then
+      flow = flow + love.math.random(8, 16) / 10
+      system.launch = "left"
+    else
+      flow = flow + love.math.random(8, 16) / 10
+      system.launch = "right"
+    end
+  end
+
 
 function gameLevel01:leave()
     bodies = earth:getBodies()

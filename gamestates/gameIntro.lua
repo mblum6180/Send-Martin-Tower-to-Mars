@@ -67,6 +67,13 @@ function gameIntro:keypressed(key, scancode, isrepeat)
     end
 end
 
+function gameIntro:touchpressed(id, x, y, pressure)
+    if system.timer >= 3 then
+      objects.audio.mainTheme:setVolume(0.42)
+      Gamestate.switch(gameIntro02)
+    end
+  end
+
 
 
 return gameIntro
