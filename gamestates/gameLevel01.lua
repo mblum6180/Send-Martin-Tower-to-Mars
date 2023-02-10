@@ -52,7 +52,7 @@ function gameLevel01:update(dt)
             --objects.tower.body:setY(objects.tower.body:getY() - 256 * dt)
         end
         if system.score01 > 0 then
-            system.score01 = system.score01 - 351 * dt
+            system.score01 = system.score01 - 200 * dt
         else 
             system.score01 = 0
         end
@@ -145,10 +145,10 @@ function gameLevel01:keypressed(key, scancode, isrepeat)
         love.event.quit()
     end
     if love.keyboard.isDown("right") and system.launch == "left" then
-        flow = flow + love.math.random(0.8, 1.1)
+        flow = flow + love.math.random(8, 12) / 10
         system.launch = "right"
     elseif love.keyboard.isDown("left") and system.launch == "right" then
-        flow = flow + love.math.random(0.8, 1.2)
+        flow = flow + love.math.random(8, 12) / 10
         system.launch = "left"
     end
     if key == "m" and objects.audio.mainTheme:isPlaying() then

@@ -56,12 +56,12 @@ function gameLevel02:update(dt)
         if userData.name == "junk" then
             if -y < scroll - system.winHeight * 1.1 then
                 body:destroy()
-                print("BOOOOOM")
+                --print("BOOOOOM")
             end
         end
         if userData.color[1] <= 0 then
             body:destroy()
-            print("BOOOOOM")
+            --print("BOOOOOM")
         end
     end
 
@@ -155,14 +155,15 @@ function gameLevel02:draw()
     for i, body in ipairs(bodies) do
         local userData = body:getUserData()
         local radius = body:getFixtures()[1]:getShape():getRadius() -- Get the radius of the first fixture of the body
-
         if userData.name == "junk" then
+            --print(radius)
             local x, y = body:getPosition()
             local angle = body:getAngle()
             love.graphics.setColor(userData.color)
-            love.graphics.draw(objects.spacePeep.image, x, y, angle, userData.size, userData.size, radius / 2, radius / 2)
+            love.graphics.draw(objects.spacePeep.image, x, y, angle, userData.size, userData.size, radius / userData.size, radius / userData.size)
 
             if debugMode then
+                love.graphics.setColor(1.0, 1.0, 1.0, 1)
                 love.graphics.circle("line", x, y, radius)
             end
         end
@@ -215,15 +216,15 @@ function gameLevel02:beginContact(obj1,obj2)
             playSound(objects.audio.itemBreak,'play', true)
             obj2:getBody():getUserData().color[1] = obj2:getBody():getUserData().color[1] - .5
             system.score02 = system.score02 - 50 *   obj2:getBody():getUserData().size
-            print("Bang1")
+            --print("Bang1")
     end
 
     if obj2:getBody():getUserData().name =="tower" and system.crashed == false  then
         playSound(objects.audio.itemBreak,'stop')
         playSound(objects.audio.itemBreak,'play', true)
-        --obj2:getUserData().red = obj2:getUserData().red - .5
+        obj1:getBody():getUserData().color[1] = obj1:getBody():getUserData().color[1] - .5
         system.score02 = system.score02 - 50 * obj1:getBody():getUserData().size
-        print("Bang2")
+        --print("Bang2")
     end
 
 
@@ -255,9 +256,15 @@ function gameLevel02:genItems()
         local width = image:getWidth()
         local height = image:getHeight()
         local red = 1
-        local green = love.math.random(0.6,1)
-        local blue = love.math.random(0.8,1)
-        local scale = love.math.random(0.8,1.5)
+        local green = love.math.random(6, 10) / 10
+        local blue = love.math.random(8,10) / 10
+        print(red,green,blue)
+        local scale = love.math.random(8,15) / 10
+        print(scale)
+        if scale >= 1.45 then
+            print("BIGGGG")
+            scale = love.math.random(14,32) / 10
+        end
         local body = love.physics.newBody(space, love.math.random(0, system.winWidth), (0 - scroll - height), "dynamic")
         local shape = love.physics.newCircleShape(width / 2 * scale)
         local fixture = love.physics.newFixture(body, shape, 1)
@@ -268,9 +275,9 @@ function gameLevel02:genItems()
         }
         body:setUserData(info)
         --print(body:getUserData())
-        body:setAngle(love.math.random(0,6.283185)) --6.283185
-        body:setAngularVelocity(love.math.random(-1.2,1.2))
-        body:applyForce(love.math.random(-200,200), love.math.random(-200, 200)) --apply force to give junk movement
+        body:setAngle(love.math.random(0,6)) --6.283185
+        body:setAngularVelocity(love.math.random(-12,12) / 10)
+        body:applyForce(love.math.random(-300,300), love.math.random(-300, 300)) --apply force to give junk movement
         junkTimer = 0
     end
 end
