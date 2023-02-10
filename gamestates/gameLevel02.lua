@@ -258,11 +258,9 @@ function gameLevel02:genItems()
         local red = 1
         local green = love.math.random(6, 10) / 10
         local blue = love.math.random(8,10) / 10
-        print(red,green,blue)
         local scale = love.math.random(8,15) / 10
-        print(scale)
         if scale >= 1.45 then
-            print("BIGGGG")
+            --print("BIGGGG")
             scale = love.math.random(14,32) / 10
         end
         local body = love.physics.newBody(space, love.math.random(0, system.winWidth), (0 - scroll - height), "dynamic")
@@ -289,7 +287,7 @@ function gameLevel02:leave()
     bodies = space:getBodies()
     for i, body in ipairs(bodies) do
         body:destroy()
-         print("BOOOOOM")
+         --print("BOOOOOM")
 
     end
 end

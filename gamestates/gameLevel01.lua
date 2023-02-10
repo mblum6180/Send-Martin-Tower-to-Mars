@@ -145,10 +145,10 @@ function gameLevel01:keypressed(key, scancode, isrepeat)
         love.event.quit()
     end
     if love.keyboard.isDown("right") and system.launch == "left" then
-        flow = flow + love.math.random(8, 12) / 10
+        flow = flow + love.math.random(8, 16) / 10
         system.launch = "right"
     elseif love.keyboard.isDown("left") and system.launch == "right" then
-        flow = flow + love.math.random(8, 12) / 10
+        flow = flow + love.math.random(8, 16) / 10
         system.launch = "left"
     end
     if key == "m" and objects.audio.mainTheme:isPlaying() then
@@ -161,9 +161,12 @@ function gameLevel01:keypressed(key, scancode, isrepeat)
 end
 
 function gameLevel01:leave()
+    bodies = earth:getBodies()
+    for i, body in ipairs(bodies) do
+        body:destroy()
+         print("BOOOOOM")
 
-    objects.tower.body:destroy()
-
+    end
 end
 
 return gameLevel01

@@ -10,6 +10,7 @@ function love.load()
   gameLevelGoal02 = require 'gamestates.gameLevelGoal02'
   gameLevelGoal03 = require 'gamestates.gameLevelGoal03'
   gameIntro = require 'gamestates.gameIntro'
+  gameIntro02 = require 'gamestates.gameIntro02'
   require "objects"
 
 

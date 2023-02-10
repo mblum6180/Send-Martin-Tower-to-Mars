@@ -1,9 +1,9 @@
---! file: gameIntro.lua
+--! file: gameIntro02.lua
 
 Gamestate = require 'libs.hump.gamestate'
-gameIntro = {}
+gameIntro02 = {}
 
-function gameIntro:enter()
+function gameIntro02:enter()
     windowWidth = love.graphics.getWidth()
     windowHeight = love.graphics.getHeight()
     system.timer = 1
@@ -19,7 +19,7 @@ function gameIntro:enter()
 end
     
     
-function gameIntro:update(dt)
+function gameIntro02:update(dt)
     system.timer = system.timer + dt
     if bgAlpha ~= 1 then
         if system.timer > bgFadein then 
@@ -40,15 +40,15 @@ function gameIntro:update(dt)
 
 end
     
-function gameIntro:draw()
+function gameIntro02:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
     love.graphics.setFont(screenFont)
-    love.graphics.printf("Martin Tower, once a Bethlehem landmark, is now a symbol of human determination and technological advancement. As a rocket ship, it will embark on a journey to Mars to serve as the foundation for a new colony. The launch will mark the beginning of humanity's expansion beyond Earth and solidify our presence on the Red Planet. Martin Tower will stand as a testament to our unrelenting spirit of exploration and innovation. The world awaits its historic journey.",
+    love.graphics.printf("Get ready to blast off to Mars with Martin Tower!\n\nFill up the fuel tank for launch by rapidly pressing the Left and Right keys.\n\nSet off on your mission to Mars now!",
         system.winWidth * 0.1, system.winHeight * 0.1, system.winWidth * 0.8, 'center', 0)
 
 end
 
-function gameIntro:keypressed(key, scancode, isrepeat)
+function gameIntro02:keypressed(key, scancode, isrepeat)
     if key == "s" then
         score = score + 1
         print(score)
@@ -57,7 +57,7 @@ function gameIntro:keypressed(key, scancode, isrepeat)
         love.event.quit()
     elseif system.timer >= 3 then
         if key == "space" or key =="left" or key =="right" or key =="down" or key =="up" then
-            Gamestate.switch(gameIntro02)
+            Gamestate.switch(gameLevel01)
         end
     end
     if key == "m" and objects.audio.mainTheme:isPlaying() then
@@ -69,4 +69,4 @@ end
 
 
 
-return gameIntro
+return gameIntro02

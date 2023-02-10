@@ -226,7 +226,7 @@ function gameLevel03:keypressed(key, scancode, isrepeat)
     elseif key == "space" or key =="left" or key =="right" or key =="down" or key =="up" then
         if system.winner == true then
         print(system.winner)
-        Gamestate.switch(gameLevelGoal03)
+        Gamestate.switch(gameLevel03)
         end
     end
     if key == "m" and objects.audio.mainTheme:isPlaying() then
@@ -275,9 +275,11 @@ function gameLevel03:landed()
 end
 
 function gameLevel03:leave()
-
-    objects.tower.body:destroy()
-
+    bodies = mars:getBodies()
+    for i, body in ipairs(bodies) do
+        body:destroy()
+         print("BOOOOOM")
+    end
 end
 
 return gameLevel03
