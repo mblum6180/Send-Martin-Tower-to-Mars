@@ -120,7 +120,7 @@ function levelSelect(level)
   elseif level == "03" then
     Gamestate.switch(gameLevel03)
   else
-    Gamestate.switch(mainMenu)
+    Gamestate.switch(gameIntro)
   end
 end
 
