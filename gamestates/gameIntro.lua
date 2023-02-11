@@ -43,7 +43,7 @@ end
 function gameIntro:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
     love.graphics.setFont(screenFont)
-    love.graphics.printf("Martin Tower, once a Bethlehem landmark, is now a symbol of human determination and technological advancement. As a rocket ship, it will embark on a journey to Mars to serve as the foundation for a new colony. The launch will mark the beginning of humanity's expansion beyond Earth and solidify our presence on the Red Planet. Martin Tower will stand as a testament to our unrelenting spirit of exploration and innovation. The world awaits its historic journey.",
+    love.graphics.printf("Martin Tower, once a Bethlehem landmark, is now a symbol of human determination and technological advancement.\n\nAs a rocket ship, it will embark on a journey to Mars to serve as the foundation for a new colony.\n\nMartin Tower will stand as a testament to our unrelenting spirit of exploration and innovation. The world awaits its historic journey.",
         system.winWidth * 0.1, system.winHeight * 0.1, system.winWidth * 0.8, 'center', 0)
 
 end

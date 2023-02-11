@@ -60,32 +60,7 @@ function gameLevelGoal03:keypressed(key, scancode, isrepeat)
         love.event.quit()
     elseif system.timer >= 3 then
         if key == "space" or key =="left" or key =="right" or key =="down" or key =="up" then
-            system.level01over = false
-            system.level02over = false
-            system.level03over = false
-            system.BGScale = 1
-            system.BGcolorR = 1
-            system.BGcolorG = 1
-            system.BGcolorB = 1
-            system.score01 = math.floor(system.score03) + math.floor(system.bonus)
-            system.score02 = 0
-            system.score03 = 0
-            system.score = 0
-            system.landed = false
-            system.landedTimer = 2
-            system.launch = "left"
-            system.crashed = false
-            system.winner = false
-            system.timer = 0
-            system.bonus = 0
-            objects.tower.strengthTorque = 2000
-            objects.tower.strengthMain = 2000
-            objects.tower.strengthSide = 300
-            objects.tower.fire = false
-            objects.tower.empty = false
-            objects.tower.crashed = false
-
-            Gamestate.switch(mainMenu)
+            Gamestate.switch(gameLevel03)
         end
     end
     if key == "m" and objects.audio.mainTheme:isPlaying() then
@@ -97,11 +72,37 @@ end
 function gameLevelGoal03:touchpressed(id, x, y, pressure)
     if system.timer >= 3 then
       objects.audio.mainTheme:setVolume(0.42)
-      Gamestate.switch(mainMenu)
+      Gamestate.switch(gameLevel03)
     end
   end
 
+function gameLevel03:leave()
+    system.level01over = false
+    system.level02over = false
+    system.level03over = false
+    system.BGScale = 1
+    system.BGcolorR = 1
+    system.BGcolorG = 1
+    system.BGcolorB = 1
+    system.score01 = math.floor(system.score03) + math.floor(system.bonus)
+    system.score02 = 0
+    system.score03 = 0
+    system.score = 0
+    system.landed = false
+    system.landedTimer = 2
+    system.launch = "left"
+    system.crashed = false
+    system.winner = false
+    system.timer = 0
+    system.bonus = 0
+    objects.tower.strengthTorque = 2000
+    objects.tower.strengthMain = 2000
+    objects.tower.strengthSide = 300
+    objects.tower.fire = false
+    objects.tower.empty = false
+    objects.tower.crashed = false
 
+end
 
 
 

@@ -14,7 +14,7 @@ function gameLevel03:enter()
     mars:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
     love.graphics.setBackgroundColor(0.92, 0.70, 0.60)
-    objects.ground.body = love.physics.newBody(mars, 0, love.graphics.getPixelHeight() * 0.5)
+    objects.ground.body = love.physics.newBody(mars, 0, system.winHeight * 0.5)
     objects.ground.shape = love.physics.newChainShape(true, objects.ground.landscape, "static")
     objects.ground.fixture = love.physics.newFixture(objects.ground.body, objects.ground.shape)
 
@@ -42,11 +42,17 @@ end
 
 function gameLevel03:update(dt)
     mars:update(dt) 
-    if objects.tower.crashed == false then
+    if objects.tower.crashed == false and objects.tower.empty == false then
         gameLevel03:input()
     end
     edge(objects.tower.body:getX(), objects.tower.body:getY())
 
+
+    if system.moveRight then
+        objects.tower.body:applyTorque(objects.tower.strengthTorque)
+    elseif system.moveLeft then
+        objects.tower.body:applyTorque(-objects.tower.strengthTorque)
+    end
     
     if system.score03 <= 0 then 
         system.score03 = 0
@@ -150,9 +156,9 @@ function gameLevel03:draw()
 
 end
 
-function gameLevel03:genLandscape()
+function gameLevel03:genLandscape()  --Height Width
 
-    local ground = {000,000, 001,200} --generate random landscape
+    local ground = {000,000, 001,love.math.random(system.winHeight * 0.1,system.winHeight * 0.3),} --generate random landscape
 
 
     local slices = love.math.random(18,30)
@@ -162,9 +168,10 @@ function gameLevel03:genLandscape()
 
         local platform = love.math.random(1, 100) --creates level platforms to land on
         if platform < 10 then
-            y = ground[#ground - 1]
+            y = ground[#ground - 1], 500
+
         else
-            y = love.math.random(ground[#ground - 1] - love.math.random(0,100), 300) -- v4
+            y = love.math.random(ground[#ground - 1] - love.math.random(0,system.winHeight * 0.1), system.winHeight * 0.32) -- v4 The first value is the last element in the array "ground" minus a random number between 0 and 100. The second value is 300. The random number generated will be stored in the variable "y".
         end
             
 
@@ -172,7 +179,7 @@ function gameLevel03:genLandscape()
     end
 
 
-    local groundReturn = {system.winWidth,love.math.random(0, system.winHeight)/2, system.winWidth,500, 000,500}
+    local groundReturn = {system.winWidth,love.math.random(0, system.winHeight)/2, system.winWidth,system.winHeight, 000,system.winHeight}
     for i,v in ipairs(groundReturn) do
         table.insert(ground, v)
     end
@@ -231,32 +238,48 @@ function gameLevel03:keypressed(key, scancode, isrepeat)
 end
 
 function gameLevel03:input()
+    if love.keyboard.isDown("right") then
+        objects.tower.body:applyTorque(objects.tower.strengthTorque)
+    elseif love.keyboard.isDown("left") then
+        objects.tower.body:applyTorque(-objects.tower.strengthTorque)
+    end
+    if love.keyboard.isDown("up") or system.moveGas then
+        objects.tower.body:applyForce(objects.tower.strengthMain * math.cos(objects.tower.body:getAngle() - 1.57), objects.tower.strengthMain * math.sin(objects.tower.body:getAngle() - 1.57))
+        objects.tower.fire = true
+    else objects.tower.fire = false
+    end
+    --if love.keyboard.isDown("a") then
+    --    objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 3.14), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 3.14))
+    --elseif love.keyboard.isDown("d") then
+    --    objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 0), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 0))
+    --end
 
-    if objects.tower.empty == false then
-        if love.keyboard.isDown("right") then
-            objects.tower.body:applyTorque(objects.tower.strengthTorque)
-        elseif love.keyboard.isDown("left") then
-            objects.tower.body:applyTorque(-objects.tower.strengthTorque)
-        end
-        if love.keyboard.isDown("up") then
-            objects.tower.body:applyForce(objects.tower.strengthMain * math.cos(objects.tower.body:getAngle() - 1.57), objects.tower.strengthMain * math.sin(objects.tower.body:getAngle() - 1.57))
-            objects.tower.fire = true
-        else objects.tower.fire = false
-        end
-        --if love.keyboard.isDown("a") then
-        --    objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 3.14), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 3.14))
-        --elseif love.keyboard.isDown("d") then
-        --    objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 0), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 0))
-        --end
+end
+
+function gameLevel03:touchpressed(id, x, y, dx, dy, pressure)
+    print(id, x, y, pressure)
+    if x < system.winWidth * 0.3 then
+        system.moveLeft = true
+    elseif x > system.winWidth * 0.7 then
+        system.moveRight = true
+    else
+        system.moveGas = true
+    end
+    if system.winner == true then
+        --print(system.winner)
+        Gamestate.switch(gameLevelGoal03)
     end
 end
 
-function gameLevel03:touchpressed(id, x, y, pressure)
-
-    print(x,y)
-
+function gameLevel03:touchreleased(id, x, y, pressure)
+    if x < system.winWidth * 0.3 then
+        system.moveLeft = false
+    elseif x > system.winWidth * 0.7 then
+        system.moveRight = false
+    else
+        system.moveGas = false
+    end
 end
-
 
 function gameLevel03:crash()
     if objects.tower.crashed == false then
@@ -278,7 +301,7 @@ function gameLevel03:leave()
     bodies = mars:getBodies()
     for i, body in ipairs(bodies) do
         body:destroy()
-         --print("BOOOOOM")
+         print("BOOOOOM")
     end
 end
 

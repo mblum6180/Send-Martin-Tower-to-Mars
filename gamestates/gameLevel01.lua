@@ -110,8 +110,8 @@ function gameLevel01:draw()
   
     love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)  
     love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), 
-        objects.tower.body:getAngle(), system.scaling * towerScaling, system.scaling * towerScaling, 
-        objects.tower.width / 2 * system.scaling, objects.tower.height / 2 * system.scaling) -- Draw Tower
+        objects.tower.body:getAngle(), system.scaling * towerScaling, system.scaling * towerScaling,
+        objects.tower.width / towerScaling, objects.tower.height/towerScaling) -- Draw Tower
     if debugMode then
         love.graphics.polygon("line", objects.tower.body:getWorldPoints(objects.tower.shape:getPoints()))
     end

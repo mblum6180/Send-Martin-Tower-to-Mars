@@ -6,7 +6,7 @@ function love.conf(t)
     t.window.resizable = false
     t.modules.joystick = false 
     t.modules.mouse = false 
-    t.window.width = 2000
+    t.window.width = 1280
     t.window.height = 720
 
 end

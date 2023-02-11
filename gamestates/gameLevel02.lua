@@ -84,7 +84,7 @@ function gameLevel02:update(dt)
 
 
     system.BGScale = system.BGScale + 0.005 * dt
-    if objects.tower.body:getY() < -2500 then -- This needs updating!!!!!!
+    if objects.tower.body:getY() < -system.winHeight * 3.4 then 
         --objects.tower.fixture:destroy()
         system.level02over = true
     end
@@ -272,12 +272,10 @@ end
 
 
 function gameLevel02:leave()
-    --objects.tower.body:destroy()
-
     bodies = space:getBodies()
     for i, body in ipairs(bodies) do
         body:destroy()
-         --print("BOOOOOM")
+         print("BOOOOOM")
 
     end
 end
