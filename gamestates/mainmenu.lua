@@ -71,7 +71,7 @@ function mainMenu:keypressed(key, scancode, isrepeat)
     elseif system.timer >= 3 then
         if key == "space" or key =="left" or key =="right" or key =="down" or key =="up" then
             objects.audio.mainTheme:setVolume(0.42)
-            Gamestate.switch(gameIntro)
+            Gamestate.switch(gameIntro02)
         end
     end
     if key == "m" and objects.audio.mainTheme:isPlaying() then
@@ -85,7 +85,7 @@ end
 function mainMenu:touchpressed(id, x, y, pressure)
     if system.timer >= 3 then
       objects.audio.mainTheme:setVolume(0.42)
-      Gamestate.switch(gameIntro)
+      Gamestate.switch(gameIntro02)
     end
   end
 

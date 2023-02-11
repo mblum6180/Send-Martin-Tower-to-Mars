@@ -49,15 +49,11 @@ function gameIntro:draw()
 end
 
 function gameIntro:keypressed(key, scancode, isrepeat)
-    if key == "s" then
-        score = score + 1
-        print(score)
-    end
     if key == "escape" then
         love.event.quit()
     elseif system.timer >= 3 then
         if key == "space" or key =="left" or key =="right" or key =="down" or key =="up" then
-            Gamestate.switch(gameIntro02)
+            Gamestate.switch(mainMenu)
         end
     end
     if key == "m" and objects.audio.mainTheme:isPlaying() then
@@ -70,7 +66,7 @@ end
 function gameIntro:touchpressed(id, x, y, pressure)
     if system.timer >= 3 then
       objects.audio.mainTheme:setVolume(0.42)
-      Gamestate.switch(mainmenu)
+      Gamestate.switch(mainMenu)
     end
   end
 

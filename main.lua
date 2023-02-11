@@ -37,7 +37,7 @@ function love.load()
     print("Debug mode = ", debugMode)
     levelSelect(arg[3])
   else
-    Gamestate.switch(mainMenu)
+    Gamestate.switch(gameIntro)
   end
 
   if debugMode then
