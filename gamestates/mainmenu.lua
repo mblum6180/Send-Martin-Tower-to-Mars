@@ -4,8 +4,6 @@ Gamestate = require 'libs.hump.gamestate'
 mainMenu = {}
 
 function mainMenu:enter()
-    windowWidth = love.graphics.getWidth()
-    windowHeight = love.graphics.getHeight()
     system.timer = 1
     bgAlpha = 0
     titleAlpha = 0
@@ -19,6 +17,8 @@ function mainMenu:enter()
     backgroundWidth = background:getWidth()
     backgroundHeight = background:getHeight()
     title = love.graphics.newImage("assets/title8bit.png")
+    titleWidth = title:getWidth()
+    titleHeight = title:getHeight()
     text = love.graphics.newImage("assets/Press-space-to-start8bit.png")
     textWidth = text:getWidth()
     textHeight = text:getHeight()
@@ -53,13 +53,13 @@ end
     
 function mainMenu:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
-    love.graphics.draw(background, 0, 0, 0, system.winWidth / backgroundWidth, system.winHeight / backgroundHeight)
+    love.graphics.draw(background, 0, 0, 0, system.winWidth / backgroundWidth, system.winHeight / backgroundHeight) -- Draw BG
     love.graphics.setColor(255, 255, 255, titleAlpha)
-    love.graphics.draw(title, 500,100, 0, 3, 3) -- Draw title 
+    love.graphics.draw(title, system.winWidth * 0.5, system.winHeight * 0.2, 0, 3 * system.scaling , 3 * system.scaling, titleWidth / 2, titleHeight / 2) -- Draw title 
     love.graphics.setFont(screenFont)
     love.graphics.printf(system.version, -system.scaling * 20, system.winHeight * 0.9, system.winWidth , 'right', 0) -- draw version
     love.graphics.setColor(255, 255, 255, textAlpha)
-    love.graphics.draw(text, windowWidth / 2, (windowHeight / 3) * 2, 0, 3, 3 , textWidth / 2, textHeight / 2) -- Draw title 
+    love.graphics.draw(text, system.winWidth * 0.5, (system.winHeight / 3) * 2, 0, 3 * system.scaling, 3  * system.scaling, textWidth / 2, textHeight / 2) -- Draw Press start 
 
    
 

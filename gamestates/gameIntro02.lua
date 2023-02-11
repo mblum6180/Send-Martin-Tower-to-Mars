@@ -72,7 +72,7 @@ function gameIntro02:touchpressed(id, x, y, pressure)
       objects.audio.mainTheme:setVolume(0.42)
       Gamestate.switch(gameLevel01)
     end
-  end
+end
 
 
 return gameIntro02

@@ -251,6 +251,12 @@ function gameLevel03:input()
     end
 end
 
+function gameLevel03:touchpressed(id, x, y, pressure)
+
+    print(x,y)
+
+end
+
 
 function gameLevel03:crash()
     if objects.tower.crashed == false then

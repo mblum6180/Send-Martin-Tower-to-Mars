@@ -14,18 +14,17 @@ function gameLevel01:enter()
     bgFadein = 1
     countDown = 10
     flow = 0
+    towerScaling = 3
 
 
-    objects.ground.body = love.physics.newBody(earth, system.winWidth/2, love.graphics.getPixelHeight() - 42)
-    objects.ground.shape = love.physics.newRectangleShape(system.winWidth, 150)
+    objects.ground.body = love.physics.newBody(earth, system.winWidth/2, system.winHeight * 0.95)
+    objects.ground.shape = love.physics.newRectangleShape(system.winWidth, system.winHeight * 0.25)
     objects.ground.fixture = love.physics.newFixture(objects.ground.body, objects.ground.shape)
 
-    objects.tower.body = love.physics.newBody(earth, love.math.random(0, system.winWidth), 0, "dynamic")
-    objects.tower.shape = love.physics.newRectangleShape(objects.tower.width * 3 * system.scaling, (objects.tower.height * 3) + 285   * system.scaling) 
+    objects.tower.body = love.physics.newBody(earth, system.winWidth * 0.8, system.winHeight * 0.6, "dynamic")
+    objects.tower.shape = love.physics.newRectangleShape(objects.tower.width / 2 * system.scaling, objects.tower.height / 2 * system.scaling, objects.tower.width * towerScaling * system.scaling, objects.tower.height * towerScaling * system.scaling, 0)    
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
 
-    objects.tower.body:setX(system.winWidth * 0.69)
-    objects.tower.body:setY(system.winHeight * 0.7)
 end
 
 
@@ -60,6 +59,7 @@ function gameLevel01:update(dt)
         if objects.image.fireball.currentFrame >= 4 then
             objects.image.fireball.currentFrame = 1
         end
+        love.system.vibrate(0.2)
     end
 
     if launch and system.score01 <= 0 and objects.tower.body:getY() > 266 then
@@ -103,15 +103,23 @@ function gameLevel01:draw()
 
     love.graphics.setColor(0.149, 0.361, 0.259, 0.4)
     love.graphics.polygon("fill", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
+    if debugMode then
+        love.graphics.setColor(1, 1, 1, 1)
+        love.graphics.polygon("line", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
+    end
   
     love.graphics.setColor(1.0, 1.0, 1.0, bgAlpha)  
-    love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), 0, 3 * system.scaling)
-
+    love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), 
+        objects.tower.body:getAngle(), system.scaling * towerScaling, system.scaling * towerScaling, 
+        objects.tower.width / 2 * system.scaling, objects.tower.height / 2 * system.scaling) -- Draw Tower
+    if debugMode then
+        love.graphics.polygon("line", objects.tower.body:getWorldPoints(objects.tower.shape:getPoints()))
+    end
 
     love.graphics.setColor(1.0, 0.9, 0.9, bgAlpha)  -- Draw Bar 
-    love.graphics.rectangle("line", system.winWidth * 0.1, system.winHeight * 0.84, 750, 45)
+    love.graphics.rectangle("line", system.winWidth * 0.1, system.winHeight * 0.84, system.winWidth * 0.8, system.winHeight * 0.1)
     love.graphics.setColor(1.0, 0.1, 0.1, bgAlpha)
-    love.graphics.rectangle("fill", system.winWidth * 0.1, system.winHeight * 0.84, flow*75, 45)
+    love.graphics.rectangle("fill", system.winWidth * 0.1, system.winHeight * 0.84,  math.min(flow * system.winWidth * 0.1, system.winWidth * 0.8), system.winHeight * 0.1)
 
     love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Score
     love.graphics.setFont(scoreFont)
@@ -136,7 +144,9 @@ function gameLevel01:draw()
     if launch then 
         love.graphics.setColor(1.0, 1.0, 1.0, 0.98)
         love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
-        objects.tower.body:getX() - objects.tower.width / 2 * system.scaling, objects.tower.body:getY() + objects.tower.height * 2.8 * system.scaling, 0, 3 * system.scaling, 3 * system.scaling)
+        objects.tower.body:getX() - objects.tower.width / 2 * system.scaling, objects.tower.body:getY() + objects.tower.height * 2.8 * system.scaling,
+         0, towerScaling * system.scaling, towerScaling * system.scaling, 
+         objects.tower.width / 2 * system.scaling, objects.tower.height / 2 * system.scaling)
     end
 end
 
@@ -159,10 +169,11 @@ function gameLevel01:keypressed(key, scancode, isrepeat)
 end
 
 function gameLevel01:touchpressed(id, x, y, dx, dy, pressure)
-    if x < love.graphics.getWidth() / 2 then
+    print(id, x, y, dx, dy, pressure)
+    if x < system.winWidth * 0.3 then
       flow = flow + love.math.random(8, 16) / 10
       system.launch = "left"
-    else
+    elseif x > system.winWidth * 0.7 then
       flow = flow + love.math.random(8, 16) / 10
       system.launch = "right"
     end

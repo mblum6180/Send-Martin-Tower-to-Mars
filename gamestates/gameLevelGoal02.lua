@@ -64,6 +64,17 @@ function gameLevelGoal02:keypressed(key, scancode, isrepeat)
     end
 end
 
+function gameLevelGoal02:touchpressed(id, x, y, pressure)
+    if system.timer >= 3 then
+      objects.audio.mainTheme:setVolume(0.42)
+      Gamestate.switch(gameLevel03)
+    end
+  end
+
+
+
+
+
 
 
 return gameLevelGoal02

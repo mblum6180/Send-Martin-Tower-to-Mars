@@ -37,7 +37,7 @@ function gameLevel02:enter()
 end
 
 function gameLevel02:update(dt)
-    space:update(dt) 
+    space:update(dt)
 
     objects.image.fireball.currentFrame = objects.image.fireball.currentFrame + 10 * dt
     if objects.image.fireball.currentFrame >= 4 then
@@ -49,7 +49,7 @@ function gameLevel02:update(dt)
     gameLevel02:genItems() --timer for junk
 
 
-    bodies = space:getBodies() -- Junk cleanup 
+    bodies = space:getBodies() -- Junk cleanup
     for i, body in ipairs(bodies) do
         local userData = body:getUserData()
         local x, y = body:getPosition()
@@ -84,7 +84,7 @@ function gameLevel02:update(dt)
 
 
     system.BGScale = system.BGScale + 0.005 * dt
-    if objects.tower.body:getY() < -2500 then
+    if objects.tower.body:getY() < -2500 then -- This needs updating!!!!!!
         --objects.tower.fixture:destroy()
         system.level02over = true
     end
@@ -103,23 +103,20 @@ function gameLevel02:update(dt)
     end
 
 
-
     if system.crashed == false and Gamestate.current() == gameLevel02 then
-        if love.keyboard.isDown("right") then
+        if love.keyboard.isDown("right") or system.moveRight then
         objects.tower.body:applyForce(400, 0)
         system.score02 = system.score02 - 2 * dt
-        elseif love.keyboard.isDown("left") then
+        elseif love.keyboard.isDown("left") or system.moveLeft then
         objects.tower.body:applyForce(-400, 0)
         system.score02 = system.score02 - 2 * dt
         end
-
         system.score02 = system.score02 - 1 * dt
     end
 
     if Gamestate.current() == gameLevel02 then
         edge(objects.tower.body:getX(), objects.tower.body:getY())
     end
-   
 
     scroll = scroll + (scrollSpeed * dt)
     --print(scroll)
@@ -130,17 +127,16 @@ function gameLevel02:update(dt)
         system.crashed = true
         playSound(objects.audio.fire,'stop')
     end
-
 end
-  
+
 function gameLevel02:draw()
     love.graphics.setColor(system.BGcolorR, system.BGcolorG, system.BGcolorB) -- draw Backgroud
     love.graphics.draw(objects.ground.background02, 0, 0, 0, system.BGScale * system.scaling)
 
     love.graphics.translate(0, scroll)
-  
 
-    love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), 
+
+    love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(),
         objects.tower.body:getAngle(), system.scaling, system.scaling, 0, 0) -- Draw Tower
     if debugMode then
         love.graphics.polygon("line", objects.tower.body:getWorldPoints(objects.tower.shape:getPoints()))
@@ -164,7 +160,7 @@ function gameLevel02:draw()
             end
         end
     end
-    
+
     love.graphics.setColor(1.0, 0.0, 0.0, 1)
     love.graphics.setFont(scoreFont)
     love.graphics.print(math.floor(system.score02), system.winWidth * 0.1, system.winHeight * 0.1 + -scroll, 0)
@@ -172,8 +168,8 @@ function gameLevel02:draw()
 
     if system.crashed == false then
         love.graphics.setColor(1.0, 1.0, 1.0, 0.7) -- Draw Flames
-        love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
-        objects.tower.body:getX() - objects.tower.width/4  * system.scaling, 
+        love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)],
+        objects.tower.body:getX() - objects.tower.width/4  * system.scaling,
         objects.tower.body:getY() + objects.tower.height * 0.9  * system.scaling, objects.tower.body:getAngle(), system.scaling, system.scaling)
     end
 
@@ -206,9 +202,6 @@ function gameLevel02:beginContact(obj1,obj2)
         system.score02 = system.score02 - 50 * obj1:getBody():getUserData().size
         --print("Bang2")
     end
-
-
-
 end
 
 function gameLevel02:keypressed(key, scancode, isrepeat)
@@ -227,9 +220,26 @@ function gameLevel02:keypressed(key, scancode, isrepeat)
     elseif key == "m" then
         playSound(objects.audio.mainTheme,'play',false) -- unpause BG music
     end
-
-
 end
+
+
+function gameLevel02:touchpressed(id, x, y, dx, dy, pressure)
+    print(id, x, y, pressure)
+    if x < system.winWidth * 0.3 then
+        system.moveLeft = true
+    elseif x > system.winWidth * 0.7 then
+        system.moveRight = true
+    end
+end
+
+function gameLevel02:touchreleased(id, x, y, pressure)
+    if x < system.winWidth * 0.3 then
+        system.moveLeft = false
+    elseif x > system.winWidth * 0.7 then
+        system.moveRight = false
+    end
+end
+
 function gameLevel02:genItems()
     if junkTimer > love.math.random(0.3,8)  and Gamestate.current() == gameLevel02 then -- 0.3,0.8
         local image = objects.spacePeep.image

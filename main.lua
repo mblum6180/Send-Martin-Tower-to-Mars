@@ -15,15 +15,16 @@ function love.load()
 
 
   love.graphics.setDefaultFilter('nearest', 'nearest')
+  --love.window.setMode(1280, 720) -- The actual resulting resolution will match the screen.
 
   love.physics.setMeter(64 * system.scaling)  -- physics setup, set the meter to 64 pixels
   earth = love.physics.newWorld(0, 9.80*64, true)  -- create a new world with gravity of 9.8 m/s^2
   space = love.physics.newWorld(0, 0.1*64, true)  -- create a new world with gravity of 0.1 m/s^2
   mars = love.physics.newWorld(0, 3.72*64, true)  -- create a new world with gravity of 3.72 m/s^2
 
-  screenFont = love.graphics.newFont('assets/font.ttf', 42)  -- create a new font with a size of 42
-  scoreFont = love.graphics.newFont('assets/font.ttf', 128)  -- create a new font with a size of 128
-  messageFont = love.graphics.newFont('assets/font.ttf', 80)  -- create a new font with a size of 80
+  screenFont = love.graphics.newFont('assets/font.ttf', 42  / love.window.getDPIScale( ))  -- create a new font with a size of 42
+  scoreFont = love.graphics.newFont('assets/font.ttf', 128  / love.window.getDPIScale( ))  -- create a new font with a size of 128
+  messageFont = love.graphics.newFont('assets/font.ttf', 80  / love.window.getDPIScale( ))  -- create a new font with a size of 80
 
 
 
@@ -56,7 +57,13 @@ function fade(dt,d,x)  --dt, Alpha, duration
 
 end
 
+function touchpressed(id, x, y, dx, dy, pressure)
+  Gamestate.touchpressed(id, x, y, dx, dy, pressure)
+end
 
+function touchreleased(id, x, y, pressure)
+  Gamestate.touchreleased(id, x, y, pressure)
+end
 
 
 function beginContact(obj1,obj2)

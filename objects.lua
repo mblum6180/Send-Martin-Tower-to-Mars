@@ -1,8 +1,8 @@
 --! file: objects.lua
 
 system = {}
-system.winWidth = love.graphics.getPixelWidth()
-system.winHeight = love.graphics.getPixelHeight()
+system.winWidth = love.graphics.getPixelWidth()  / love.window.getDPIScale( )
+system.winHeight = love.graphics.getPixelHeight()  / love.window.getDPIScale( )
 system.level01over = false
 system.level02over = false
 system.level03over = false
@@ -24,6 +24,9 @@ system.timer = 0
 system.bonus = 0
 system.scaling = system.winWidth / 1280 -- Scaling factor for 1280 wide
 system.version = "0.13 - Beta"
+system.moveLeft = false
+system.moveRight = false
+system.moveGas = false
 
 
 activePeeps = {}
