@@ -275,7 +275,7 @@ function gameLevel02:leave()
     bodies = space:getBodies()
     for i, body in ipairs(bodies) do
         body:destroy()
-         print("BOOOOOM")
+         --print("BOOOOOM")
 
     end
 end

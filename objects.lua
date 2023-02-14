@@ -106,6 +106,12 @@ objects.tower.crashed = false
 
 objects.spacePeep = {}
 objects.spacePeep.image = love.graphics.newImage("assets/asteroid.png")
+local year = os.date("%Y")
+local easter_year, easter_month, easter_day = getEasterSunday(year)
+local current_month, current_day = tonumber(os.date("%m")), tonumber(os.date("%d"))
+if current_month == easter_month and current_day == easter_day then
+    objects.spacePeep.image = love.graphics.newImage("assets/chick8bit.png")
+end
 objects.spacePeep.width = objects.spacePeep.image:getWidth()
 objects.spacePeep.height = objects.spacePeep.image:getHeight()
 

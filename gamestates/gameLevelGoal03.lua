@@ -72,11 +72,11 @@ end
 function gameLevelGoal03:touchpressed(id, x, y, pressure)
     if system.timer >= 3 then
       objects.audio.mainTheme:setVolume(0.42)
-      Gamestate.switch(gameLevel03)
+      Gamestate.switch(mainMenu)
     end
   end
 
-function gameLevel03:leave()
+function gameLevelGoal03:leave()
     system.level01over = false
     system.level02over = false
     system.level03over = false

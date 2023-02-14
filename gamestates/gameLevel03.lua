@@ -47,12 +47,7 @@ function gameLevel03:update(dt)
     end
     edge(objects.tower.body:getX(), objects.tower.body:getY())
 
-
-    if system.moveRight then
-        objects.tower.body:applyTorque(objects.tower.strengthTorque)
-    elseif system.moveLeft then
-        objects.tower.body:applyTorque(-objects.tower.strengthTorque)
-    end
+    
     
     if system.score03 <= 0 then 
         system.score03 = 0
@@ -247,13 +242,13 @@ function gameLevel03:input()
         objects.tower.body:applyForce(objects.tower.strengthMain * math.cos(objects.tower.body:getAngle() - 1.57), objects.tower.strengthMain * math.sin(objects.tower.body:getAngle() - 1.57))
         objects.tower.fire = true
     else objects.tower.fire = false
+        objects.tower.body:applyForce(objects.tower.strengthMain / 10 * math.cos(objects.tower.body:getAngle() - 1.57), objects.tower.strengthMain / 10 * math.sin(objects.tower.body:getAngle() - 1.57))
     end
-    --if love.keyboard.isDown("a") then
-    --    objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 3.14), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 3.14))
-    --elseif love.keyboard.isDown("d") then
-    --    objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 0), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 0))
-    --end
-
+    if love.keyboard.isDown("a") or system.moveLeft then
+        objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 3.14), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 3.14))
+    elseif love.keyboard.isDown("d") or system.moveRight then
+        objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 0), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 0))
+    end
 end
 
 function gameLevel03:touchpressed(id, x, y, dx, dy, pressure)
@@ -298,10 +293,11 @@ function gameLevel03:landed()
 end
 
 function gameLevel03:leave()
+    print("hello")
     bodies = mars:getBodies()
     for i, body in ipairs(bodies) do
         body:destroy()
-         print("BOOOOOM")
+         --print("BOOOOOM")
     end
 end
 

@@ -37,7 +37,7 @@ function love.load()
     print("Debug mode = ", debugMode)
     levelSelect(arg[3])
   else
-    Gamestate.switch(gameLevel03)
+    Gamestate.switch(gameIntro)
   end
 
   if debugMode then
@@ -122,5 +122,23 @@ function levelSelect(level)
   else
     Gamestate.switch(gameIntro)
   end
+end
+
+function getEasterSunday(year)
+  local a = year % 19
+  local b = math.floor(year / 100)
+  local c = year % 100
+  local d = math.floor(b / 4)
+  local e = b % 4
+  local f = math.floor((b + 8) / 25)
+  local g = math.floor((b - f + 1) / 3)
+  local h = (19 * a + b - d - g + 15) % 30
+  local i = math.floor(c / 4)
+  local k = c % 4
+  local l = (32 + 2 * e + 2 * i - h - k) % 7
+  local m = math.floor((a + 11 * h + 22 * l) / 451)
+  local month = math.floor((h + l - 7 * m + 114) / 31)
+  local day = ((h + l - 7 * m + 114) % 31) + 1
+  return year, month, day
 end
 
