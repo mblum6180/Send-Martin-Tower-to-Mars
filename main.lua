@@ -154,3 +154,29 @@ function getEasterSunday(year)
   return year, month, day
 end
 
+function reset()
+  system.level01over = false
+  system.level02over = false
+  system.level03over = false
+  system.BGScale = 1
+  system.BGcolorR = 1
+  system.BGcolorG = 1
+  system.BGcolorB = 1
+  system.score01 = math.floor(system.score03) + math.floor(system.bonus)
+  system.score02 = 0
+  system.score03 = 0
+  system.score = 0
+  system.landed = false
+  system.landedTimer = 2
+  system.launch = "left"
+  system.crashed = false
+  system.winner = false
+  system.timer = 0
+  system.bonus = 0
+  objects.tower.strengthTorque = 2000
+  objects.tower.strengthMain = 2000
+  objects.tower.strengthSide = 300
+  objects.tower.fire = false
+  objects.tower.empty = false
+  objects.tower.crashed = false
+end

@@ -180,7 +180,7 @@ function gameLevel02:draw()
     if system.crashed == true then
         love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Crashed
         love.graphics.setFont(screenFont)
-        love.graphics.print("Out of Fuel!", system.winWidth * 0.1, system.winHeight * 0.3  + -scroll, 0)
+        love.graphics.print("Out of Fuel!\n\nPress to play agian.", system.winWidth * 0.1, system.winHeight * 0.3  + -scroll, 0)
     end
 end
 
@@ -232,6 +232,10 @@ function gameLevel02:keypressed(key, scancode, isrepeat)
     elseif key == "m" then
         playSound(objects.audio.mainTheme,'play',false) -- unpause BG music
     end
+    if key == "space" and system.crashed == true then
+        reset()
+        Gamestate.switch(gameIntro02)
+    end
 end
 
 
@@ -240,6 +244,10 @@ function gameLevel02:mousepressed(x, y, istouch)
         system.moveLeft = system.moveLeftTime
     elseif x > system.winWidth * 0.7 then
         system.moveRight = system.moveRightTime
+    end
+    if system.crashed == true then
+        reset()
+        Gamestate.switch(gameIntro02)
     end
 end
 

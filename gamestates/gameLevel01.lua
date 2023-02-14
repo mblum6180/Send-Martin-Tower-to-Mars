@@ -138,7 +138,7 @@ function gameLevel01:draw()
     if countDown == 0 and system.crashed == true then
         love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Crashed
         love.graphics.setFont(screenFont)
-        love.graphics.print("Crashed!", system.winWidth * 0.1, system.winHeight * 0.3, 0, system.scaling,  system.scaling)
+        love.graphics.print("Crashed!\n\nPress to play agian.", system.winWidth * 0.1, system.winHeight * 0.3, 0, system.scaling,  system.scaling)
     end
 
     if launch then 
@@ -167,6 +167,11 @@ function gameLevel01:keypressed(key, scancode, isrepeat)
     elseif key == "m" then
         playSound(objects.audio.mainTheme,'play',false) -- unpause BG music
     end
+    if  key == "space" and countDown == 0 and system.crashed == true then
+        reset()
+        Gamestate.switch(gameIntro02)
+    end
+    
 end
 
 function gameLevel01:mousepressed(x, y, istouch)
@@ -177,6 +182,10 @@ function gameLevel01:mousepressed(x, y, istouch)
       flow = flow + love.math.random(8, 16) / 10
       system.launch = "left"
     end
+    if countDown == 0 and system.crashed == true then
+        reset()
+        Gamestate.switch(gameIntro02)
+    end
 end
 
 
@@ -185,8 +194,8 @@ function gameLevel01:leave()
     for i, body in ipairs(bodies) do
         body:destroy()
          --print("BOOOOOM")
-
     end
+
 end
 
 return gameLevel01

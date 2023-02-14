@@ -4,6 +4,7 @@ Gamestate = require 'libs.hump.gamestate'
 gameIntro02 = {}
 
 function gameIntro02:enter()
+    love.graphics.reset()
     windowWidth = love.graphics.getWidth()
     windowHeight = love.graphics.getHeight()
     system.timer = 1
