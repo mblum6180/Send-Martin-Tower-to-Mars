@@ -26,7 +26,8 @@ system.scaling = system.winWidth / 1280 -- Scaling factor for 1280 wide
 system.version = "0.13 - Beta"
 system.moveLeft = false
 system.moveRight = false
-system.moveGas = false
+system.moveGas = 0
+system.moveGasTime = 0.6
 
 
 activePeeps = {}
@@ -82,23 +83,13 @@ objects.ground.background02Height = objects.ground.background01:getHeight()
 objects.ground.background03 = love.graphics.newImage("assets/marsmountain8bit.png") -- Background image
 objects.ground.background03Width = objects.ground.background03:getWidth()
 objects.ground.background03Height = objects.ground.background03:getHeight()
-objects.ground.box = {
-    -20,-100, --1
-    system.winWidth + 20,-100, --2
-    system.winWidth + 20, system.winHeight, --3
-    system.winWidth + 30, system.winHeight, --4
-    system.winWidth + 30, -110,  --5
-    -20, -110, --6
-    -20, system.winHeight,--7
-    -10, system.winHeight}--8
-
 objects.tower = {}
 objects.tower.image = love.graphics.newImage("assets/martin8bit.png")
 objects.tower.width = objects.tower.image:getWidth()
 objects.tower.height = objects.tower.image:getHeight()
 objects.tower.strengthTorque = 2000
-objects.tower.strengthMain = 2000
-objects.tower.strengthSide = 300
+objects.tower.strengthMain = 1600
+objects.tower.strengthSide = 128
 objects.tower.fire = false
 objects.tower.empty = false
 objects.tower.crashed = false

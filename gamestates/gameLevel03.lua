@@ -18,11 +18,6 @@ function gameLevel03:enter()
     objects.ground.shape = love.physics.newChainShape(true, objects.ground.landscape, "static")
     objects.ground.fixture = love.physics.newFixture(objects.ground.body, objects.ground.shape)
 
-    objects.ground.bodyBox = love.physics.newBody(mars, 0, 0)
-    objects.ground.shapeBox = love.physics.newChainShape(true, objects.ground.box, "static")
-    objects.ground.fixtureBox = love.physics.newFixture(objects.ground.bodyBox, objects.ground.shapeBox)
-
-
     objects.tower.body = love.physics.newBody(mars, love.math.random(150, system.winWidth - 150), 0, "dynamic")
     objects.tower.body:setLinearDamping(0.6)
     objects.tower.shape = love.physics.newRectangleShape(objects.tower.width / 2 * system.scaling, objects.tower.height / 2 * system.scaling,
@@ -47,6 +42,7 @@ function gameLevel03:update(dt)
     end
     edge(objects.tower.body:getX(), objects.tower.body:getY())
 
+    system.moveGas = system.moveGas - 1 * dt
     
     
     if system.score03 <= 0 then 
@@ -217,6 +213,14 @@ function gameLevel03:keypressed(key, scancode, isrepeat)
             print(objects.tower.fixture:getUserData())
         end
     end
+    if love.keyboard.isDown("right") then
+        system.moveRight = true
+      elseif love.keyboard.isDown("left") then
+        system.moveLeft = true
+    end
+    if love.keyboard.isDown("up") then
+        system.moveGas = system.moveGasTime
+    end
     if key == "escape" then
         love.event.quit()
     elseif key == "space" or key =="left" or key =="right" or key =="down" or key =="up" then
@@ -233,46 +237,36 @@ function gameLevel03:keypressed(key, scancode, isrepeat)
 end
 
 function gameLevel03:input()
-    if love.keyboard.isDown("right") then
+    if love.keyboard.isDown("a") then
         objects.tower.body:applyTorque(objects.tower.strengthTorque)
-    elseif love.keyboard.isDown("left") then
+    elseif love.keyboard.isDown("d") then
         objects.tower.body:applyTorque(-objects.tower.strengthTorque)
     end
-    if love.keyboard.isDown("up") or system.moveGas then
+    if system.moveGas > 0 then
         objects.tower.body:applyForce(objects.tower.strengthMain * math.cos(objects.tower.body:getAngle() - 1.57), objects.tower.strengthMain * math.sin(objects.tower.body:getAngle() - 1.57))
         objects.tower.fire = true
     else objects.tower.fire = false
-        objects.tower.body:applyForce(objects.tower.strengthMain / 10 * math.cos(objects.tower.body:getAngle() - 1.57), objects.tower.strengthMain / 10 * math.sin(objects.tower.body:getAngle() - 1.57))
     end
-    if love.keyboard.isDown("a") or system.moveLeft then
-        objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 3.14), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 3.14))
-    elseif love.keyboard.isDown("d") or system.moveRight then
-        objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 0), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 0))
+    if system.moveLeft then
+        objects.tower.body:applyLinearImpulse(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 3.14), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 3.14))
+        system.moveLeft = false
+    elseif system.moveRight then
+        objects.tower.body:applyLinearImpulse(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 0), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 0))
+        system.moveRight = false
     end
 end
 
-function gameLevel03:touchpressed(id, x, y, dx, dy, pressure)
-    print(id, x, y, pressure)
+function gameLevel03:mousepressed(x, y, istouch)
     if x < system.winWidth * 0.3 then
         system.moveLeft = true
     elseif x > system.winWidth * 0.7 then
         system.moveRight = true
     else
-        system.moveGas = true
+        system.moveGas = system.moveGasTime
     end
     if system.winner == true then
         --print(system.winner)
         Gamestate.switch(gameLevelGoal03)
-    end
-end
-
-function gameLevel03:touchreleased(id, x, y, pressure)
-    if x < system.winWidth * 0.3 then
-        system.moveLeft = false
-    elseif x > system.winWidth * 0.7 then
-        system.moveRight = false
-    else
-        system.moveGas = false
     end
 end
 

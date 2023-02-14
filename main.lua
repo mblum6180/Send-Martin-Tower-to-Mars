@@ -75,23 +75,30 @@ function endContact(obj1,obj2)
 end
 
 function edge(x, y)
-  if x < 100 then
+  if x < system.winWidth * 0.1 then
       objects.tower.body:applyForce(100, 0)
       system.BGcolorG,system.BGcolorB = 0.25, 0.25
-      if x < 10 then
+      if x < system.winWidth * 0.05 then
           objects.tower.body:applyForce(1000, 0)
           system.BGcolorG,system.BGcolorB = 0.01, 0.01  
       end
-  elseif x > system.winWidth - 100 then
+  elseif x > system.winWidth * 0.9 then
       objects.tower.body:applyForce(-100, 0)
       system.BGcolorG,system.BGcolorB = 0.25, 0.25
-      if x > system.winWidth - 10 then
+      if x > system.winWidth * 0.95 then
           objects.tower.body:applyForce(-1000, 0)
           system.BGcolorG,system.BGcolorB = 0.01, 0.01  
       end
   else
       system.BGcolorG,system.BGcolorB = 1.0, 1.0
   end
+  if y < 0 - system.winHeight * 0.3 then
+    objects.tower.body:applyForce(0, 10000)
+    system.BGcolorG,system.BGcolorB = 0.25, 0.25
+        system.BGcolorG,system.BGcolorB = 0.01, 0.01  
+  end
+
+
 end
 
 function playSound(sound,mode,pitchMod,x,y)
@@ -122,6 +129,10 @@ function levelSelect(level)
   else
     Gamestate.switch(gameIntro)
   end
+end
+
+function keyboardInput()
+
 end
 
 function getEasterSunday(year)

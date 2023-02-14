@@ -38,6 +38,7 @@ end
 
 function gameLevel02:update(dt)
     space:update(dt)
+    keyboardInput()
 
     objects.image.fireball.currentFrame = objects.image.fireball.currentFrame + 10 * dt
     if objects.image.fireball.currentFrame >= 4 then
@@ -104,11 +105,13 @@ function gameLevel02:update(dt)
 
 
     if system.crashed == false and Gamestate.current() == gameLevel02 then
-        if love.keyboard.isDown("right") or system.moveRight then
-        objects.tower.body:applyForce(400, 0)
+        if system.moveRight then
+        objects.tower.body:applyLinearImpulse(objects.tower.strengthSide, 0)
+        system.moveRight = false
         system.score02 = system.score02 - 2 * dt
-        elseif love.keyboard.isDown("left") or system.moveLeft then
-        objects.tower.body:applyForce(-400, 0)
+        elseif system.moveLeft then
+        objects.tower.body:applyLinearImpulse(-objects.tower.strengthSide, 0)
+        system.moveLeft = false
         system.score02 = system.score02 - 2 * dt
         end
         system.score02 = system.score02 - 1 * dt
@@ -210,6 +213,14 @@ function gameLevel02:keypressed(key, scancode, isrepeat)
             objects.items = {}
         end
     end
+    if love.keyboard.isDown("right") then
+        system.moveRight = true
+      elseif love.keyboard.isDown("left") then
+        system.moveLeft = true
+    end
+    if love.keyboard.isDown("up") then
+        system.moveGas = true
+    end
     if key == "escape" then
         love.event.quit()
     --elseif key == "space" then
@@ -223,8 +234,7 @@ function gameLevel02:keypressed(key, scancode, isrepeat)
 end
 
 
-function gameLevel02:touchpressed(id, x, y, dx, dy, pressure)
-    print(id, x, y, pressure)
+function gameLevel02:mousepressed(x, y, istouch)
     if x < system.winWidth * 0.3 then
         system.moveLeft = true
     elseif x > system.winWidth * 0.7 then
@@ -232,13 +242,6 @@ function gameLevel02:touchpressed(id, x, y, dx, dy, pressure)
     end
 end
 
-function gameLevel02:touchreleased(id, x, y, pressure)
-    if x < system.winWidth * 0.3 then
-        system.moveLeft = false
-    elseif x > system.winWidth * 0.7 then
-        system.moveRight = false
-    end
-end
 
 function gameLevel02:genItems()
     if junkTimer > love.math.random(0.3,8)  and Gamestate.current() == gameLevel02 then -- 0.3,0.8
