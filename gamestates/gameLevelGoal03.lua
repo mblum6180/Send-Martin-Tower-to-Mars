@@ -15,6 +15,7 @@ function gameLevelGoal03:enter()
     titleFadein = 2
     textFadin = 2
 
+    system.level = system.level + 1
 
 end
     
@@ -49,7 +50,7 @@ function gameLevelGoal03:draw()
         "Bonus: "..math.floor(system.bonus).."\n"..
         "Final Score: "..math.floor(system.score03) + math.floor(system.bonus)),
         system.winWidth * 0.1, system.winHeight * 0.6, system.winWidth * 0.8, 'center', 0)
-    love.graphics.printf("Press an arrow key to restart",system.winWidth * 0.1, system.winHeight * 0.9, system.winWidth * 0.8, 'center', 0)
+    love.graphics.printf("Press to restart",system.winWidth * 0.1, system.winHeight * 0.9, system.winWidth * 0.8, 'center', 0)
 
 
 end

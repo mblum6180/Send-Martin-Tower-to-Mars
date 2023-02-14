@@ -137,7 +137,7 @@ function gameLevel03:draw()
     if system.winner == true and objects.tower.crashed == true then
         love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw Crashed
         love.graphics.setFont(screenFont)
-        love.graphics.print("Crashed!", system.winWidth * 0.1, system.winHeight * 0.3, 0)
+        love.graphics.print("Crashed!\n\nPress to play agian.", system.winWidth * 0.1, system.winHeight * 0.3, 0)
     
     end
     love.graphics.setColor(0.63, 0.49, 0.42) --   Draw Foreground Mountains --must be last
@@ -226,17 +226,21 @@ function gameLevel03:keypressed(key, scancode, isrepeat)
     end
     if key == "escape" then
         love.event.quit()
-    elseif key == "space" or key =="left" or key =="right" or key =="down" or key =="up" then
-        if system.winner == true then
-        --print(system.winner)
+    elseif key == "space" then
+        if system.winner == true and objects.tower.crashed == false then
         Gamestate.switch(gameLevelGoal03)
         end
+    elseif key == "space" and system.winner == true and objects.tower.crashed == true then 
+        reset()
+        Gamestate.switch(gameIntro02)
     end
+
     if key == "m" and objects.audio.mainTheme:isPlaying() then
         playSound(objects.audio.mainTheme,'pause',false) -- pause BG music
     elseif key == "m" then
         playSound(objects.audio.mainTheme,'play',false) -- unpause BG music
     end
+
 end
 
 function gameLevel03:input()
@@ -270,6 +274,10 @@ function gameLevel03:mousepressed(x, y, istouch)
     if system.winner == true then
         --print(system.winner)
         Gamestate.switch(gameLevelGoal03)
+    end
+    if system.winner == true and objects.tower.crashed == true then 
+        reset()
+        Gamestate.switch(gameIntro02)
     end
 end
 

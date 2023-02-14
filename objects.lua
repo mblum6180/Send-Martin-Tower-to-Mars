@@ -30,6 +30,7 @@ system.moveRight = 0
 system.moveRightTime = 0.4
 system.moveGas = 0
 system.moveGasTime = 0.4
+system.level = 1
 
 
 activePeeps = {}
