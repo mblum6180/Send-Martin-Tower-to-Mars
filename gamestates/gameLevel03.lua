@@ -41,18 +41,21 @@ function gameLevel03:update(dt)
         gameLevel03:input()
     end
     edge(objects.tower.body:getX(), objects.tower.body:getY())
+    edgeTop(objects.tower.body:getX(), objects.tower.body:getY())
 
     system.moveGas = system.moveGas - 1 * dt
+    system.moveRight = system.moveRight - 1 * dt
+    system.moveLeft = system.moveLeft - 1 * dt
+
     
-    
-    if system.score03 <= 0 then 
-        system.score03 = 0
+    if system.score03 <= 0 or system.landedTimer == 0 then 
+        if system.score03 <= 0 then
+            system.score03 = 0
+        end
         objects.tower.empty = true
         objects.tower.fire = false
     end
-    if system.landedTimer == 0 then 
-        objects.tower.empty = true
-    end
+
 
     if system.winner == false then
         if system.landed then 
@@ -189,7 +192,7 @@ function gameLevel03:beginContact(obj1,obj2)
         landingSpeed = y
         --print(landingSpeed)
     end
-    if y < 100 then
+    if y < love.math.random(128,150) then
         gameLevel03:landed()
 
     else 
@@ -214,9 +217,9 @@ function gameLevel03:keypressed(key, scancode, isrepeat)
         end
     end
     if love.keyboard.isDown("right") then
-        system.moveRight = true
+        system.moveRight = system.moveRightTime
       elseif love.keyboard.isDown("left") then
-        system.moveLeft = true
+        system.moveLeft = system.moveLeftTime
     end
     if love.keyboard.isDown("up") then
         system.moveGas = system.moveGasTime
@@ -247,20 +250,20 @@ function gameLevel03:input()
         objects.tower.fire = true
     else objects.tower.fire = false
     end
-    if system.moveLeft then
-        objects.tower.body:applyLinearImpulse(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 3.14), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 3.14))
-        system.moveLeft = false
-    elseif system.moveRight then
-        objects.tower.body:applyLinearImpulse(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 0), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 0))
-        system.moveRight = false
+    if system.moveLeft > 0 then
+        objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 3.14), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 3.14))
+       
+    elseif system.moveRight > 0 then
+        objects.tower.body:applyForce(objects.tower.strengthSide * math.cos(objects.tower.body:getAngle() + 0), objects.tower.strengthSide * math.sin(objects.tower.body:getAngle() + 0))
+
     end
 end
 
 function gameLevel03:mousepressed(x, y, istouch)
     if x < system.winWidth * 0.3 then
-        system.moveLeft = true
+        system.moveLeft = system.moveLeftTime
     elseif x > system.winWidth * 0.7 then
-        system.moveRight = true
+        system.moveRight = system.moveRightTime
     else
         system.moveGas = system.moveGasTime
     end

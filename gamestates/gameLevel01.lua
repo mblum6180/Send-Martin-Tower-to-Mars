@@ -21,7 +21,7 @@ function gameLevel01:enter()
     objects.ground.shape = love.physics.newRectangleShape(system.winWidth, system.winHeight * 0.25)
     objects.ground.fixture = love.physics.newFixture(objects.ground.body, objects.ground.shape)
 
-    objects.tower.body = love.physics.newBody(earth, system.winWidth * 0.8, system.winHeight * 0.6, "dynamic")
+    objects.tower.body = love.physics.newBody(earth, system.winWidth * 0.681, system.winHeight * 0.6, "dynamic")
     objects.tower.shape = love.physics.newRectangleShape(objects.tower.width / 2 * system.scaling, objects.tower.height / 2 * system.scaling, objects.tower.width * towerScaling * system.scaling, objects.tower.height * towerScaling * system.scaling, 0)    
     objects.tower.fixture = love.physics.newFixture(objects.tower.body, objects.tower.shape, 1)
 
@@ -126,7 +126,7 @@ function gameLevel01:draw()
     love.graphics.print(math.floor(system.score01), system.winWidth * 0.1, system.winHeight * 0.1, 0, system.scaling,  system.scaling)
 
     love.graphics.setColor(1.0, 0.0, 0.0, bgAlpha)  -- Draw CountDown
-    love.graphics.setFont(screenFont)
+    love.graphics.setFont(countDownFont)
     love.graphics.print(math.floor(countDown), system.winWidth * 0.1, system.winHeight * 0.65, 0,  system.scaling,  system.scaling)
 
     if countDown == 0 and system.crashed == false then
@@ -144,9 +144,10 @@ function gameLevel01:draw()
     if launch then 
         love.graphics.setColor(1.0, 1.0, 1.0, 0.98)
         love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
-        objects.tower.body:getX() - objects.tower.width / 2 * system.scaling, objects.tower.body:getY() + objects.tower.height * 2.8 * system.scaling,
-         0, towerScaling * system.scaling, towerScaling * system.scaling, 
-         objects.tower.width / 2 * system.scaling, objects.tower.height / 2 * system.scaling)
+        objects.tower.body:getX(), objects.tower.body:getY(),
+         0, 
+         towerScaling * system.scaling, towerScaling * system.scaling, 
+         objects.tower.width / 2 * system.scaling, -objects.tower.height / 2 * system.scaling)
     end
 end
 
@@ -168,16 +169,15 @@ function gameLevel01:keypressed(key, scancode, isrepeat)
     end
 end
 
-function gameLevel01:touchpressed(id, x, y, dx, dy, pressure)
-    print(id, x, y, dx, dy, pressure)
-    if x < system.winWidth * 0.3 then
-      flow = flow + love.math.random(8, 16) / 10
-      system.launch = "left"
-    elseif x > system.winWidth * 0.7 then
+function gameLevel01:mousepressed(x, y, istouch)
+    if x < system.winWidth * 0.3  and system.launch == "left" then
       flow = flow + love.math.random(8, 16) / 10
       system.launch = "right"
+    elseif x > system.winWidth * 0.7  and system.launch == "right" then
+      flow = flow + love.math.random(8, 16) / 10
+      system.launch = "left"
     end
-  end
+end
 
 
 function gameLevel01:leave()

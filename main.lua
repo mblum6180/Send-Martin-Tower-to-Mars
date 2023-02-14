@@ -25,6 +25,7 @@ function love.load()
   screenFont = love.graphics.newFont('assets/font.ttf', 42  / love.window.getDPIScale( ))  -- create a new font with a size of 42
   scoreFont = love.graphics.newFont('assets/font.ttf', 128  / love.window.getDPIScale( ))  -- create a new font with a size of 128
   messageFont = love.graphics.newFont('assets/font.ttf', 80  / love.window.getDPIScale( ))  -- create a new font with a size of 80
+  countDownFont = love.graphics.newFont('assets/font.ttf', 100  / love.window.getDPIScale( ))  -- create a new font with a size of 100
 
 
 
@@ -92,13 +93,13 @@ function edge(x, y)
   else
       system.BGcolorG,system.BGcolorB = 1.0, 1.0
   end
+end
+function edgeTop(x, y)
   if y < 0 - system.winHeight * 0.3 then
     objects.tower.body:applyForce(0, 10000)
     system.BGcolorG,system.BGcolorB = 0.25, 0.25
         system.BGcolorG,system.BGcolorB = 0.01, 0.01  
   end
-
-
 end
 
 function playSound(sound,mode,pitchMod,x,y)

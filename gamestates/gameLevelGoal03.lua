@@ -69,7 +69,7 @@ function gameLevelGoal03:keypressed(key, scancode, isrepeat)
         playSound(objects.audio.mainTheme,'play',false) -- unpause BG music
     end
 end
-function gameLevelGoal03:touchpressed(id, x, y, pressure)
+function gameLevelGoal03:mousepressed(x, y, istouch)
     if system.timer >= 3 then
       objects.audio.mainTheme:setVolume(0.42)
       Gamestate.switch(mainMenu)

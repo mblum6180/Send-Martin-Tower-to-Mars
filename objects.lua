@@ -24,10 +24,12 @@ system.timer = 0
 system.bonus = 0
 system.scaling = system.winWidth / 1280 -- Scaling factor for 1280 wide
 system.version = "0.13 - Beta"
-system.moveLeft = false
-system.moveRight = false
+system.moveLeft = 0
+system.moveLeftTime = 0.4
+system.moveRight = 0
+system.moveRightTime = 0.4
 system.moveGas = 0
-system.moveGasTime = 0.6
+system.moveGasTime = 0.4
 
 
 activePeeps = {}
@@ -89,7 +91,7 @@ objects.tower.width = objects.tower.image:getWidth()
 objects.tower.height = objects.tower.image:getHeight()
 objects.tower.strengthTorque = 2000
 objects.tower.strengthMain = 1600
-objects.tower.strengthSide = 128
+objects.tower.strengthSide = 300
 objects.tower.fire = false
 objects.tower.empty = false
 objects.tower.crashed = false

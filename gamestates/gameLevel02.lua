@@ -40,6 +40,9 @@ function gameLevel02:update(dt)
     space:update(dt)
     keyboardInput()
 
+    system.moveRight = system.moveRight - 1 * dt
+    system.moveLeft = system.moveLeft - 1 * dt
+
     objects.image.fireball.currentFrame = objects.image.fireball.currentFrame + 10 * dt
     if objects.image.fireball.currentFrame >= 4 then
         objects.image.fireball.currentFrame = 1
@@ -105,13 +108,11 @@ function gameLevel02:update(dt)
 
 
     if system.crashed == false and Gamestate.current() == gameLevel02 then
-        if system.moveRight then
-        objects.tower.body:applyLinearImpulse(objects.tower.strengthSide, 0)
-        system.moveRight = false
+        if system.moveRight > 0 then
+        objects.tower.body:applyForce(objects.tower.strengthSide, 0)
         system.score02 = system.score02 - 2 * dt
-        elseif system.moveLeft then
-        objects.tower.body:applyLinearImpulse(-objects.tower.strengthSide, 0)
-        system.moveLeft = false
+        elseif system.moveLeft > 0 then
+        objects.tower.body:applyForce(-objects.tower.strengthSide, 0)
         system.score02 = system.score02 - 2 * dt
         end
         system.score02 = system.score02 - 1 * dt
@@ -214,9 +215,9 @@ function gameLevel02:keypressed(key, scancode, isrepeat)
         end
     end
     if love.keyboard.isDown("right") then
-        system.moveRight = true
+        system.moveRight =system.moveRightTime
       elseif love.keyboard.isDown("left") then
-        system.moveLeft = true
+        system.moveLeft = system.moveLeftTime
     end
     if love.keyboard.isDown("up") then
         system.moveGas = true
@@ -236,9 +237,9 @@ end
 
 function gameLevel02:mousepressed(x, y, istouch)
     if x < system.winWidth * 0.3 then
-        system.moveLeft = true
+        system.moveLeft = system.moveLeftTime
     elseif x > system.winWidth * 0.7 then
-        system.moveRight = true
+        system.moveRight = system.moveRightTime
     end
 end
 
