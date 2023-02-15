@@ -49,7 +49,7 @@ function gameLevel02:update(dt)
     end
 
 
-    junkTimer = junkTimer + 1 *system.scaling * dt
+    junkTimer = junkTimer + 1 *system.scaling * dt * (system.level * 0.6)
     gameLevel02:genItems() --timer for junk
 
 

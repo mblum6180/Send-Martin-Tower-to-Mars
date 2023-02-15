@@ -47,7 +47,7 @@ function gameLevel01:update(dt)
     if launch and system.crashed == false then 
         playSound(objects.audio.launch, "play")
         if system.score01 > 0 then
-            objects.tower.body:applyForce(0, -31000)
+            objects.tower.body:applyForce(0, -28000)
             --objects.tower.body:setY(objects.tower.body:getY() - 256 * dt)
         end
         if system.score01 > 0 then
@@ -82,7 +82,7 @@ function gameLevel01:update(dt)
         if math.floor(countDown) == 9 then
             playSound(objects.audio.countdown,'play',false)
         end
-        flow = flow - (flow * 3.2) * dt --set to 1.2 
+        flow = flow - (flow * 3.2) * dt * (system.level * 0.8)
         system.score01 = system.score01 + flow
         
     elseif system.crashed == false then

@@ -165,7 +165,7 @@ function gameLevel03:genLandscape()  --Height Width
             y = ground[#ground - 1], 500
 
         else
-            y = love.math.random(ground[#ground - 1] - love.math.random(0,system.winHeight * 0.1), system.winHeight * 0.32) -- v4 The first value is the last element in the array "ground" minus a random number between 0 and 100. The second value is 300. The random number generated will be stored in the variable "y".
+            y = love.math.random(ground[#ground - 1] - love.math.random(0,system.winHeight * 0.1 * system.level), system.winHeight * 0.32) -- v4 The first value is the last element in the array "ground" minus a random number between 0 and 100. The second value is 300. The random number generated will be stored in the variable "y".
         end
             
 

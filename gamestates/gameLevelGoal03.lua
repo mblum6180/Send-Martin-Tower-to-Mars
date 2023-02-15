@@ -61,7 +61,7 @@ function gameLevelGoal03:keypressed(key, scancode, isrepeat)
         love.event.quit()
     elseif system.timer >= 3 then
         if key == "space" or key =="left" or key =="right" or key =="down" or key =="up" then
-            Gamestate.switch(gameLevel03)
+            Gamestate.switch(mainMenu)
         end
     end
     if key == "m" and objects.audio.mainTheme:isPlaying() then
