@@ -229,10 +229,10 @@ function gameLevel03:keypressed(key, scancode, isrepeat)
     elseif key == "space" then
         if system.winner == true and objects.tower.crashed == false then
         Gamestate.switch(gameLevelGoal03)
+        elseif key == "space" and system.winner == true and objects.tower.crashed == true then 
+            reset()
+            Gamestate.switch(gameIntro02)
         end
-    elseif key == "space" and system.winner == true and objects.tower.crashed == true then 
-        reset()
-        Gamestate.switch(gameIntro02)
     end
 
     if key == "m" and objects.audio.mainTheme:isPlaying() then

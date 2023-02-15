@@ -11,6 +11,7 @@ function love.load()
   gameLevelGoal03 = require 'gamestates.gameLevelGoal03'
   gameIntro = require 'gamestates.gameIntro'
   gameIntro02 = require 'gamestates.gameIntro02'
+  stage = require 'gamestates.stage'
   require "objects"
 
 
