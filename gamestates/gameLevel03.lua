@@ -109,6 +109,12 @@ function gameLevel03:draw()
     for i, triangle in ipairs(triangles) do 
         love.graphics.polygon("fill", triangle)
     end
+    love.graphics.setColor(0.63, 0.49, 0.42) --   Draw Foreground Mountains 
+    love.graphics.translate(0, system.winHeight * 0.04)
+    for i, triangle in ipairs(triangles) do 
+        love.graphics.polygon("fill", triangle)
+    end
+    love.graphics.translate(0, -system.winHeight * 0.04)
 
     love.graphics.setColor(1.0, 1.0, 1.0) -- Draw Tower
     love.graphics.draw(objects.tower.image, objects.tower.body:getX(), objects.tower.body:getY(), objects.tower.body:getAngle(), system.scaling, system.scaling, 0, 0 )
@@ -140,11 +146,7 @@ function gameLevel03:draw()
         love.graphics.print("Crashed!\n\nPress to play agian.", system.winWidth * 0.1, system.winHeight * 0.3, 0)
     
     end
-    love.graphics.setColor(0.63, 0.49, 0.42) --   Draw Foreground Mountains --must be last
-    love.graphics.translate(0, system.winHeight * 0.04)
-    for i, triangle in ipairs(triangles) do 
-        love.graphics.polygon("fill", triangle)
-    end
+
 
 
 
