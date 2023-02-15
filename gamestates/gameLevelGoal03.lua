@@ -79,6 +79,7 @@ function gameLevelGoal03:mousepressed(x, y, istouch)
 
 function gameLevelGoal03:leave()
     reset()
+    
 end
 
 

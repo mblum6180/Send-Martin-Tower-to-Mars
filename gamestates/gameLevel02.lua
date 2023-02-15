@@ -234,6 +234,7 @@ function gameLevel02:keypressed(key, scancode, isrepeat)
     end
     if key == "space" and system.crashed == true then
         reset()
+        system.score01 = 0
         Gamestate.switch(gameIntro02)
     end
 end
@@ -247,6 +248,7 @@ function gameLevel02:mousepressed(x, y, istouch)
     end
     if system.crashed == true then
         reset()
+        system.score01 = 0
         Gamestate.switch(gameIntro02)
     end
 end

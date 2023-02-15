@@ -44,7 +44,7 @@ end
 function stage:draw()
     love.graphics.setColor(255, 255, 255, bgAlpha)
     love.graphics.setFont(scoreFont)
-    love.graphics.printf("Stage: "..system.level,
+    love.graphics.printf("Round: "..system.level,
         system.winWidth * 0.1, system.winHeight * 0.3, system.winWidth * 0.8, 'center', 0)
 
         

@@ -231,6 +231,7 @@ function gameLevel03:keypressed(key, scancode, isrepeat)
         Gamestate.switch(gameLevelGoal03)
         elseif key == "space" and system.winner == true and objects.tower.crashed == true then 
             reset()
+            system.score01 = 0
             Gamestate.switch(gameIntro02)
         end
     end
@@ -277,6 +278,7 @@ function gameLevel03:mousepressed(x, y, istouch)
     end
     if system.winner == true and objects.tower.crashed == true then 
         reset()
+        system.score01 = 0
         Gamestate.switch(gameIntro02)
     end
 end

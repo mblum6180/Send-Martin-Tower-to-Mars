@@ -1,6 +1,7 @@
 --! file: main.lua
 function love.load()
 
+  require "objects"
   Gamestate = require 'libs.hump.gamestate' -- Game levels
   mainMenu = require 'gamestates.mainmenu'
   gameLevel01 = require 'gamestates.gameLevel01'
@@ -12,7 +13,7 @@ function love.load()
   gameIntro = require 'gamestates.gameIntro'
   gameIntro02 = require 'gamestates.gameIntro02'
   stage = require 'gamestates.stage'
-  require "objects"
+
 
 
   love.graphics.setDefaultFilter('nearest', 'nearest')
