@@ -1,4 +1,4 @@
-## Shake Alarm Clock: Privacy policy
+## Send Martin Tower to Mars!: Privacy policy
 
 Welcome to the Send Martin Tower to Mars! app for Android. This open source app was developed by Matthew Blum in collaboration with Lightly-Salted Production, LLC. You can find the app on Google Play, and its source code is available on GitHub under the MIT license.
 
@@ -11,7 +11,7 @@ The list of permissions required by the app can be found in the `AndroidManifest
 
 | Permission | Why it is required |
 | :---: | --- |
-| `android.permission.VIBRATE` | Required to vibrate the device when alarm is during tower takeoff. |
+| `android.permission.VIBRATE` | Required to vibrate the device in game during tower takeoff. |
 
  <hr style="border:1px solid gray">
 
