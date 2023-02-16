@@ -144,10 +144,10 @@ function gameLevel01:draw()
     if launch then 
         love.graphics.setColor(1.0, 1.0, 1.0, 0.98)
         love.graphics.draw(objects.image.fireball.tex, objects.image.fireball.frames[math.floor(objects.image.fireball.currentFrame)], 
-        objects.tower.body:getX(), objects.tower.body:getY(),
-         0, 
-         towerScaling * system.scaling, towerScaling * system.scaling, 
-         objects.tower.width / 2 * system.scaling, -objects.tower.height / 2 * system.scaling)
+        objects.tower.body:getX() - objects.tower.width /2 * towerScaling * system.scaling, objects.tower.body:getY() + objects.tower.height /2 * towerScaling * system.scaling,
+         0,
+         towerScaling * system.scaling, towerScaling * system.scaling
+         )
     end
 end
 
