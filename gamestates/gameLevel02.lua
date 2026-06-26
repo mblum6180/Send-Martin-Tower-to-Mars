@@ -135,7 +135,7 @@ end
 
 function gameLevel02:draw()
     love.graphics.setColor(system.BGcolorR, system.BGcolorG, system.BGcolorB) -- draw Backgroud
-    love.graphics.draw(objects.ground.background02, 0, 0, 0, system.BGScale * system.scaling)
+    love.graphics.draw(objects.ground.background02, 0, 0, 0, system.BGScale * system.scaling, system.BGScale * system.scalingH)
 
     love.graphics.translate(0, scroll)
 
