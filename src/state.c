@@ -25,6 +25,8 @@ void RegisterScreens(void) {
     screens[SCREEN_LEVEL3]  = Level3Screen();
     screens[SCREEN_GOAL3]   = Goal3Screen();
     screens[SCREEN_STAGE]   = StageScreen();
+    screens[SCREEN_NAME_ENTRY]  = NameEntryScreen();
+    screens[SCREEN_LEADERBOARD] = LeaderboardScreen();
 }
 
 GameScreen CurrentScreen(void) { return current; }

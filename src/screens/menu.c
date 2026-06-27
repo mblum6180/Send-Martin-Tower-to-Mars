@@ -59,6 +59,13 @@ static void menu_update(float dt) {
         }
     }
 
+    // Leaderboard browser / name change. These keys are distinct from the
+    // "advance" set below, so they don't fall through to starting the game.
+    if (menu_timer > 2.0f) {
+        if (IsKeyPressed(KEY_L)) { LeaderboardConfigure(SCREEN_MENU); ChangeScreen(SCREEN_LEADERBOARD); return; }
+        if (IsKeyPressed(KEY_N)) { NameEntryConfigure(SCREEN_MENU, -1); ChangeScreen(SCREEN_NAME_ENTRY); return; }
+    }
+
     if (menu_timer >= 3.0f) {
         bool key = IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_LEFT) ||
                    IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_UP);
@@ -104,6 +111,15 @@ static void menu_draw(void) {
         DrawWrappedText(hs, assets.screenFont, 0.0f, sys.winHeight * 0.82f,
                         sys.winWidth, ALIGN_CENTER, textCol);
     }
+
+    // Leaderboard / name controls (the actual game-start prompt is the logo below).
+    char hint[96];
+    if (sys.playerName[0])
+        snprintf(hint, sizeof(hint), "[L] Leaderboard    [N] Name: %s", sys.playerName);
+    else
+        snprintf(hint, sizeof(hint), "[L] Leaderboard    [N] Set Name");
+    DrawWrappedText(hint, assets.screenFont, 0.0f, sys.winHeight * 0.76f,
+                    sys.winWidth, ALIGN_CENTER, textCol);
 
     // Smoothly pulsing "press to start" (gentler than a hard blink).
     if (menu_timer > 2.0f) {
