@@ -4,6 +4,7 @@
 #define GAME_H
 
 #include "raylib.h"
+#include "leaderboard.h"   // shared online-leaderboard module (engine/ submodule)
 #include <stdbool.h>
 #include <stddef.h>
 
@@ -25,6 +26,8 @@ typedef enum {
     SCREEN_LEVEL3,
     SCREEN_GOAL3,
     SCREEN_STAGE,
+    SCREEN_NAME_ENTRY,   // keyboard entry of the leaderboard display name
+    SCREEN_LEADERBOARD,  // worldwide top-10 high-score list
     SCREEN_COUNT
 } GameScreen;
 
@@ -88,6 +91,8 @@ typedef struct {
 
     const char *version;
     bool  debugMode;
+
+    char  playerName[LB_NAME_MAX]; // leaderboard display name (persisted to disk)
 } System;
 
 extern System sys;
@@ -115,6 +120,15 @@ const Screen *Goal2Screen(void);
 const Screen *Level3Screen(void);
 const Screen *Goal3Screen(void);
 const Screen *StageScreen(void);
+const Screen *NameEntryScreen(void);
+const Screen *LeaderboardScreen(void);
+
+// Configure the name-entry screen before changing to it: where to go on
+// confirm/cancel, and (if >= 0) a final score to submit online after the name is
+// accepted. Pass submitScore < 0 for a plain "change my name" edit.
+void NameEntryConfigure(GameScreen returnScreen, int submitScore);
+// Configure where the leaderboard screen returns to (defaults to the menu).
+void LeaderboardConfigure(GameScreen returnScreen);
 
 // ----------------------------------------------------------------------------
 // Shared helpers (main.c)
@@ -135,6 +149,17 @@ void  DrawStarfield(void);                        // ambient backdrop for text s
 // (updates + persists sys.highScore, returns true if it was a new best).
 int   LoadHighScore(void);
 bool  SubmitHighScore(int finalScore);
+
+// ----------------------------------------------------------------------------
+// Online leaderboard (engine/leaderboard.{c,h}). One shared client instance,
+// initialised in main(); screens submit/fetch/rank against it.
+// ----------------------------------------------------------------------------
+extern LeaderboardData g_lb;
+#define PLAYERNAME_FILE "martin_name.txt"
+#define LB_SCORE_METRIC "score"
+LeaderboardConfig MartinLBConfig(void);   // server url + game id ("martin")
+void  LoadPlayerName(void);               // read sys.playerName from disk (if any)
+void  SavePlayerName(void);               // persist sys.playerName to disk
 
 // Word-wrapped, alpha-aware text in the screen font (replaces love printf 'center').
 typedef enum { ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT } TextAlign;

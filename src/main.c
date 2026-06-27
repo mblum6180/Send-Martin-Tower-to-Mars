@@ -12,6 +12,9 @@
 System sys;
 Tower  tower;
 
+// Shared online-leaderboard client (see game.h). Initialised in main().
+LeaderboardData g_lb;
+
 // ----------------------------------------------------------------------------
 // Shared helpers
 // ----------------------------------------------------------------------------
@@ -131,6 +134,44 @@ bool SubmitHighScore(int finalScore) {
     return true;
 }
 
+// ----------------------------------------------------------------------------
+// Online leaderboard config + player-name persistence.
+// ----------------------------------------------------------------------------
+
+// Server connection + game identity for every Submit/Fetch/Validate call. The
+// shared server partitions all boards by `game`, so "martin" is this game's slice.
+LeaderboardConfig MartinLBConfig(void) {
+    LeaderboardConfig c = { 0 };
+    snprintf(c.url,   sizeof(c.url),   "%s", "https://scores.lightly-salted.com/api");
+    snprintf(c.game,  sizeof(c.game),  "%s", "martin");
+    snprintf(c.build, sizeof(c.build), "%s", "0.16.0");
+    snprintf(c.platform, sizeof(c.platform), "%s", "desktop-linux");
+    c.install_id[0] = '\0';  // per-install analytics id (optional) — omitted
+    c.playtime = -1.0;       // omit per-run telemetry
+    c.runs     = -1.0;
+    return c;
+}
+
+// Player name lives in a plain-text file beside the working dir (one line).
+void LoadPlayerName(void) {
+    sys.playerName[0] = '\0';
+    FILE *f = fopen(PLAYERNAME_FILE, "r");
+    if (!f) return;
+    if (fgets(sys.playerName, sizeof(sys.playerName), f)) {
+        size_t len = strlen(sys.playerName);
+        while (len > 0 && (sys.playerName[len-1] == '\n' || sys.playerName[len-1] == '\r'))
+            sys.playerName[--len] = '\0';
+    }
+    fclose(f);
+}
+
+void SavePlayerName(void) {
+    FILE *f = fopen(PLAYERNAME_FILE, "w");
+    if (!f) return;
+    fputs(sys.playerName, f);
+    fclose(f);
+}
+
 // Shared slow-drifting, twinkling starfield used as a living backdrop behind the
 // otherwise-black text / goal / stage screens.
 void DrawStarfield(void) {
@@ -240,6 +281,8 @@ static GameScreen ScreenFromName(const char *n) {
     if (!strcmp(n, "level3"))  return SCREEN_LEVEL3;
     if (!strcmp(n, "goal3"))   return SCREEN_GOAL3;
     if (!strcmp(n, "stage"))   return SCREEN_STAGE;
+    if (!strcmp(n, "nameentry"))   return SCREEN_NAME_ENTRY;
+    if (!strcmp(n, "leaderboard"))  return SCREEN_LEADERBOARD;
     return SCREEN_INTRO;
 }
 
@@ -258,6 +301,7 @@ int main(int argc, char **argv) {
     sys.level = 1;
     sys.lives = START_LIVES;
     sys.highScore = LoadHighScore();
+    LoadPlayerName();
     sys.landedTimer = 2.0f;
     sys.BGScale = 1.0f;
     sys.BGcolorR = sys.BGcolorG = sys.BGcolorB = 1.0f;
@@ -277,6 +321,14 @@ int main(int argc, char **argv) {
     PhysicsInit();
     FxInit();
     RegisterScreens();
+
+    // Online leaderboard: init, load the CA bundle for HTTPS, then fire a one-off
+    // connectivity probe so on/offline is known by the time a board is shown.
+    Leaderboard_Init(&g_lb);
+    char *caPem = LoadFileText("assets/cacert.pem");
+    if (caPem) { Leaderboard_SetCA(&g_lb, caPem); UnloadFileText(caPem); }
+    LeaderboardConfig lbProbe = MartinLBConfig();
+    Leaderboard_Probe(&g_lb, &lbProbe);
 
     // Scripted demo input (verification only); empty/NULL = normal play.
     InputInitDemo(getenv("MARTIN_DEMO"));
@@ -316,6 +368,7 @@ int main(int argc, char **argv) {
     while (!WindowShouldClose()) {
         float dt = GetFrameTime();
         UpdateGlobalAudio();
+        Leaderboard_Update(&g_lb);   // reap finished fetch/submit/validate threads
         GameScreen cur = CurrentScreen();
         if (!TransitionFreezing() && screens[cur] && screens[cur]->update)
             screens[cur]->update(dt);
@@ -344,6 +397,7 @@ int main(int argc, char **argv) {
         }
     }
 
+    Leaderboard_Destroy(&g_lb);
     PhysicsClose();
     UnloadAssets();
     CloseAudioDevice();
