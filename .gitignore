@@ -1,0 +1,15 @@
+martin
+build/
+shots/
+*.o
+cap.png
+*.png.tmp
+highscore.dat
+martin_name.txt
+martin_uuid.txt
+# Leaderboard data files written at runtime
+*.dat
+# Built mbedTLS objects (prebuilt static lib is committed)
+vendor/mbedtls/library/*.o
+# Vendored raylib source (web-only, 100M+ with its own .git; build locally)
+vendor/raylib-src/

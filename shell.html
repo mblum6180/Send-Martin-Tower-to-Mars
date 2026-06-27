@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>Send Martin Tower to Mars!</title>
+  <style>
+    body { margin: 0; background: #000; color: #ddd; font-family: monospace;
+           display: flex; flex-direction: column; align-items: center; }
+    canvas.emscripten { border: 0; image-rendering: pixelated;
+           width: 100vw; max-width: 1280px; height: auto; display: block; }
+    #status { padding: 8px; }
+  </style>
+</head>
+<body>
+  <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+  <div id="status">Loading…</div>
+  <script>
+    var statusElement = document.getElementById('status');
+    var Module = {
+      canvas: (function () { return document.getElementById('canvas'); })(),
+      setStatus: function (t) { statusElement.textContent = t; if (!t) statusElement.style.display = 'none'; },
+      print: function (t) { console.log(t); },
+      printErr: function (t) { console.error(t); },
+    };
+  </script>
+  {{{ SCRIPT }}}
+</body>
+</html>
