@@ -10,6 +10,8 @@ void InputInitDemo(const char *spec) {
     if (strstr(spec, "left"))   demo[ACT_LEFT]   = true;
     if (strstr(spec, "right"))  demo[ACT_RIGHT]  = true;
     if (strstr(spec, "thrust")) demo[ACT_THRUST] = true;
+    if (strstr(spec, "up"))     demo[ACT_THRUST] = true;  // alias: L1 DDR "up" arrow
+    if (strstr(spec, "down"))   demo[ACT_DOWN]   = true;
     if (strstr(spec, "rotl"))   demo[ACT_ROTL]   = true;
     if (strstr(spec, "rotr"))   demo[ACT_ROTR]   = true;
     if (strstr(spec, "confirm"))demo[ACT_CONFIRM]= true;
@@ -20,6 +22,7 @@ static bool KeyDownFor(Action a) {
         case ACT_LEFT:    return IsKeyDown(KEY_LEFT);
         case ACT_RIGHT:   return IsKeyDown(KEY_RIGHT);
         case ACT_THRUST:  return IsKeyDown(KEY_UP);
+        case ACT_DOWN:    return IsKeyDown(KEY_DOWN);
         case ACT_ROTL:    return IsKeyDown(KEY_A);
         case ACT_ROTR:    return IsKeyDown(KEY_D);
         case ACT_CONFIRM: return IsKeyDown(KEY_SPACE);
@@ -32,6 +35,7 @@ static bool KeyPressedFor(Action a) {
         case ACT_LEFT:    return IsKeyPressed(KEY_LEFT);
         case ACT_RIGHT:   return IsKeyPressed(KEY_RIGHT);
         case ACT_THRUST:  return IsKeyPressed(KEY_UP);
+        case ACT_DOWN:    return IsKeyPressed(KEY_DOWN);
         case ACT_ROTL:    return IsKeyPressed(KEY_A);
         case ACT_ROTR:    return IsKeyPressed(KEY_D);
         case ACT_CONFIRM: return IsKeyPressed(KEY_SPACE);

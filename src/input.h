@@ -10,7 +10,8 @@
 typedef enum {
     ACT_LEFT = 0,   // steer / fill left
     ACT_RIGHT,      // steer / fill right
-    ACT_THRUST,     // main engine (up / center tap)
+    ACT_THRUST,     // main engine (up / center tap); also the L1 DDR "up" arrow
+    ACT_DOWN,       // down arrow (L1 DDR launch-code lane)
     ACT_ROTL,       // rotate counter-clockwise (a)
     ACT_ROTR,       // rotate clockwise (d)
     ACT_CONFIRM,    // advance / restart (space / tap)
