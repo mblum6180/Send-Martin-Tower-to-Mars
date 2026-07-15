@@ -20,6 +20,7 @@ static int        ne_submit;       // score to post after accept, or < 0 for non
 static bool       ne_validating;   // waiting on a server name pre-flight
 static char       ne_error[48];
 static float      ne_timer;        // drives the caret blink
+static float      ne_bg;           // content fade-in (0 -> 1)
 
 // Server charset (mirrors the leaderboard server's NAME_RE: [A-Za-z0-9_ .'-]).
 // Disallowed keystrokes are dropped at entry time so a confirmed name always
@@ -44,6 +45,7 @@ static void ne_enter(void) {
     ne_validating = false;
     ne_error[0] = '\0';
     ne_timer = 0.0f;
+    ne_bg = 0.0f;
 }
 
 // Accept the typed name: persist it and (if queued) post the score + refresh.
@@ -76,6 +78,7 @@ static void ne_confirm(void) {
 
 static void ne_update(float dt) {
     ne_timer += dt;
+    ne_bg = FadeIn(dt, ne_bg, 0.9f);
 
     // While a name pre-flight is in flight, swallow input and wait for the result.
     if (ne_validating) {
@@ -108,7 +111,7 @@ static void ne_draw(void) {
 
     DrawWrappedText("ENTER YOUR NAME", assets.messageFont,
                     sys.winWidth * 0.1f, sys.winHeight * 0.18f,
-                    sys.winWidth * 0.8f, ALIGN_CENTER, WHITE);
+                    sys.winWidth * 0.8f, ALIGN_CENTER, Fade(WHITE, ne_bg));
 
     // The entered text with a blinking caret while not validating.
     char shown[NE_MAX_CHARS + 2];
@@ -116,21 +119,21 @@ static void ne_draw(void) {
     snprintf(shown, sizeof(shown), "%s%s", ne_buf, caret ? "_" : "");
     DrawWrappedText(shown[0] ? shown : " ", assets.scoreFont,
                     sys.winWidth * 0.1f, sys.winHeight * 0.40f,
-                    sys.winWidth * 0.8f, ALIGN_CENTER, (Color){ 90, 230, 200, 255 });
+                    sys.winWidth * 0.8f, ALIGN_CENTER, Fade((Color){ 90, 230, 200, 255 }, ne_bg));
 
     if (ne_validating) {
         DrawWrappedText("CHECKING...", assets.screenFont,
                         sys.winWidth * 0.1f, sys.winHeight * 0.70f,
-                        sys.winWidth * 0.8f, ALIGN_CENTER, (Color){ 200, 200, 200, 255 });
+                        sys.winWidth * 0.8f, ALIGN_CENTER, Fade((Color){ 200, 200, 200, 255 }, ne_bg));
     } else if (ne_error[0]) {
         DrawWrappedText(ne_error, assets.screenFont,
                         sys.winWidth * 0.1f, sys.winHeight * 0.70f,
-                        sys.winWidth * 0.8f, ALIGN_CENTER, (Color){ 255, 90, 90, 255 });
+                        sys.winWidth * 0.8f, ALIGN_CENTER, Fade((Color){ 255, 90, 90, 255 }, ne_bg));
     }
 
     DrawWrappedText("Type a name, then press ENTER", assets.screenFont,
                     sys.winWidth * 0.1f, sys.winHeight * 0.85f,
-                    sys.winWidth * 0.8f, ALIGN_CENTER, (Color){ 200, 200, 200, 255 });
+                    sys.winWidth * 0.8f, ALIGN_CENTER, Fade((Color){ 200, 200, 200, 255 }, ne_bg));
 }
 
 const Screen *NameEntryScreen(void) {

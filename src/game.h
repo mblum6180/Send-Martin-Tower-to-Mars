@@ -134,6 +134,8 @@ void LeaderboardConfigure(GameScreen returnScreen);
 // Shared helpers (main.c)
 // ----------------------------------------------------------------------------
 float FadeIn(float dt, float a, float speed);   // ported fade(): ramp a -> 1
+float Smooth01(float t);                          // smoothstep easing of a 0..1 value
+void  SetMusicTarget(float v);                    // glide main-theme volume toward v
 void  ResetGame(void);                            // ported reset()
 void  EdgePush(float x, float y);                 // ported edge()
 void  EdgeTop(float x, float y);                  // ported edgeTop()

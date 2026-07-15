@@ -62,8 +62,10 @@ void TransitionUpdate(float dt) {
 }
 
 void TransitionDraw(void) {
+    // trAlpha stays the linear driver (so DoSwitch still fires exactly at full
+    // black); only the drawn overlay alpha is eased for a softer in/out.
     if (trAlpha > 0.0f)
-        DrawRectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, Fade(BLACK, trAlpha));
+        DrawRectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, Fade(BLACK, Smooth01(trAlpha)));
 }
 
 // True while fading out: the outgoing screen is frozen (not updated) so it can't

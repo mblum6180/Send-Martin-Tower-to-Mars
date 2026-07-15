@@ -39,14 +39,14 @@ ifeq ($(PLATFORM),PLATFORM_WEB)
              -s ALLOW_MEMORY_GROWTH=1 -s FETCH=1 \
              --exclude-file '*cacert.pem' \
              --preload-file assets --shell-file shell.html $(RAYLIB_WEB_LIB)
-  ENGINE_SRC  := $(ENGINE)/leaderboard_web.c $(ENGINE)/cJSON.c
+  ENGINE_SRC  := $(ENGINE)/leaderboard_web.c $(ENGINE)/cJSON.c $(ENGINE)/crt.c $(ENGINE)/vfs.c
   MBEDTLS_DEP :=
 else
   CC      := cc
   OUTPUT  := $(NAME)
   CFLAGS  += -O2 -g -DPLATFORM_DESKTOP -I$(MBEDTLS_DIR)/include $(shell pkg-config --cflags raylib 2>/dev/null)
   LDFLAGS := $(shell pkg-config --libs raylib 2>/dev/null) $(MBEDTLS_LIB) -lm -lpthread -ldl -lrt -lX11
-  ENGINE_SRC  := $(ENGINE)/leaderboard.c $(ENGINE)/cJSON.c
+  ENGINE_SRC  := $(ENGINE)/leaderboard.c $(ENGINE)/cJSON.c $(ENGINE)/crt.c $(ENGINE)/vfs.c
   MBEDTLS_DEP := $(MBEDTLS_LIB)
 endif
 

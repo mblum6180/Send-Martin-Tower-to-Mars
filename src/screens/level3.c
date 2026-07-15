@@ -22,6 +22,7 @@ static float   landingSpeed;
 static bool    landingSpeedSet;
 static bool    contact;       // lander currently touching terrain (edge-detect)
 static float   padMult;       // touchdown bonus multiplier (1 = off-pad)
+static float   startFade;      // level-start fade-from-black (1 -> 0)
 static bool    onPad;         // landed on a marked pad (for the result text)
 
 // --- tuning (physac units; tuned by feel) -----------------------------------
@@ -105,6 +106,7 @@ static void l3_enter(void) {
     sys.score03 = sys.score02;
     landingSpeed = 0; landingSpeedSet = false; contact = false;
     padMult = 1.0f; onPad = false;
+    startFade = 1.0f;
     SetSoundVolume(assets.fire, 1.0f);
     GenTerrain();
 
@@ -169,6 +171,7 @@ static bool TerrainContact(void) {
 }
 
 static void l3_update(float dt) {
+    if (startFade > 0.0f) startFade -= dt / 0.5f;   // ~0.5s settle-in from black
     PhysicsStep();
     PhysicsBody tb = (PhysicsBody)tower.body;
 
@@ -391,6 +394,9 @@ static void l3_draw(void) {
                         sys.winWidth * 0.1f, sys.winHeight * 0.3f, sys.winWidth * 0.8f, ALIGN_LEFT, red);
 
     DrawLives();
+
+    if (startFade > 0.0f)   // settle-in fade from black at level start
+        DrawRectangle(0, 0, (int)sys.winWidth, (int)sys.winHeight, Fade(BLACK, Smooth01(startFade)));
 }
 
 static void l3_leave(void) {

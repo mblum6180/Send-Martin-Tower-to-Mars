@@ -70,7 +70,7 @@ static void menu_update(float dt) {
         bool key = IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_LEFT) ||
                    IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_UP);
         if (key || IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            SetMusicVolume(assets.mainTheme, 0.42f);
+            SetMusicTarget(0.42f);
             ChangeScreen(SCREEN_INTRO02);
         }
     }

@@ -4,6 +4,7 @@
 #include "physics.h"
 #include "input.h"
 #include "fx.h"
+#include "crt.h"        // engine CRT post-process (lightly-salted-engine)
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -15,6 +16,20 @@ Tower  tower;
 // Shared online-leaderboard client (see game.h). Initialised in main().
 LeaderboardData g_lb;
 
+// CRT post-process (engine/crt). Subtle retro pass, on by default; F1 toggles it,
+// MARTIN_CRT=0 forces it off. Shader differs by platform (desktop 330 / web ES 100).
+#ifdef PLATFORM_WEB
+  #define CRT_SHADER_PATH "assets/shaders/crt.web.fs"
+#else
+  #define CRT_SHADER_PATH "assets/shaders/crt.fs"
+#endif
+static CRTEffect g_crt;
+static bool g_crtReady = false, g_crtOn = false;
+
+// Music volume glides toward g_musicTarget instead of snapping (see UpdateGlobalAudio).
+static float g_musicVol = 1.0f, g_musicTarget = 1.0f;
+void SetMusicTarget(float v) { g_musicTarget = v; }
+
 // ----------------------------------------------------------------------------
 // Shared helpers
 // ----------------------------------------------------------------------------
@@ -24,6 +39,13 @@ float FadeIn(float dt, float a, float speed) {
     if (a < 1.0f) a += speed * dt;
     if (a > 1.0f) a = 1.0f;
     return a;
+}
+
+// Smoothstep easing of a 0..1 value (3t^2 - 2t^3): eased-in-and-out feel for fades.
+float Smooth01(float t) {
+    if (t < 0.0f) t = 0.0f;
+    if (t > 1.0f) t = 1.0f;
+    return t * t * (3.0f - 2.0f * t);
 }
 
 // Clears the per-attempt flags a fresh launch/landing needs (shared by
@@ -265,10 +287,15 @@ void DrawWrappedText(const char *text, Font font, float x, float y, float wrapW,
 // ----------------------------------------------------------------------------
 static void UpdateGlobalAudio(void) {
     UpdateMusicStream(assets.mainTheme);
+    // Glide the music volume toward its target so screen changes don't snap.
+    float k = GetFrameTime() * 4.0f; if (k > 1.0f) k = 1.0f;
+    g_musicVol += (g_musicTarget - g_musicVol) * k;
+    SetMusicVolume(assets.mainTheme, g_musicVol);
     if (IsKeyPressed(KEY_M)) {
         if (IsMusicStreamPlaying(assets.mainTheme)) PauseMusicStream(assets.mainTheme);
         else                                        ResumeMusicStream(assets.mainTheme);
     }
+    if (IsKeyPressed(KEY_F1) && g_crtReady) g_crtOn = !g_crtOn;   // toggle the CRT pass
 }
 
 static GameScreen ScreenFromName(const char *n) {
@@ -284,6 +311,23 @@ static GameScreen ScreenFromName(const char *n) {
     if (!strcmp(n, "nameentry"))   return SCREEN_NAME_ENTRY;
     if (!strcmp(n, "leaderboard"))  return SCREEN_LEADERBOARD;
     return SCREEN_INTRO;
+}
+
+// Draw one full frame of the game (scene through the shake camera, particles,
+// fade overlay, debug FPS). Rendered either straight to the backbuffer or into
+// the CRT target, so both paths share exactly the same scene composition.
+static void DrawSceneFrame(void) {
+    ClearBackground(BLACK);
+    GameScreen cur = CurrentScreen();
+    Camera2D shakeCam = { 0 };
+    shakeCam.zoom = 1.0f;
+    shakeCam.offset = FxShakeOffset();
+    BeginMode2D(shakeCam);
+        if (screens[cur] && screens[cur]->draw) screens[cur]->draw();
+        FxDraw();
+    EndMode2D();
+    TransitionDraw();                 // fade overlay sits above everything
+    if (sys.debugMode) DrawFPS(10, 10);
 }
 
 int main(int argc, char **argv) {
@@ -321,6 +365,22 @@ int main(int argc, char **argv) {
     PhysicsInit();
     FxInit();
     RegisterScreens();
+
+    // CRT post-process (engine): render the whole game into a fixed-res target and
+    // blit it back through a subtle scanline/curvature/vignette shader. On by default
+    // (F1 toggles; MARTIN_CRT=0 forces off). Fails closed -> plain rendering if the
+    // shader can't compile/load.
+    g_crtReady = CRT_Init(&g_crt, CRT_SHADER_PATH, GAME_WIDTH, GAME_HEIGHT);
+    if (g_crtReady) {
+        CRT_SetIntensity(&g_crt, 0.9f);
+        CRT_SetScanlineStrength(&g_crt, 0.15f);
+        CRT_SetCurvature(&g_crt, 0.08f);
+        CRT_SetVignette(&g_crt, 0.22f);
+        CRT_SetBloomStrength(&g_crt, 0.22f);
+        CRT_SetStaticStrength(&g_crt, 0.0f);
+        const char *crtEnv = getenv("MARTIN_CRT");
+        g_crtOn = !(crtEnv && crtEnv[0] == '0');
+    }
 
     // Online leaderboard: init, load the CA bundle for HTTPS, then fire a one-off
     // connectivity probe so on/offline is known by the time a board is shown.
@@ -375,21 +435,23 @@ int main(int argc, char **argv) {
         TransitionUpdate(dt);
         FxUpdate(dt);
 
-        BeginDrawing();
-            ClearBackground(BLACK);
-            cur = CurrentScreen();
-            // The whole scene + particles render through the shake camera so
-            // impacts kick the frame; the HUD lives inside each screen's draw.
-            Camera2D shakeCam = { 0 };
-            shakeCam.zoom = 1.0f;
-            shakeCam.offset = FxShakeOffset();
-            BeginMode2D(shakeCam);
-                if (screens[cur] && screens[cur]->draw) screens[cur]->draw();
-                FxDraw();
-            EndMode2D();
-            TransitionDraw();                 // fade overlay sits above everything
-            if (sys.debugMode) DrawFPS(10, 10);
-        EndDrawing();
+        if (g_crtReady) {
+            // Render the scene into the CRT target, then blit it to the window
+            // (shaded when on, plain scaled blit when toggled off).
+            CRT_BeginScene(&g_crt);
+                DrawSceneFrame();
+            CRT_EndScene(&g_crt);
+            BeginDrawing();
+                ClearBackground(BLACK);
+                Rectangle full = { 0, 0, GAME_WIDTH, GAME_HEIGHT };
+                if (g_crtOn) CRT_Draw(&g_crt, full);
+                else         CRT_Present(&g_crt, full);
+            EndDrawing();
+        } else {
+            BeginDrawing();
+                DrawSceneFrame();
+            EndDrawing();
+        }
 
         if (capMode) {
             capElapsed += dt;
@@ -398,6 +460,7 @@ int main(int argc, char **argv) {
     }
 
     Leaderboard_Destroy(&g_lb);
+    if (g_crtReady) CRT_Unload(&g_crt);
     PhysicsClose();
     UnloadAssets();
     CloseAudioDevice();

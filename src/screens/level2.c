@@ -38,6 +38,7 @@ static float towerX, towerVX;
 static float grazeFlash;          // seconds remaining on the "GRAZE!" popup
 static int   grazeCount;          // grazes this run
 static int   combo;               // consecutive grazes (resets on a hit)
+static float startFade;           // level-start fade-from-black (1 -> 0)
 #define MAX_COMBO 5
 
 // --- tuning -----------------------------------------------------------------
@@ -65,6 +66,7 @@ static void l2_enter(void) {
     for (int i = 0; i < MAX_METEOROIDS; i++) junk[i].active = false;
     scroll = 0; scrollTower = 0; junkTimer = 0; NewInterval();
     grazeFlash = 0; grazeCount = 0; combo = 0;
+    startFade = 1.0f;
     for (int i = 0; i < NSTARS; i++) {
         stars[i].x = Frnd(0, sys.winWidth);
         stars[i].y = Frnd(0, sys.winHeight);
@@ -113,6 +115,7 @@ static float TowerGap(float cx, float cy, float r, float rx, float ry) {
 }
 
 static void l2_update(float dt) {
+    if (startFade > 0.0f) startFade -= dt / 0.5f;   // ~0.5s settle-in from black
     AnimAdvance(&assets.fireball, 10.0f * dt);
     if (!IsSoundPlaying(assets.fire) && !sys.crashed) PlaySound(assets.fire); // loop
 
@@ -316,6 +319,9 @@ static void l2_draw(void) {
                         ALIGN_LEFT, (Color){ 255, 0, 0, 255 });
 
     DrawLives();
+
+    if (startFade > 0.0f)   // settle-in fade from black at level start
+        DrawRectangle(0, 0, (int)sys.winWidth, (int)sys.winHeight, Fade(BLACK, Smooth01(startFade)));
 }
 
 static void l2_leave(void) {

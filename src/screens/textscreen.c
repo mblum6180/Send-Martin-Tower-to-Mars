@@ -23,7 +23,7 @@ static void ts_update(float dt) {
                    IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_UP);
         bool tap = IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
         if (key || tap) {
-            SetMusicVolume(assets.mainTheme, 0.42f);
+            SetMusicTarget(0.42f);
             ChangeScreen(ts_next);
         }
     }
