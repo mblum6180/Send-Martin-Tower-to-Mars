@@ -330,6 +330,24 @@ static void DrawSceneFrame(void) {
     if (sys.debugMode) DrawFPS(10, 10);
 }
 
+// "Monitor housing" shown behind the curved CRT image so the border the barrel
+// distortion leaves around the screen reads as a beveled TV bezel, not dead
+// pixels. A top-lit gradient panel + a rounded bevel (highlight ring over an
+// inner shadow) + a little green power LED in the corner.
+static void DrawBezel(void) {
+    DrawRectangleGradientV(0, 0, GAME_WIDTH, GAME_HEIGHT,
+                           (Color){ 27, 28, 35, 255 }, (Color){ 10, 10, 14, 255 });
+    Rectangle outer = { 9,  9,  GAME_WIDTH - 18, GAME_HEIGHT - 18 };
+    Rectangle inner = { 22, 22, GAME_WIDTH - 44, GAME_HEIGHT - 44 };
+    DrawRectangleRounded(inner, 0.06f, 16, (Color){ 12, 13, 18, 255 });                 // recessed screen well
+    DrawRectangleRoundedLinesEx(outer, 0.055f, 16, 3.0f, (Color){ 56, 60, 74, 255 });   // outer bevel highlight
+    DrawRectangleRoundedLinesEx(inner, 0.06f, 16, 2.0f, (Color){ 3, 3, 6, 255 });       // inner recess shadow
+    // Power LED (classic CRT tell) tucked in the bottom-right corner gap.
+    Vector2 led = { GAME_WIDTH - 46, GAME_HEIGHT - 40 };
+    DrawCircleV(led, 9.0f, Fade((Color){ 80, 230, 120, 255 }, 0.20f));                  // glow
+    DrawCircleV(led, 4.0f, (Color){ 120, 240, 150, 255 });                              // core
+}
+
 int main(int argc, char **argv) {
     SetConfigFlags(FLAG_VSYNC_HINT);
     InitWindow(GAME_WIDTH, GAME_HEIGHT, "Send Martin Tower to Mars!");
@@ -442,7 +460,7 @@ int main(int argc, char **argv) {
                 DrawSceneFrame();
             CRT_EndScene(&g_crt);
             BeginDrawing();
-                ClearBackground(BLACK);
+                DrawBezel();          // fills the curved border behind the CRT image
                 Rectangle full = { 0, 0, GAME_WIDTH, GAME_HEIGHT };
                 if (g_crtOn) CRT_Draw(&g_crt, full);
                 else         CRT_Present(&g_crt, full);

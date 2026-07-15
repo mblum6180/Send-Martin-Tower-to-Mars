@@ -24,12 +24,13 @@ static float L1_FALL  = 700.0f;   // downward accel (px/s^2) once the tank runs 
 
 // DDR launch-code chart tuning.
 static float L1_BPM          = 132.0f; // fixed tempo of the launch-code chart
-static float L1_LEAD         = 1.6f;   // seconds a note takes to scroll to the receptor
+static float L1_LEAD         = 1.9f;   // seconds a note takes to scroll to the receptor
 static float L1_PERFECT      = 0.06f;  // |timing| for a Perfect hit
 static float L1_GOOD         = 0.13f;  // |timing| for a Good hit (also the miss cutoff)
 static float L1_FUEL_PERFECT = 52.0f;  // fuel banked for a Perfect (before combo)
 static float L1_FUEL_GOOD    = 30.0f;  // fuel banked for a Good (before combo)
 static int   L1_NOTES_BASE   = 22;     // notes on round 1 (grows with sys.level)
+static float L1_PREROLL      = 2.6f;   // "GET READY" grace period before the first note
 
 #define TOWER_SCALE   3.0f
 #define ORBIT_Y      (-375.0f)    // clear this height = reached orbit (win)
@@ -52,6 +53,7 @@ static PhysicsBody groundBody;
 static Note  notes[L1_MAX_NOTES];
 static int   noteCount, judgedCount, combo, hits;
 static float chartTime, fuelTarget, scrollSpeed;
+static float laneFlash[L1_LANES];    // per-lane receptor flash (1 on hit, decays)
 
 #define NL1STARS 70
 static Vector2 l1star[NL1STARS];
@@ -82,6 +84,7 @@ static void ChartHit(int i, bool perfect) {
     sys.score01 += (perfect ? L1_FUEL_PERFECT : L1_FUEL_GOOD) * mult;
     fillPulse = 1.0f;
     flow = 12.0f;                                          // flare the pad glow
+    laneFlash[notes[i].lane] = 1.0f;                       // light up this lane's receptor
     Vector2 rp = { LaneX(notes[i].lane), ReceptorY() };
     FxBurst(rp, perfect ? 10 : 6,
             perfect ? (Color){ 255, 240, 150, 255 } : (Color){ 180, 220, 255, 255 },
@@ -134,12 +137,13 @@ static void l1_enter(void) {
     L1_BURN         = EnvF("L1_BURN", 300.0f);
     L1_FALL         = EnvF("L1_FALL", 700.0f);
     L1_BPM          = EnvF("L1_BPM", 132.0f);
-    L1_LEAD         = EnvF("L1_LEAD", 1.6f);
+    L1_LEAD         = EnvF("L1_LEAD", 1.9f);
     L1_PERFECT      = EnvF("L1_PERFECT", 0.06f);
     L1_GOOD         = EnvF("L1_GOOD", 0.13f);
     L1_FUEL_PERFECT = EnvF("L1_FUEL_PERFECT", 52.0f);
     L1_FUEL_GOOD    = EnvF("L1_FUEL_GOOD", 30.0f);
     L1_NOTES_BASE   = (int)EnvF("L1_NOTES", 22.0f);
+    L1_PREROLL      = EnvF("L1_PREROLL", 2.6f);
 
     launch = false;
     timer = 1.0f;
@@ -164,7 +168,9 @@ static void l1_enter(void) {
         notes[i].time = L1_LEAD + i * beat;   // first note scrolls in over L1_LEAD s
         notes[i].judged = false;
     }
-    judgedCount = 0; combo = 0; hits = 0; chartTime = 0.0f;
+    judgedCount = 0; combo = 0; hits = 0;
+    chartTime = -L1_PREROLL;   // "GET READY" lead-in: notes hold off-screen, then approach
+    for (int i = 0; i < L1_LANES; i++) laneFlash[i] = 0.0f;
     scrollSpeed = (sys.winHeight - ReceptorY()) / L1_LEAD;
     fuelTarget = noteCount * L1_FUEL_PERFECT;
     if (fuelTarget < 1.0f) fuelTarget = 1.0f;
@@ -233,6 +239,8 @@ static void l1_update(float dt) {
 
     if (fillPulse > 0) fillPulse -= dt * 3.0f;
     if (flow > 0) { flow -= flow * 4.0f * dt; if (flow < 0.01f) flow = 0; }
+    for (int L = 0; L < L1_LANES; L++)
+        if (laneFlash[L] > 0) laneFlash[L] -= dt * 3.0f;
 
     // Launch-code entry: scroll the chart, judge presses, auto-miss stragglers,
     // then ignite once every note has been resolved.
@@ -336,15 +344,37 @@ static void l1_draw(void) {
             (Vector2){ 107 * TOWER_SCALE / 2.0f, 0 }, 0.0f, Fade(WHITE, 0.98f));
     }
 
-    // Launch-code lanes: receptors + scrolling note arrows + combo readout.
+    // Launch-code lanes: target zone + receptors + scrolling notes + readout.
     if (!launch && !sys.crashed) {
         float ry = ReceptorY();
         float ar = sys.winHeight * 0.038f;
+        float bandL = LaneX(0) - ar * 1.7f;
+        float bandR = LaneX(L1_LANES - 1) + ar * 1.7f;
+        float bandW = bandR - bandL;
+
         DrawWrappedText("ENTER LAUNCH CODE", assets.messageFont,
                         0, sys.winHeight * 0.03f, sys.winWidth, ALIGN_CENTER, Fade(WHITE, bgAlpha));
-        for (int L = 0; L < L1_LANES; L++)
-            DrawArrow((Vector2){ LaneX(L), ry }, L, ar * 1.15f, false,
-                      Fade(LANE_COL[L], 0.5f * bgAlpha));
+
+        // Target zone: a faint band across the lanes framed by edge lines, with a
+        // bright hit-line through the middle so it's obvious WHERE to strike.
+        DrawRectangle((int)bandL, (int)(ry - ar * 1.35f), (int)bandW, (int)(ar * 2.7f),
+                      Fade((Color){ 255, 255, 255, 255 }, 0.08f * bgAlpha));
+        DrawRectangle((int)bandL, (int)(ry - ar * 1.35f), (int)bandW, 2,
+                      Fade((Color){ 255, 255, 255, 255 }, 0.35f * bgAlpha));
+        DrawRectangle((int)bandL, (int)(ry + ar * 1.35f - 2), (int)bandW, 2,
+                      Fade((Color){ 255, 255, 255, 255 }, 0.35f * bgAlpha));
+        DrawRectangle((int)bandL, (int)ry - 2, (int)bandW, 4,
+                      Fade((Color){ 255, 255, 255, 255 }, 0.85f * bgAlpha));   // the hit line
+
+        // Receptors: a dim filled arrow + a bright outline, flaring on a fresh hit.
+        for (int L = 0; L < L1_LANES; L++) {
+            Vector2 c = { LaneX(L), ry };
+            float f = laneFlash[L]; if (f < 0) f = 0;
+            DrawArrow(c, L, ar * 0.92f, true,  Fade(LANE_COL[L], (0.16f + 0.5f * f) * bgAlpha));
+            DrawArrow(c, L, ar * 1.15f, false, Fade(LANE_COL[L], (0.6f + 0.4f * f) * bgAlpha));
+        }
+
+        // Scrolling notes.
         for (int i = 0; i < noteCount; i++) {
             if (notes[i].judged) continue;
             float ny = ry + (notes[i].time - chartTime) * scrollSpeed;
@@ -352,9 +382,14 @@ static void l1_draw(void) {
             DrawArrow((Vector2){ LaneX(notes[i].lane), ny }, notes[i].lane, ar, true,
                       Fade(LANE_COL[notes[i].lane], bgAlpha));
         }
-        if (combo > 1) {
+
+        // Lead-in prompt during the pre-roll, then the combo readout once running.
+        if (chartTime < 0.0f) {
+            DrawWrappedText("GET READY", assets.messageFont, 0, ry + sys.winHeight * 0.16f,
+                            sys.winWidth, ALIGN_CENTER, Fade((Color){ 255, 220, 120, 255 }, bgAlpha));
+        } else if (combo > 1) {
             char cb[32]; snprintf(cb, sizeof(cb), "COMBO x%d", combo);
-            DrawWrappedText(cb, assets.screenFont, 0, ry + sys.winHeight * 0.11f,
+            DrawWrappedText(cb, assets.screenFont, 0, ry + sys.winHeight * 0.16f,
                             sys.winWidth, ALIGN_CENTER, Fade((Color){ 255, 220, 120, 255 }, bgAlpha));
         }
     }

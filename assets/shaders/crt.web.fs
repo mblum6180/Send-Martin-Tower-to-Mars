@@ -59,7 +59,7 @@ void main() {
     vec2 distortedUv = distortUv(fragTexCoord);
     if (distortedUv.x < 0.0 || distortedUv.x > 1.0 ||
         distortedUv.y < 0.0 || distortedUv.y > 1.0) {
-        gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+        gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);   // transparent: let the bezel show in the curved border
         return;
     }
 
